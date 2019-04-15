@@ -13,28 +13,28 @@
 <meta name="keywords" content=" ">
 <meta property="og:type" content="article">
 <meta property="og:title" content="DDCTF_re1_writeup">
-<meta property="og:url" content="http://yoursite.com/2019/04/15/DDCTF-re1-writeup/index.html">
+<meta property="og:url" content="http://yoursite.com/2019/04/15/DDCTF re1 writeup/index.html">
 <meta property="og:site_name" content="Mr.周半仙的blog">
 <meta property="og:description" content="DDCTF re1 writeup下载下来是一个叫做reverse1_final的文件，打开发现是windows x86文件，直接用IDA无法反编译，提示如下  怀疑被加壳了，拖进PEID里面查看PE信息  EP段是UPX1，说明是UPX的壳，下载解压器，拖进去解压得到新的文件，发现新的文件已经无法正常运行，拖入IDA反汇编，先找到main函数，然后一通改名字  发现是对v4进行一系列操作后同DD">
 <meta property="og:locale" content="default">
-<meta property="og:image" content="c:/Users/周半仙/AppData/Roaming/Typora/typora-user-images/1555338436435.png">
-<meta property="og:image" content="c:/Users/周半仙/AppData/Roaming/Typora/typora-user-images/1555338503650.png">
-<meta property="og:image" content="c:/Users/周半仙/AppData/Roaming/Typora/typora-user-images/1555338607923.png">
-<meta property="og:image" content="c:/Users/周半仙/AppData/Roaming/Typora/typora-user-images/1555338706423.png">
-<meta property="og:image" content="c:/Users/周半仙/AppData/Roaming/Typora/typora-user-images/1555338881770.png">
-<meta property="og:image" content="c:/Users/周半仙/AppData/Roaming/Typora/typora-user-images/1555338967854.png">
-<meta property="og:image" content="c:/Users/周半仙/AppData/Roaming/Typora/typora-user-images/1555339857870.png">
-<meta property="og:image" content="c:/Users/周半仙/AppData/Roaming/Typora/typora-user-images/1555339900874.png">
-<meta property="og:image" content="c:/Users/周半仙/AppData/Roaming/Typora/typora-user-images/1555340063958.png">
-<meta property="og:image" content="c:/Users/周半仙/AppData/Roaming/Typora/typora-user-images/1555340618407.png">
-<meta property="og:image" content="c:/Users/周半仙/AppData/Roaming/Typora/typora-user-images/1555341082709.png">
-<meta property="og:image" content="c:/Users/周半仙/AppData/Roaming/Typora/typora-user-images/1555341096937.png">
-<meta property="og:image" content="c:/Users/周半仙/AppData/Roaming/Typora/typora-user-images/1555341224597.png">
-<meta property="og:updated_time" content="2019-04-15T15:16:07.041Z">
+<meta property="og:image" content="http://yoursite.com/2019/04/15/DDCTF%20re1%20writeup/assets/1555338436435.png">
+<meta property="og:image" content="http://yoursite.com/2019/04/15/DDCTF%20re1%20writeup/assets/1555338503650.png">
+<meta property="og:image" content="http://yoursite.com/2019/04/15/DDCTF%20re1%20writeup/assets/1555338607923-1555342113031.png">
+<meta property="og:image" content="http://yoursite.com/2019/04/15/DDCTF%20re1%20writeup/assets/1555338706423-1555342128134.png">
+<meta property="og:image" content="http://yoursite.com/2019/04/15/DDCTF%20re1%20writeup/assets/1555338881770.png">
+<meta property="og:image" content="http://yoursite.com/2019/04/15/DDCTF%20re1%20writeup/assets/1555338967854.png">
+<meta property="og:image" content="http://yoursite.com/2019/04/15/DDCTF%20re1%20writeup/assets/1555339857870.png">
+<meta property="og:image" content="http://yoursite.com/2019/04/15/DDCTF%20re1%20writeup/assets/1555339900874.png">
+<meta property="og:image" content="http://yoursite.com/2019/04/15/DDCTF%20re1%20writeup/assets/1555340063958.png">
+<meta property="og:image" content="http://yoursite.com/2019/04/15/DDCTF%20re1%20writeup/assets/1555340618407.png">
+<meta property="og:image" content="http://yoursite.com/2019/04/15/DDCTF%20re1%20writeup/assets/1555341082709.png">
+<meta property="og:image" content="http://yoursite.com/2019/04/15/DDCTF%20re1%20writeup/assets/1555341096937.png">
+<meta property="og:image" content="http://yoursite.com/2019/04/15/DDCTF%20re1%20writeup/assets/1555341224597.png">
+<meta property="og:updated_time" content="2019-04-15T15:32:43.909Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="DDCTF_re1_writeup">
 <meta name="twitter:description" content="DDCTF re1 writeup下载下来是一个叫做reverse1_final的文件，打开发现是windows x86文件，直接用IDA无法反编译，提示如下  怀疑被加壳了，拖进PEID里面查看PE信息  EP段是UPX1，说明是UPX的壳，下载解压器，拖进去解压得到新的文件，发现新的文件已经无法正常运行，拖入IDA反汇编，先找到main函数，然后一通改名字  发现是对v4进行一系列操作后同DD">
-<meta name="twitter:image" content="c:/Users/周半仙/AppData/Roaming/Typora/typora-user-images/1555338436435.png">
+<meta name="twitter:image" content="http://yoursite.com/2019/04/15/DDCTF%20re1%20writeup/assets/1555338436435.png">
   
     <link rel="alternative" href="/atom.xml" title="Mr.周半仙的blog" type="application/atom+xml">
   
@@ -177,7 +177,7 @@
             <canvas data-colors="#eaeaea" data-sectionHeight="100" data-contentId="js-content" id="myCanvas1" class="anm-canvas"></canvas>
           </div>
           <div id="js-content" class="content-ll">
-            <article id="post-DDCTF-re1-writeup" class="article article-type-post " itemscope itemprop="blogPost">
+            <article id="post-DDCTF re1 writeup" class="article article-type-post " itemscope itemprop="blogPost">
   <div class="article-inner">
     
       <header class="article-header">
@@ -189,7 +189,7 @@
   
 
         
-        <a href="/2019/04/15/DDCTF-re1-writeup/" class="archive-article-date">
+        <a href="/2019/04/15/DDCTF re1 writeup/" class="archive-article-date">
   	<time datetime="2019-04-15T15:15:21.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-04-15</time>
 </a>
         
@@ -198,35 +198,35 @@
     <div class="article-entry" itemprop="articleBody">
       
         <h1 id="DDCTF-re1-writeup"><a href="#DDCTF-re1-writeup" class="headerlink" title="DDCTF re1 writeup"></a>DDCTF re1 writeup</h1><p>下载下来是一个叫做reverse1_final的文件，打开发现是windows x86文件，直接用IDA无法反编译，提示如下</p>
-<p><img src="C:\Users\周半仙\AppData\Roaming\Typora\typora-user-images\1555338436435.png" alt="1555338436435"></p>
+<p><img src="assets/1555338436435.png" alt="1555338436435"></p>
 <p>怀疑被加壳了，拖进PEID里面查看PE信息</p>
-<p><img src="C:\Users\周半仙\AppData\Roaming\Typora\typora-user-images\1555338503650.png" alt="1555338503650"></p>
+<p><img src="assets/1555338503650.png" alt="1555338503650"></p>
 <p>EP段是UPX1，说明是UPX的壳，下载解压器，拖进去解压得到新的文件，发现新的文件已经无法正常运行，拖入IDA反汇编，先找到main函数，然后一通改名字</p>
-<p><img src="C:\Users\周半仙\AppData\Roaming\Typora\typora-user-images\1555338607923.png" alt="1555338607923"></p>
+<p><img src="assets/1555338607923-1555342113031.png" alt="1555338607923"></p>
 <p>发现是对v4进行一系列操作后同<code>DDCTF{reverseME}</code> 进行比较，输入进入str_in，然后v4就是解密后的内容，进入该函数</p>
-<p><img src="C:\Users\周半仙\AppData\Roaming\Typora\typora-user-images\1555338706423.png" alt="1555338706423"></p>
+<p><img src="assets/1555338706423-1555342128134.png" alt="1555338706423"></p>
 <p>发现就是对输入的字符串进行读取，让然后去匹配data里面的数值，data大概就是密码表，双击进入data是可以发现data没有在源码里面固定。</p>
 <p>乱打乱撞，进入data里面发现这样</p>
-<p><img src="C:\Users\周半仙\AppData\Roaming\Typora\typora-user-images\1555338881770.png" alt="1555338881770"></p>
+<p><img src="assets/1555338881770.png" alt="1555338881770"></p>
 <p>没有发现密码表，然后在下面翻，居然让我发现了类似密码表的东西</p>
-<p><img src="C:\Users\周半仙\AppData\Roaming\Typora\typora-user-images\1555338967854.png" alt="1555338967854"></p>
+<p><img src="assets/1555338967854.png" alt="1555338967854"></p>
 <p>这串字符八九不离十就是密码表了，然后写脚本进行输出</p>
 <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;string.h&gt;</span></span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="keyword">char</span> key[] = &#123;<span class="string">"DDCTF&#123;reverseME&#125;"</span>&#125;;</span><br><span class="line">	<span class="keyword">char</span> alpha[] = &#123;<span class="string">"~&#125;|&#123;zyxwvutsrqponmlkjihgfedcba`_^]\\[ZYXWVUTSRQPONMLKJIHGFEDCBA@?&gt;=&lt;;:9876543210/.-,+*)(，&amp;%$#\"!"</span>&#125; ;</span><br><span class="line">	<span class="keyword">for</span> (<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;<span class="built_in">strlen</span>(key);i++)&#123;</span><br><span class="line">		<span class="keyword">for</span>(<span class="keyword">int</span> j=<span class="number">0</span>;j&lt;<span class="built_in">strlen</span>(alpha);j++)&#123;</span><br><span class="line">			<span class="keyword">if</span>(key[i]==alpha[j]) <span class="built_in">printf</span>(<span class="string">"%d "</span>,j);</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line"> &#125;</span><br></pre></td></tr></table></figure>
 <p>运行结果如下<code>58 58 59 42 56 3 12 25 8 25 12 11 25 49 57 1</code></p>
 <p>根本不像是能打进去的字符串，于是进入ollydbg，发现这个地址是随机化了的，不好下断点，于是用PEtools 关闭地址空间随机化</p>
-<p><img src="C:\Users\周半仙\AppData\Roaming\Typora\typora-user-images\1555339857870.png" alt="1555339857870"></p>
-<p><img src="C:\Users\周半仙\AppData\Roaming\Typora\typora-user-images\1555339900874.png" alt="1555339900874"></p>
+<p><img src="assets/1555339857870.png" alt="1555339857870"></p>
+<p><img src="assets/1555339900874.png" alt="1555339900874"></p>
 <p>然后保存，在关键函数<code>sub_401000</code>处下断点，然后输入测试数据就是密码表的前面几个字符<code>ABCDEFG</code> 进行测试</p>
-<p><img src="C:\Users\周半仙\AppData\Roaming\Typora\typora-user-images\1555340063958.png" alt="1555340063958"></p>
+<p><img src="assets/1555340063958.png" alt="1555340063958"></p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">loc_401020:</span><br><span class="line">movsx   eax, byte ptr [ebx+ecx]</span><br><span class="line">mov     dl, ds:data[eax]</span><br><span class="line">mov     eax, ebp</span><br><span class="line">mov     [ecx], dl</span><br><span class="line">inc     edi</span><br><span class="line">inc     ecx</span><br><span class="line">lea     esi, [eax+1]</span><br></pre></td></tr></table></figure>
 <p>这一块就是从堆栈里面找到<code>data[eax]</code>里面的内容，eax就是偏移量，然后eax是由ebx+ecx得到的，此时的寄存器信息如下</p>
-<p><img src="C:\Users\周半仙\AppData\Roaming\Typora\typora-user-images\1555340618407.png" alt="1555340618407"></p>
-<p>发现A指向的是]，于是修改C代码如下</p>
+<p><img src="assets/1555340618407.png" alt="1555340618407"></p>
+<p>发现A指向的是]，于是修改C</p>
 <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;string.h&gt;</span></span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="keyword">char</span> key[] = &#123;<span class="string">"ABCDEFG"</span>&#125;;</span><br><span class="line">	<span class="keyword">char</span> alpha[] = &#123;<span class="string">"~&#125;|&#123;zyxwvutsrqponmlkjihgfedcba`_^],[ZYXWVUTSRQPONMLKJIHGFEDCBA@?&gt;=&lt;;:9876543210/.-,+*)(，&amp;%$#\"!"</span>&#125; ;</span><br><span class="line">	<span class="keyword">for</span> (<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;<span class="built_in">strlen</span>(key);i++)&#123;</span><br><span class="line">		<span class="keyword">for</span>(<span class="keyword">int</span> j=<span class="number">0</span>;j&lt;<span class="built_in">strlen</span>(alpha);j++)&#123;</span><br><span class="line">			<span class="keyword">if</span>(key[i]==alpha[j]) <span class="built_in">printf</span>(<span class="string">"%c "</span>,j-<span class="string">'='</span>+<span class="string">']'</span>);</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line"> &#125;</span><br></pre></td></tr></table></figure>
 <p>采用这种方式来找到偏移量，是<code>-&#39;=&#39;+&#39;]&#39;</code> 然后在OD里面验证一下，发现符合<code>] \ [ Z Y X W</code>然后把key换成<code>DDCTF{reverseME}</code> 放到OD里面进行验证</p>
-<p><img src="C:\Users\周半仙\AppData\Roaming\Typora\typora-user-images\1555341082709.png" alt="1555341082709"></p>
-<p><img src="C:\Users\周半仙\AppData\Roaming\Typora\typora-user-images\1555341096937.png" alt="1555341096937"></p>
-<p><img src="C:\Users\周半仙\AppData\Roaming\Typora\typora-user-images\1555341224597.png" alt="1555341224597"></p>
+<p><img src="assets/1555341082709.png" alt="1555341082709"></p>
+<p><img src="assets/1555341096937.png" alt="1555341096937"></p>
+<p><img src="assets/1555341224597.png" alt="1555341224597"></p>
 <p>成功拿到Flag~~</p>
 <p>撒花<em>★,°</em>:.☆(￣▽￣)/$:<em>.°★</em> 。</p>
 
@@ -287,7 +287,7 @@
     <a class="close js-modal-close" href="javascript:;"><i class="icon icon-close"></i></a>
     <p>扫一扫，分享到微信</p>
     <div class="wx-qrcode">
-      <img src="//pan.baidu.com/share/qrcode?url=http://yoursite.com/2019/04/15/DDCTF-re1-writeup/" alt="微信分享二维码">
+      <img src="//pan.baidu.com/share/qrcode?url=http://yoursite.com/2019/04/15/DDCTF re1 writeup/" alt="微信分享二维码">
     </div>
 </div>
 
@@ -334,8 +334,8 @@
   <div id="cloud-tie-wrapper" class="cloud-tie-wrapper"></div>
 <script>
   var cloudTieConfig = {
-    url: "http://yoursite.com/2019/04/15/DDCTF-re1-writeup/", 
-    sourceId: "DDCTF-re1-writeup",
+    url: "http://yoursite.com/2019/04/15/DDCTF re1 writeup/", 
+    sourceId: "DDCTF re1 writeup",
     productKey: "true",
     target: "cloud-tie-wrapper"
   };
