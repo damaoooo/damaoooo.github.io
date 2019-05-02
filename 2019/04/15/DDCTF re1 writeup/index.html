@@ -9,13 +9,13 @@
   <link rel="dns-prefetch" href="http://yoursite.com">
   <title>DDCTF_re1_writeup | Mr.周半仙的blog</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="DDCTF re1 writeup下载下来是一个叫做reverse1_final的文件，打开发现是windows x86文件，直接用IDA无法反编译，提示如下  怀疑被加壳了，拖进PEID里面查看PE信息  EP段是UPX1，说明是UPX的壳，下载解压器，拖进去解压得到新的文件，发现新的文件已经无法正常运行，拖入IDA反汇编，先找到main函数，然后一通改名字  发现是对v4进行一系列操作后同DD">
+  <meta name="description" content="DDCTF re1 writeup下载下来是一个叫做reverse1_final的文件，打开发现是windows x86文件，直接用IDA无法反编译，提示如下  怀疑被加壳了，拖进PEID里面查看PE信息">
 <meta name="keywords" content=" ">
 <meta property="og:type" content="article">
 <meta property="og:title" content="DDCTF_re1_writeup">
 <meta property="og:url" content="http://yoursite.com/2019/04/15/DDCTF re1 writeup/index.html">
 <meta property="og:site_name" content="Mr.周半仙的blog">
-<meta property="og:description" content="DDCTF re1 writeup下载下来是一个叫做reverse1_final的文件，打开发现是windows x86文件，直接用IDA无法反编译，提示如下  怀疑被加壳了，拖进PEID里面查看PE信息  EP段是UPX1，说明是UPX的壳，下载解压器，拖进去解压得到新的文件，发现新的文件已经无法正常运行，拖入IDA反汇编，先找到main函数，然后一通改名字  发现是对v4进行一系列操作后同DD">
+<meta property="og:description" content="DDCTF re1 writeup下载下来是一个叫做reverse1_final的文件，打开发现是windows x86文件，直接用IDA无法反编译，提示如下  怀疑被加壳了，拖进PEID里面查看PE信息">
 <meta property="og:locale" content="default">
 <meta property="og:image" content="http://yoursite.com/2019/04/15/DDCTF%20re1%20writeup/assets/1555338436435.png">
 <meta property="og:image" content="http://yoursite.com/2019/04/15/DDCTF%20re1%20writeup/assets/1555338503650.png">
@@ -30,10 +30,10 @@
 <meta property="og:image" content="http://yoursite.com/2019/04/15/DDCTF%20re1%20writeup/assets/1555341082709.png">
 <meta property="og:image" content="http://yoursite.com/2019/04/15/DDCTF%20re1%20writeup/assets/1555341096937.png">
 <meta property="og:image" content="http://yoursite.com/2019/04/15/DDCTF%20re1%20writeup/assets/1555341224597.png">
-<meta property="og:updated_time" content="2019-04-15T15:32:43.909Z">
+<meta property="og:updated_time" content="2019-05-02T08:57:00.454Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="DDCTF_re1_writeup">
-<meta name="twitter:description" content="DDCTF re1 writeup下载下来是一个叫做reverse1_final的文件，打开发现是windows x86文件，直接用IDA无法反编译，提示如下  怀疑被加壳了，拖进PEID里面查看PE信息  EP段是UPX1，说明是UPX的壳，下载解压器，拖进去解压得到新的文件，发现新的文件已经无法正常运行，拖入IDA反汇编，先找到main函数，然后一通改名字  发现是对v4进行一系列操作后同DD">
+<meta name="twitter:description" content="DDCTF re1 writeup下载下来是一个叫做reverse1_final的文件，打开发现是windows x86文件，直接用IDA无法反编译，提示如下  怀疑被加壳了，拖进PEID里面查看PE信息">
 <meta name="twitter:image" content="http://yoursite.com/2019/04/15/DDCTF%20re1%20writeup/assets/1555338436435.png">
   
     <link rel="alternative" href="/atom.xml" title="Mr.周半仙的blog" type="application/atom+xml">
@@ -200,6 +200,7 @@
         <h1 id="DDCTF-re1-writeup"><a href="#DDCTF-re1-writeup" class="headerlink" title="DDCTF re1 writeup"></a>DDCTF re1 writeup</h1><p>下载下来是一个叫做reverse1_final的文件，打开发现是windows x86文件，直接用IDA无法反编译，提示如下</p>
 <p><img src="assets/1555338436435.png" alt="1555338436435"></p>
 <p>怀疑被加壳了，拖进PEID里面查看PE信息</p>
+<a id="more"></a>
 <p><img src="assets/1555338503650.png" alt="1555338503650"></p>
 <p>EP段是UPX1，说明是UPX的壳，下载解压器，拖进去解压得到新的文件，发现新的文件已经无法正常运行，拖入IDA反汇编，先找到main函数，然后一通改名字</p>
 <p><img src="assets/1555338607923-1555342113031.png" alt="1555338607923"></p>
@@ -331,6 +332,19 @@
             </div>
         </div>
         
+        
+        <div class="toc-container tooltip-left">
+            <i class="icon-font icon-category"></i>
+            <div class="tooltip tooltip-east">
+                <span class="tooltip-item">
+                </span>
+                <span class="tooltip-content">
+                    <div class="toc-article">
+                    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#DDCTF-re1-writeup"><span class="toc-number">1.</span> <span class="toc-text">DDCTF re1 writeup</span></a></li></ol>
+                    </div>
+                </span>
+            </div>
+        </div>
         
     </div>
 </aside>
