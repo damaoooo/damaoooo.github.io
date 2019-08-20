@@ -7,20 +7,20 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <link rel="dns-prefetch" href="http://yoursite.com">
-  <title>两元素去重 | Mr.周半仙的blog</title>
+  <title>判断是否是完全平方数 | Mr.周半仙的blog</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="给定一个非空整数数组，除了某个元素只出现一次以外，其余每个元素均出现两次。找出那个只出现了一次的元素。 说明： 你的算法应该具有线性时间复杂度。 你可以不使用额外空间来实现吗？ 示例 1: 输入: [2,2,1]输出: 1示例 2: 输入: [4,1,2,1,2]输出: 4 一开始我的想法是暴力枚举，python代码如下： 123for i in nums:    if(nums.count(i)">
+  <meta name="description" content="给定一个正整数 num，编写一个函数，如果 num 是一个完全平方数，则返回 True，否则返回 False。 说明：不要使用任何内置的库函数，如  sqrt。 示例 1： 输入：16输出：True示例 2： 输入：14输出：False 最开始想到的是使用sqrt()直接判断，什么？不能使用sqrt()? 不能使用任何内置的库函数，所以使用math.log的方案也挂掉了，老老实实去凑吧 12345">
 <meta name="keywords" content=" ">
 <meta property="og:type" content="article">
-<meta property="og:title" content="两元素去重">
-<meta property="og:url" content="http://yoursite.com/2019/07/25/趣题3/index.html">
+<meta property="og:title" content="判断是否是完全平方数">
+<meta property="og:url" content="http://yoursite.com/2019/08/21/判断是否是完全平方数/index.html">
 <meta property="og:site_name" content="Mr.周半仙的blog">
-<meta property="og:description" content="给定一个非空整数数组，除了某个元素只出现一次以外，其余每个元素均出现两次。找出那个只出现了一次的元素。 说明： 你的算法应该具有线性时间复杂度。 你可以不使用额外空间来实现吗？ 示例 1: 输入: [2,2,1]输出: 1示例 2: 输入: [4,1,2,1,2]输出: 4 一开始我的想法是暴力枚举，python代码如下： 123for i in nums:    if(nums.count(i)">
+<meta property="og:description" content="给定一个正整数 num，编写一个函数，如果 num 是一个完全平方数，则返回 True，否则返回 False。 说明：不要使用任何内置的库函数，如  sqrt。 示例 1： 输入：16输出：True示例 2： 输入：14输出：False 最开始想到的是使用sqrt()直接判断，什么？不能使用sqrt()? 不能使用任何内置的库函数，所以使用math.log的方案也挂掉了，老老实实去凑吧 12345">
 <meta property="og:locale" content="default">
-<meta property="og:updated_time" content="2019-07-24T18:37:55.675Z">
+<meta property="og:updated_time" content="2019-08-20T16:30:12.433Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="两元素去重">
-<meta name="twitter:description" content="给定一个非空整数数组，除了某个元素只出现一次以外，其余每个元素均出现两次。找出那个只出现了一次的元素。 说明： 你的算法应该具有线性时间复杂度。 你可以不使用额外空间来实现吗？ 示例 1: 输入: [2,2,1]输出: 1示例 2: 输入: [4,1,2,1,2]输出: 4 一开始我的想法是暴力枚举，python代码如下： 123for i in nums:    if(nums.count(i)">
+<meta name="twitter:title" content="判断是否是完全平方数">
+<meta name="twitter:description" content="给定一个正整数 num，编写一个函数，如果 num 是一个完全平方数，则返回 True，否则返回 False。 说明：不要使用任何内置的库函数，如  sqrt。 示例 1： 输入：16输出：True示例 2： 输入：14输出：False 最开始想到的是使用sqrt()直接判断，什么？不能使用sqrt()? 不能使用任何内置的库函数，所以使用math.log的方案也挂掉了，老老实实去凑吧 12345">
   
     <link rel="alternative" href="/atom.xml" title="Mr.周半仙的blog" type="application/atom+xml">
   
@@ -163,42 +163,45 @@
             <canvas data-colors="#eaeaea" data-sectionHeight="100" data-contentId="js-content" id="myCanvas1" class="anm-canvas"></canvas>
           </div>
           <div id="js-content" class="content-ll">
-            <article id="post-趣题3" class="article article-type-post " itemscope itemprop="blogPost">
+            <article id="post-判断是否是完全平方数" class="article article-type-post " itemscope itemprop="blogPost">
   <div class="article-inner">
     
       <header class="article-header">
         
   
     <h1 class="article-title" itemprop="name">
-      两元素去重
+      判断是否是完全平方数
     </h1>
   
 
         
-        <a href="/2019/07/25/趣题3/" class="archive-article-date">
-  	<time datetime="2019-07-24T18:34:53.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-07-25</time>
+        <a href="/2019/08/21/判断是否是完全平方数/" class="archive-article-date">
+  	<time datetime="2019-08-20T16:28:54.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-08-21</time>
 </a>
         
       </header>
     
     <div class="article-entry" itemprop="articleBody">
       
-        <p>给定一个非空整数数组，除了某个元素只出现一次以外，其余每个元素均出现两次。找出那个只出现了一次的元素。</p>
-<p>说明：</p>
-<p>你的算法应该具有线性时间复杂度。 你可以不使用额外空间来实现吗？</p>
-<p>示例 1:</p>
-<p>输入: [2,2,1]<br>输出: 1<br>示例 2:</p>
-<p>输入: [4,1,2,1,2]<br>输出: 4</p>
-<p>一开始我的想法是暴力枚举，python代码如下：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> nums:</span><br><span class="line">    <span class="keyword">if</span>(nums.count(i)==<span class="number">1</span>):</span><br><span class="line">        <span class="keyword">return</span> i</span><br></pre></td></tr></table></figure>
-<p>后来一想，要求具有线性时间复杂度，对python的<code>list.count()</code> 不是很了解，万一这玩意本身的时间复杂度是O(n)，然后一来不就O(n^n)了？</p>
-<p>随后想到先把这个数组排个序，然后模拟栈来实现（需要使用2个<code>int</code>的空间来存放结果）</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">func</span><span class="params">(nums)</span>:</span></span><br><span class="line">    nums = sorted(nums)</span><br><span class="line">    cnt = <span class="number">2</span></span><br><span class="line">    stack = nums[<span class="number">0</span>]</span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> nums:</span><br><span class="line">        <span class="keyword">if</span>(i==stack):</span><br><span class="line">            cnt = cnt<span class="number">-1</span></span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            cnt = cnt+<span class="number">1</span></span><br><span class="line">            <span class="keyword">if</span>(cnt==<span class="number">2</span>):</span><br><span class="line">                <span class="keyword">return</span> stack</span><br><span class="line">            stack = i</span><br><span class="line">    <span class="keyword">return</span> nums[<span class="number">-1</span>]</span><br></pre></td></tr></table></figure>
-<p>居然很神奇的过了，用时88ms,超过22.81%，内存14.8MB超过48.18%。不过这显然不符合题目要求</p>
-<p>想不出办法了，看看题解里面，有个叫做<code>Hash表</code>的算法，想到了在离散数学里面似乎看到过这玩意，就是比如<code>[3,1,2,4,5]</code>这个数组，根据值来确定存放元素的地址，3就放在a[3]的位置（1开始算）</p>
-<p>这样的话，python里面用dict就可以实现,暂且不表</p>
-<p>最骚的是直接用XOR，XOR还能满足交换律？！长见识了，考虑到每个重复元素只出现2次，就tql</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">func</span><span class="params">(nums)</span>:</span></span><br><span class="line">	ans = <span class="number">0</span></span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> nums:</span><br><span class="line">        ans = ans^i</span><br><span class="line">    <span class="keyword">return</span> ans</span><br></pre></td></tr></table></figure>
+        <p>给定一个正整数 num，编写一个函数，如果 num 是一个完全平方数，则返回 True，否则返回 False。</p>
+<p>说明：不要使用任何内置的库函数，如  sqrt。</p>
+<p>示例 1：</p>
+<p>输入：16<br>输出：True<br>示例 2：</p>
+<p>输入：14<br>输出：False</p>
+<p>最开始想到的是使用<code>sqrt()</code>直接判断，什么？不能使用sqrt()?</p>
+<p>不能使用任何内置的库函数，所以使用math.log的方案也挂掉了，老老实实去凑吧</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">func</span><span class="params">(num)</span>:</span></span><br><span class="line">    <span class="keyword">if</span>(num&lt;<span class="number">0</span>):</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">False</span></span><br><span class="line">    <span class="keyword">if</span>(num&lt;=<span class="number">2</span>):</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">True</span></span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">1</span>,num//<span class="number">2</span>):</span><br><span class="line">        <span class="keyword">if</span>(i*i==num):</span><br><span class="line">            <span class="keyword">return</span> <span class="literal">True</span></span><br><span class="line">        <span class="keyword">if</span>(i*i&gt;num):</span><br><span class="line">            <span class="keyword">return</span> <span class="literal">False</span></span><br></pre></td></tr></table></figure>
+<p>虽然我觉得他肯定要卡你时间复杂度    </p>
+<p>果然后面他给我报错，<code>MemoryError</code>不过是发生在<code>Line 7</code>也就是<code>for i in range(1,num//2):</code>这一行就让我感觉有点意外</p>
+<p>后来看到了公式，有点东西</p>
+<p><code>4 = 1+3</code></p>
+<p><code>9 = 1+3+5</code></p>
+<p><code>16 = 1+3+5+7</code></p>
+<p>以此类推</p>
+<p><code>n^2 = 1+3+5+……+(2n-1)</code></p>
+<p>所以我们就挨着挨着减下来就好了</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">func</span><span class="params">(num)</span>:</span></span><br><span class="line">    <span class="keyword">if</span>(num&lt;<span class="number">0</span>):</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">False</span></span><br><span class="line">    i = <span class="number">1</span></span><br><span class="line">    <span class="keyword">while</span>(num&gt;<span class="number">0</span>):</span><br><span class="line">        num-=i</span><br><span class="line">        i+=<span class="number">2</span></span><br><span class="line">    <span class="keyword">return</span> num==<span class="number">0</span></span><br></pre></td></tr></table></figure>
+<p>只需要执行n次就可以了</p>
 
       
 
@@ -257,7 +260,7 @@
     <a class="close js-modal-close" href="javascript:;"><i class="icon icon-close"></i></a>
     <p>扫一扫，分享到微信</p>
     <div class="wx-qrcode">
-      <img src="//pan.baidu.com/share/qrcode?url=http://yoursite.com/2019/07/25/趣题3/" alt="微信分享二维码">
+      <img src="//pan.baidu.com/share/qrcode?url=http://yoursite.com/2019/08/21/判断是否是完全平方数/" alt="微信分享二维码">
     </div>
 </div>
 
@@ -271,18 +274,9 @@
   
 <nav id="article-nav">
   
-    <a href="/2019/08/21/重新分组密钥/" id="article-nav-newer" class="article-nav-link-wrap">
-      <i class="icon-circle-left"></i>
-      <div class="article-nav-title">
-        
-          重新分组密钥
-        
-      </div>
-    </a>
   
-  
-    <a href="/2019/07/25/趣题2/" id="article-nav-older" class="article-nav-link-wrap">
-      <div class="article-nav-title">相同元素下标之差</div>
+    <a href="/2019/08/21/各个位上的数字相加/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">各个位上的数字相加</div>
       <i class="icon-circle-right"></i>
     </a>
   
@@ -326,8 +320,8 @@
   <div id="cloud-tie-wrapper" class="cloud-tie-wrapper"></div>
 <script>
   var cloudTieConfig = {
-    url: "http://yoursite.com/2019/07/25/趣题3/", 
-    sourceId: "趣题3",
+    url: "http://yoursite.com/2019/08/21/判断是否是完全平方数/", 
+    sourceId: "判断是否是完全平方数",
     productKey: "true",
     target: "cloud-tie-wrapper"
   };

@@ -7,20 +7,20 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <link rel="dns-prefetch" href="http://yoursite.com">
-  <title>两元素去重 | Mr.周半仙的blog</title>
+  <title>位运算计算整数之和 | Mr.周半仙的blog</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="给定一个非空整数数组，除了某个元素只出现一次以外，其余每个元素均出现两次。找出那个只出现了一次的元素。 说明： 你的算法应该具有线性时间复杂度。 你可以不使用额外空间来实现吗？ 示例 1: 输入: [2,2,1]输出: 1示例 2: 输入: [4,1,2,1,2]输出: 4 一开始我的想法是暴力枚举，python代码如下： 123for i in nums:    if(nums.count(i)">
+  <meta name="description" content="不使用运算符 + 和 - ，计算两整数 a 、b 之和。 示例 1: 输入: a = 1, b = 2输出: 3示例 2: 输入: a = -2, b = 3输出: 1 一开始看到这个两数相加我笑了，无非是return a+b嘛，但是看到不使用运算符+和-的时候我蒙圈了，？！，纳尼？ 于是我试着提交了一下return a+b 居然过了哈哈哈哈 算了不耍无赖，正经看题，不准用+和-，那就只能用位运算">
 <meta name="keywords" content=" ">
 <meta property="og:type" content="article">
-<meta property="og:title" content="两元素去重">
-<meta property="og:url" content="http://yoursite.com/2019/07/25/趣题3/index.html">
+<meta property="og:title" content="位运算计算整数之和">
+<meta property="og:url" content="http://yoursite.com/2019/08/21/不使用运算符 + 和 - ，计算两整数 a 、b 之和/index.html">
 <meta property="og:site_name" content="Mr.周半仙的blog">
-<meta property="og:description" content="给定一个非空整数数组，除了某个元素只出现一次以外，其余每个元素均出现两次。找出那个只出现了一次的元素。 说明： 你的算法应该具有线性时间复杂度。 你可以不使用额外空间来实现吗？ 示例 1: 输入: [2,2,1]输出: 1示例 2: 输入: [4,1,2,1,2]输出: 4 一开始我的想法是暴力枚举，python代码如下： 123for i in nums:    if(nums.count(i)">
+<meta property="og:description" content="不使用运算符 + 和 - ，计算两整数 a 、b 之和。 示例 1: 输入: a = 1, b = 2输出: 3示例 2: 输入: a = -2, b = 3输出: 1 一开始看到这个两数相加我笑了，无非是return a+b嘛，但是看到不使用运算符+和-的时候我蒙圈了，？！，纳尼？ 于是我试着提交了一下return a+b 居然过了哈哈哈哈 算了不耍无赖，正经看题，不准用+和-，那就只能用位运算">
 <meta property="og:locale" content="default">
-<meta property="og:updated_time" content="2019-07-24T18:37:55.675Z">
+<meta property="og:updated_time" content="2019-08-20T16:29:51.507Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="两元素去重">
-<meta name="twitter:description" content="给定一个非空整数数组，除了某个元素只出现一次以外，其余每个元素均出现两次。找出那个只出现了一次的元素。 说明： 你的算法应该具有线性时间复杂度。 你可以不使用额外空间来实现吗？ 示例 1: 输入: [2,2,1]输出: 1示例 2: 输入: [4,1,2,1,2]输出: 4 一开始我的想法是暴力枚举，python代码如下： 123for i in nums:    if(nums.count(i)">
+<meta name="twitter:title" content="位运算计算整数之和">
+<meta name="twitter:description" content="不使用运算符 + 和 - ，计算两整数 a 、b 之和。 示例 1: 输入: a = 1, b = 2输出: 3示例 2: 输入: a = -2, b = 3输出: 1 一开始看到这个两数相加我笑了，无非是return a+b嘛，但是看到不使用运算符+和-的时候我蒙圈了，？！，纳尼？ 于是我试着提交了一下return a+b 居然过了哈哈哈哈 算了不耍无赖，正经看题，不准用+和-，那就只能用位运算">
   
     <link rel="alternative" href="/atom.xml" title="Mr.周半仙的blog" type="application/atom+xml">
   
@@ -163,42 +163,51 @@
             <canvas data-colors="#eaeaea" data-sectionHeight="100" data-contentId="js-content" id="myCanvas1" class="anm-canvas"></canvas>
           </div>
           <div id="js-content" class="content-ll">
-            <article id="post-趣题3" class="article article-type-post " itemscope itemprop="blogPost">
+            <article id="post-不使用运算符 + 和 - ，计算两整数 a 、b 之和" class="article article-type-post " itemscope itemprop="blogPost">
   <div class="article-inner">
     
       <header class="article-header">
         
   
     <h1 class="article-title" itemprop="name">
-      两元素去重
+      位运算计算整数之和
     </h1>
   
 
         
-        <a href="/2019/07/25/趣题3/" class="archive-article-date">
-  	<time datetime="2019-07-24T18:34:53.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-07-25</time>
+        <a href="/2019/08/21/不使用运算符 + 和 - ，计算两整数 a 、b 之和/" class="archive-article-date">
+  	<time datetime="2019-08-20T16:28:54.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-08-21</time>
 </a>
         
       </header>
     
     <div class="article-entry" itemprop="articleBody">
       
-        <p>给定一个非空整数数组，除了某个元素只出现一次以外，其余每个元素均出现两次。找出那个只出现了一次的元素。</p>
-<p>说明：</p>
-<p>你的算法应该具有线性时间复杂度。 你可以不使用额外空间来实现吗？</p>
+        <p>不使用运算符 + 和 - ，计算两整数 a 、b 之和。</p>
 <p>示例 1:</p>
-<p>输入: [2,2,1]<br>输出: 1<br>示例 2:</p>
-<p>输入: [4,1,2,1,2]<br>输出: 4</p>
-<p>一开始我的想法是暴力枚举，python代码如下：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> nums:</span><br><span class="line">    <span class="keyword">if</span>(nums.count(i)==<span class="number">1</span>):</span><br><span class="line">        <span class="keyword">return</span> i</span><br></pre></td></tr></table></figure>
-<p>后来一想，要求具有线性时间复杂度，对python的<code>list.count()</code> 不是很了解，万一这玩意本身的时间复杂度是O(n)，然后一来不就O(n^n)了？</p>
-<p>随后想到先把这个数组排个序，然后模拟栈来实现（需要使用2个<code>int</code>的空间来存放结果）</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">func</span><span class="params">(nums)</span>:</span></span><br><span class="line">    nums = sorted(nums)</span><br><span class="line">    cnt = <span class="number">2</span></span><br><span class="line">    stack = nums[<span class="number">0</span>]</span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> nums:</span><br><span class="line">        <span class="keyword">if</span>(i==stack):</span><br><span class="line">            cnt = cnt<span class="number">-1</span></span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            cnt = cnt+<span class="number">1</span></span><br><span class="line">            <span class="keyword">if</span>(cnt==<span class="number">2</span>):</span><br><span class="line">                <span class="keyword">return</span> stack</span><br><span class="line">            stack = i</span><br><span class="line">    <span class="keyword">return</span> nums[<span class="number">-1</span>]</span><br></pre></td></tr></table></figure>
-<p>居然很神奇的过了，用时88ms,超过22.81%，内存14.8MB超过48.18%。不过这显然不符合题目要求</p>
-<p>想不出办法了，看看题解里面，有个叫做<code>Hash表</code>的算法，想到了在离散数学里面似乎看到过这玩意，就是比如<code>[3,1,2,4,5]</code>这个数组，根据值来确定存放元素的地址，3就放在a[3]的位置（1开始算）</p>
-<p>这样的话，python里面用dict就可以实现,暂且不表</p>
-<p>最骚的是直接用XOR，XOR还能满足交换律？！长见识了，考虑到每个重复元素只出现2次，就tql</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">func</span><span class="params">(nums)</span>:</span></span><br><span class="line">	ans = <span class="number">0</span></span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> nums:</span><br><span class="line">        ans = ans^i</span><br><span class="line">    <span class="keyword">return</span> ans</span><br></pre></td></tr></table></figure>
+<p>输入: a = 1, b = 2<br>输出: 3<br>示例 2:</p>
+<p>输入: a = -2, b = 3<br>输出: 1</p>
+<p>一开始看到这个两数相加我笑了，无非是<code>return a+b</code>嘛，但是看到不使用运算符<code>+</code>和<code>-</code>的时候我蒙圈了，？！，纳尼？</p>
+<p>于是我试着提交了一下<code>return a+b</code></p>
+<p>居然过了哈哈哈哈</p>
+<p>算了不耍无赖，正经看题，不准用<code>+</code>和<code>-</code>，那就只能用位运算了呗</p>
+<p><code>5 = 101</code></p>
+<p><code>3 = 011</code></p>
+<p><code>2 = 010</code></p>
+<p>需要找到一种位运算，在不进位的情况下满足<code>1?1=0,1?0=1,0?0=0</code>这个运算符就是<code>xor</code>，然后考虑进位的问题</p>
+<p>如果是进位的话，考虑一下情况</p>
+<p><code>7 = 111</code></p>
+<p><code>7 = 111</code></p>
+<p><code>14 = 1110</code></p>
+<p>使用<code>xor</code>得到的结果<code>111 xor 111 = 0</code> ，而<code></code>111 and 111 = 111`，所以，a+b = (a xor b)+(a&amp;b &lt;&lt; 1)</p>
+<p>写个迭代试试</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">getSum</span><span class="params">(a,b)</span>:</span></span><br><span class="line">    jin = (a&amp;b)&lt;&lt;<span class="number">1</span></span><br><span class="line">    zheng = (a^b)</span><br><span class="line">    <span class="keyword">if</span>(jin==<span class="number">0</span>):</span><br><span class="line">        <span class="keyword">return</span> zheng</span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        <span class="keyword">return</span> getSum(jin,zheng)</span><br></pre></td></tr></table></figure>
+<p>然而出现了一个问题，python里面计算负数出了问题</p>
+<p>我试着输出一下python里面负数的表示</p>
+<p><code>print(hex(-1))</code> 发现出来的结果是<code>&#39;-0x1&#39;</code>没有说是类似<code>FFFFFFFF</code>的表达</p>
+<p>于是查找题解，发现python是需要模拟32位溢出的情况，魔改代码如下</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">getSum</span><span class="params">(a,b)</span>:</span></span><br><span class="line">    jin = (a&amp;b)&lt;&lt;<span class="number">1</span></span><br><span class="line">    zheng = (a^b)</span><br><span class="line">    MASK =   <span class="number">0x100000000</span></span><br><span class="line">    MAX_INT = <span class="number">0x7FFFFFFF</span></span><br><span class="line">    MIN_INT = MAX_INT + <span class="number">1</span></span><br><span class="line">    jin = jin % MASK</span><br><span class="line">    zheng = zheng %MASK</span><br><span class="line">    <span class="keyword">if</span>(jin==<span class="number">0</span>):</span><br><span class="line">        <span class="keyword">if</span>(zheng&gt;&gt;<span class="number">28</span>==<span class="number">0xf</span>):</span><br><span class="line">            zheng^=<span class="number">0xffffffff</span></span><br><span class="line">            zheng = ~zheng</span><br><span class="line">            <span class="keyword">return</span> zheng</span><br><span class="line">        <span class="keyword">return</span> zheng</span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        <span class="keyword">return</span> getSum(jin,zheng)</span><br></pre></td></tr></table></figure>
+<p>后来又发现<code>python</code>这个弄出来全部都是<strong>无符号整数</strong> 然后强制转化成<strong>带符号整数</strong>进行输出就可以了</p>
 
       
 
@@ -257,7 +266,7 @@
     <a class="close js-modal-close" href="javascript:;"><i class="icon icon-close"></i></a>
     <p>扫一扫，分享到微信</p>
     <div class="wx-qrcode">
-      <img src="//pan.baidu.com/share/qrcode?url=http://yoursite.com/2019/07/25/趣题3/" alt="微信分享二维码">
+      <img src="//pan.baidu.com/share/qrcode?url=http://yoursite.com/2019/08/21/不使用运算符 + 和 - ，计算两整数 a 、b 之和/" alt="微信分享二维码">
     </div>
 </div>
 
@@ -271,18 +280,18 @@
   
 <nav id="article-nav">
   
-    <a href="/2019/08/21/重新分组密钥/" id="article-nav-newer" class="article-nav-link-wrap">
+    <a href="/2019/08/21/各个位上的数字相加/" id="article-nav-newer" class="article-nav-link-wrap">
       <i class="icon-circle-left"></i>
       <div class="article-nav-title">
         
-          重新分组密钥
+          各个位上的数字相加
         
       </div>
     </a>
   
   
-    <a href="/2019/07/25/趣题2/" id="article-nav-older" class="article-nav-link-wrap">
-      <div class="article-nav-title">相同元素下标之差</div>
+    <a href="/2019/08/21/重新分组密钥/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">重新分组密钥</div>
       <i class="icon-circle-right"></i>
     </a>
   
@@ -326,8 +335,8 @@
   <div id="cloud-tie-wrapper" class="cloud-tie-wrapper"></div>
 <script>
   var cloudTieConfig = {
-    url: "http://yoursite.com/2019/07/25/趣题3/", 
-    sourceId: "趣题3",
+    url: "http://yoursite.com/2019/08/21/不使用运算符 + 和 - ，计算两整数 a 、b 之和/", 
+    sourceId: "不使用运算符 + 和 - ，计算两整数 a 、b 之和",
     productKey: "true",
     target: "cloud-tie-wrapper"
   };

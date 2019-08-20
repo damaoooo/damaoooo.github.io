@@ -164,6 +164,327 @@
           <div id="js-content" class="content-ll">
             
   
+    <article id="post-判断是否是完全平方数" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2019/08/21/判断是否是完全平方数/">判断是否是完全平方数</a>
+    </h1>
+  
+
+        
+        <a href="/2019/08/21/判断是否是完全平方数/" class="archive-article-date">
+  	<time datetime="2019-08-20T16:28:54.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-08-21</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>给定一个正整数 num，编写一个函数，如果 num 是一个完全平方数，则返回 True，否则返回 False。</p>
+<p>说明：不要使用任何内置的库函数，如  sqrt。</p>
+<p>示例 1：</p>
+<p>输入：16<br>输出：True<br>示例 2：</p>
+<p>输入：14<br>输出：False</p>
+<p>最开始想到的是使用<code>sqrt()</code>直接判断，什么？不能使用sqrt()?</p>
+<p>不能使用任何内置的库函数，所以使用math.log的方案也挂掉了，老老实实去凑吧</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">func</span><span class="params">(num)</span>:</span></span><br><span class="line">    <span class="keyword">if</span>(num&lt;<span class="number">0</span>):</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">False</span></span><br><span class="line">    <span class="keyword">if</span>(num&lt;=<span class="number">2</span>):</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">True</span></span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">1</span>,num//<span class="number">2</span>):</span><br><span class="line">        <span class="keyword">if</span>(i*i==num):</span><br><span class="line">            <span class="keyword">return</span> <span class="literal">True</span></span><br><span class="line">        <span class="keyword">if</span>(i*i&gt;num):</span><br><span class="line">            <span class="keyword">return</span> <span class="literal">False</span></span><br></pre></td></tr></table></figure>
+<p>虽然我觉得他肯定要卡你时间复杂度    </p>
+<p>果然后面他给我报错，<code>MemoryError</code>不过是发生在<code>Line 7</code>也就是<code>for i in range(1,num//2):</code>这一行就让我感觉有点意外</p>
+<p>后来看到了公式，有点东西</p>
+<p><code>4 = 1+3</code></p>
+<p><code>9 = 1+3+5</code></p>
+<p><code>16 = 1+3+5+7</code></p>
+<p>以此类推</p>
+<p><code>n^2 = 1+3+5+……+(2n-1)</code></p>
+<p>所以我们就挨着挨着减下来就好了</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">func</span><span class="params">(num)</span>:</span></span><br><span class="line">    <span class="keyword">if</span>(num&lt;<span class="number">0</span>):</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">False</span></span><br><span class="line">    i = <span class="number">1</span></span><br><span class="line">    <span class="keyword">while</span>(num&gt;<span class="number">0</span>):</span><br><span class="line">        num-=i</span><br><span class="line">        i+=<span class="number">2</span></span><br><span class="line">    <span class="keyword">return</span> num==<span class="number">0</span></span><br></pre></td></tr></table></figure>
+<p>只需要执行n次就可以了</p>
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+      
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2019/08/21/判断是否是完全平方数/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
+    <article id="post-各个位上的数字相加" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2019/08/21/各个位上的数字相加/">各个位上的数字相加</a>
+    </h1>
+  
+
+        
+        <a href="/2019/08/21/各个位上的数字相加/" class="archive-article-date">
+  	<time datetime="2019-08-20T16:28:54.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-08-21</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>给定一个非负整数 <code>num</code>，反复将各个位上的数字相加，直到结果为一位数。</p>
+<p>示例:</p>
+<p>输入: 38<br>输出: 2<br>解释: 各位相加的过程为：3 + 8 = 11, 1 + 1 = 2。 由于 2 是一位数，所以返回 2。</p>
+<p>这个直接用循环来做非常快，题目进阶要求说不使用循环和递归，且要求时间复杂度<code>O(1)</code>之内解决</p>
+<p>直接上很秀的解法</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">func</span><span class="params">(num)</span>:</span></span><br><span class="line">	<span class="keyword">return</span> (num%<span class="number">9</span>) <span class="keyword">or</span> (<span class="number">9</span>*bool(num))</span><br></pre></td></tr></table></figure>
+<p>假设原来的数是<code>abcd</code>即，<code>1000*a+100*b+10*c+d</code>之后我们需要的数字是<code>a+b+c+d</code></p>
+<p>所以<code>a+b+c+d</code>=<code>(1000*a+100*b+10*c+d)-(999*a+99*b+9*c)=&#39;abcd&#39;-9*(111*a+11*b+c)</code> 就相当于<code>a+b+c+d=num%9</code></p>
+<p>如果<code>num</code>是9的倍数怎么办呢？<code>num</code>是0怎么办呢？</p>
+<p>9的倍数的各位数的和就是9，而此时<code>num%9==0</code>，所以直接使用<code>9*bool(num)</code></p>
+<p>最后一个<code>or</code> 把句子缩写到一行，<code>leecode</code>大神写的代码真是太优雅了</p>
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+      
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2019/08/21/各个位上的数字相加/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
+    <article id="post-不使用运算符 + 和 - ，计算两整数 a 、b 之和" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2019/08/21/不使用运算符 + 和 - ，计算两整数 a 、b 之和/">位运算计算整数之和</a>
+    </h1>
+  
+
+        
+        <a href="/2019/08/21/不使用运算符 + 和 - ，计算两整数 a 、b 之和/" class="archive-article-date">
+  	<time datetime="2019-08-20T16:28:54.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-08-21</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>不使用运算符 + 和 - ，计算两整数 a 、b 之和。</p>
+<p>示例 1:</p>
+<p>输入: a = 1, b = 2<br>输出: 3<br>示例 2:</p>
+<p>输入: a = -2, b = 3<br>输出: 1</p>
+<p>一开始看到这个两数相加我笑了，无非是<code>return a+b</code>嘛，但是看到不使用运算符<code>+</code>和<code>-</code>的时候我蒙圈了，？！，纳尼？</p>
+<p>于是我试着提交了一下<code>return a+b</code></p>
+<p>居然过了哈哈哈哈</p>
+<p>算了不耍无赖，正经看题，不准用<code>+</code>和<code>-</code>，那就只能用位运算了呗</p>
+<p><code>5 = 101</code></p>
+<p><code>3 = 011</code></p>
+<p><code>2 = 010</code></p>
+<p>需要找到一种位运算，在不进位的情况下满足<code>1?1=0,1?0=1,0?0=0</code>这个运算符就是<code>xor</code>，然后考虑进位的问题</p>
+<p>如果是进位的话，考虑一下情况</p>
+<p><code>7 = 111</code></p>
+<p><code>7 = 111</code></p>
+<p><code>14 = 1110</code></p>
+<p>使用<code>xor</code>得到的结果<code>111 xor 111 = 0</code> ，而<code></code>111 and 111 = 111`，所以，a+b = (a xor b)+(a&amp;b &lt;&lt; 1)</p>
+<p>写个迭代试试</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">getSum</span><span class="params">(a,b)</span>:</span></span><br><span class="line">    jin = (a&amp;b)&lt;&lt;<span class="number">1</span></span><br><span class="line">    zheng = (a^b)</span><br><span class="line">    <span class="keyword">if</span>(jin==<span class="number">0</span>):</span><br><span class="line">        <span class="keyword">return</span> zheng</span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        <span class="keyword">return</span> getSum(jin,zheng)</span><br></pre></td></tr></table></figure>
+<p>然而出现了一个问题，python里面计算负数出了问题</p>
+<p>我试着输出一下python里面负数的表示</p>
+<p><code>print(hex(-1))</code> 发现出来的结果是<code>&#39;-0x1&#39;</code>没有说是类似<code>FFFFFFFF</code>的表达</p>
+<p>于是查找题解，发现python是需要模拟32位溢出的情况，魔改代码如下</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">getSum</span><span class="params">(a,b)</span>:</span></span><br><span class="line">    jin = (a&amp;b)&lt;&lt;<span class="number">1</span></span><br><span class="line">    zheng = (a^b)</span><br><span class="line">    MASK =   <span class="number">0x100000000</span></span><br><span class="line">    MAX_INT = <span class="number">0x7FFFFFFF</span></span><br><span class="line">    MIN_INT = MAX_INT + <span class="number">1</span></span><br><span class="line">    jin = jin % MASK</span><br><span class="line">    zheng = zheng %MASK</span><br><span class="line">    <span class="keyword">if</span>(jin==<span class="number">0</span>):</span><br><span class="line">        <span class="keyword">if</span>(zheng&gt;&gt;<span class="number">28</span>==<span class="number">0xf</span>):</span><br><span class="line">            zheng^=<span class="number">0xffffffff</span></span><br><span class="line">            zheng = ~zheng</span><br><span class="line">            <span class="keyword">return</span> zheng</span><br><span class="line">        <span class="keyword">return</span> zheng</span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        <span class="keyword">return</span> getSum(jin,zheng)</span><br></pre></td></tr></table></figure>
+<p>后来又发现<code>python</code>这个弄出来全部都是<strong>无符号整数</strong> 然后强制转化成<strong>带符号整数</strong>进行输出就可以了</p>
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+      
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2019/08/21/不使用运算符 + 和 - ，计算两整数 a 、b 之和/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
+    <article id="post-重新分组密钥" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2019/08/21/重新分组密钥/">重新分组密钥</a>
+    </h1>
+  
+
+        
+        <a href="/2019/08/21/重新分组密钥/" class="archive-article-date">
+  	<time datetime="2019-08-20T16:28:54.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-08-21</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>给定一个密钥字符串S，只包含字母，数字以及 ‘-‘（破折号）。N 个 ‘-‘ 将字符串分成了 N+1 组。给定一个数字 K，重新格式化字符串，除了第一个分组以外，每个分组要包含 K 个字符，第一个分组至少要包含 1 个字符。两个分组之间用 ‘-‘（破折号）隔开，并且将所有的小写字母转换为大写字母。</p>
+<p>给定非空字符串 S 和数字 K，按照上面描述的规则进行格式化。</p>
+<p>示例 1：</p>
+<p>输入：S = “5F3Z-2e-9-w”, K = 4</p>
+<p>输出：”5F3Z-2E9W”</p>
+<p>解释：字符串 S 被分成了两个部分，每部分 4 个字符；<br>     注意，两个额外的破折号需要删掉。<br>示例 2：</p>
+<p>输入：S = “2-5g-3-J”, K = 2</p>
+<p>输出：”2-5G-3J”</p>
+<p>解释：字符串 S 被分成了 3 个部分，按照前面的规则描述，第一部分的字符可以少于给定的数量，其余部分皆为 2 个字符。</p>
+<p>只能说这个题目没有解释清楚，一开始我以为是第一组保持不变，然后后面的转大写然后去按照K个字母来进行分组，思路就是先读取这个字符串第一个’-‘的位置，然后把后面的’-‘全部去除掉，然后根据K来进行插入’-‘即可</p>
+<p>python代码如下：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">func</span><span class="params">(S,K)</span>:</span></span><br><span class="line">    S = list(S.upper())</span><br><span class="line">    first = <span class="number">0</span></span><br><span class="line">    lens = len(S)</span><br><span class="line">    offset = <span class="number">0</span></span><br><span class="line">    popList = []</span><br><span class="line">    popoffset = <span class="number">0</span></span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> range(lens):</span><br><span class="line">        <span class="keyword">if</span>(S[i]==<span class="string">'-'</span> <span class="keyword">and</span> first!=<span class="number">1</span>):</span><br><span class="line">            first = <span class="number">1</span></span><br><span class="line">            offset = i</span><br><span class="line">        <span class="keyword">elif</span>(S[i]==<span class="string">'-'</span>):</span><br><span class="line">            popList.append(i)</span><br><span class="line">            lens-=<span class="number">1</span></span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> popList:</span><br><span class="line">        S.pop(i-popoffset)</span><br><span class="line">        popoffset+=<span class="number">1</span></span><br><span class="line">    res = lens-(offset+<span class="number">1</span>)</span><br><span class="line">    res_char_num = K</span><br><span class="line">    insertList = []</span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> range(offset+<span class="number">1</span>,lens):</span><br><span class="line">        <span class="keyword">if</span>((i-offset<span class="number">-1</span>)%res_char_num==<span class="number">0</span> <span class="keyword">and</span> (i-offset<span class="number">-1</span>)!= <span class="number">0</span>):</span><br><span class="line">            insertList.append(i)</span><br><span class="line">    insertOffset = <span class="number">0</span></span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> insertList:</span><br><span class="line">        S.insert(i+insertOffset,<span class="string">'-'</span>)</span><br><span class="line">        insertOffset+=<span class="number">1</span></span><br><span class="line">    <span class="keyword">return</span> <span class="string">''</span>.join(S)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">S = <span class="string">'5F3Z-2e-9-w'</span></span><br><span class="line">K = <span class="number">4</span></span><br><span class="line">print(func(S,K))</span><br></pre></td></tr></table></figure>
+<p>没想到报错了,我寻思我这个很符合题意啊</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">执行结果：解答错误 显示详情</span><br><span class="line">输入:</span><br><span class="line">&quot;2-4A0r7-4k&quot;</span><br><span class="line">4</span><br><span class="line">输出</span><br><span class="line">&quot;2-4A0R-74K&quot;</span><br><span class="line">预期结果</span><br><span class="line">&quot;24A0-R74K&quot;</span><br></pre></td></tr></table></figure>
+<p>看了题解才知道，这个题目的意思就是，前面第一组的长度<code>S&lt;=K</code> 后面每一组的长度<code>S==k</code>，这个锅要怪出题人没有解释清楚</p>
+<p>然后修改代码，去掉’-‘，从后往前找到插入’-‘的位置插入即可</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">func</span><span class="params">(S,K)</span>:</span></span><br><span class="line">    S = list(S.upper().replace(<span class="string">'-'</span>,<span class="string">''</span>))</span><br><span class="line">    insertList = []</span><br><span class="line">    insertOffset = <span class="number">0</span></span><br><span class="line">    n = <span class="number">1</span></span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> range(len(S)<span class="number">-1</span>,<span class="number">0</span>,<span class="number">-1</span>):</span><br><span class="line">        <span class="keyword">if</span>(n%K==<span class="number">0</span>):</span><br><span class="line">            insertList.append(i)</span><br><span class="line">        n+=<span class="number">1</span></span><br><span class="line">    insertList.sort()</span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> insertList:</span><br><span class="line">        S.insert(i+insertOffset,<span class="string">'-'</span>)</span><br><span class="line">        insertOffset+=<span class="number">1</span></span><br><span class="line">    <span class="keyword">return</span> <span class="string">''</span>.join(S)</span><br><span class="line">S = <span class="string">'5F3Z-2e-9-w'</span></span><br><span class="line">K = <span class="number">4</span></span><br><span class="line">print(func(S,K))</span><br></pre></td></tr></table></figure>
+<p>通过</p>
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+      
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2019/08/21/重新分组密钥/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
     <article id="post-趣题3" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
@@ -409,9 +730,20 @@
     <div class="article-entry" itemprop="articleBody">
       
         <h3 id="国家队观后感"><a href="#国家队观后感" class="headerlink" title="国家队观后感"></a>国家队观后感</h3><h4 id="关于科技"><a href="#关于科技" class="headerlink" title="关于科技"></a>关于科技</h4><h5 id="乌托邦"><a href="#乌托邦" class="headerlink" title="乌托邦"></a>乌托邦</h5><p>里面描绘到的一个世界，人类靠着地下燃料，开始了长生不老，社会的一切都像是在一个机器中有序运转，每个人都是一个螺丝钉，组织类似于1984 。存天理灭人性，因为人性是一种不确定因素，由于已经长生不老了，人类放弃了生殖这种玩意，转向永生，退役的男性变成了“缸中脑” ，只要掌握了大脑的奖励机制，给大脑定期输送多巴胺，人就可以永远生活在幸福之中，对，是永远（美丽新世界？）。然而社会的发展要是到了这个地步，就是“未来简史”里面的成神，真正意义上的把全体人类结合成一个整体，各司其职，不得有误，按需分配，共产主义实现了？只是，由于没有了生殖，人类的情感也不被允许（徒增麻烦，妨碍管理）那个时候已经<strong>不是机器更像人了，而是人类向着机器进化</strong>，每个人从小开始就在被监视中长大，看什么书，用什么药，都是被决定好了的，孩子们从小就被教育：你们存在的意义就是给爸爸们工作，保护爸爸们。</p>
-        
-          <a class="article-more-a" href="/2019/05/02/国家队观后感/#more">more >></a>
-        
+<p>这么讲太空洞，联系实际。我们从还没出生开始就已经在国家的信息系统登记，父谁母谁，家庭住址。生下来之后，脚印就已经被输入进了数据库，后面进入了户口本之后，就有了独一无二的身份证号码（对，没错，从一生下来就被定好了的），每一个人的信息都被保存进入了数据库里面，到后面上学，学籍信息记录着你的一切转学入学，甚至连每一次的期末考试的成绩。到了一定年龄，能够办理身份证了，这张身份证上面绑定了你的指纹，人脸数据，家庭住址，医疗档案等信息，后面智能手机的普及，我们享受着前所未有的便捷的同时，信息更多的全部上传出去，你的身份证里面绑定的东西就更多了，学籍信息，银行卡，手机SIM卡，甚至，消费记录。你在什么时候去了哪个网吧上网，去过哪一家宾馆开房，都被一五一十地通过你的身份证信息记录了下来，然后上传到数据库里面。后面你工作了，你受到的奖励，受到的处分，甚至你买了什么东西，都被记录了下来，而且对于个人来说，你到底被记录了多少信息，无从得知。</p>
+<p>现在人工智能以及物联网技术的兴起，更是加剧了这一趋势，天网系统（全国联网的监控系统）捕捉到了每街上每一个人的图像，结合数据库里面的人脸数据和未来将会出现的更高级的图像捕捉技术以及更快速的计算能力，你人只要在城市里，你在哪儿，一目了然。有这个权限的家伙要找到你在那条街上面干什么，易如反掌，不是能不能，只是想不想。即便是在山区，只要是手机信号能够达到的地方，你的智能设备就是告密者，摄像头自启动，麦克风自启动，然后你的所作所为暴露无遗。在这种环境下，何处是你的安身之地，躲，能够躲到何处？</p>
+<p>在这个信息时代我们以为我们能够看的更广，看得更远，其实我们的眼界被蒙蔽了还不知。一堵墙隔绝了大陆与互联网，于是我们看到的全是当权者想让我们看到的东西，天天新闻联播式的灌输价值观。我们有网络，有电视节目，有报纸，有书刊。但是不被允许的内容一旦出现，就会被国家机器给消灭掉，最后留在我们脑子里面的，全是被精心处理过的信息，斯大林时代的大清洗，1984的再现，把有关这个人的全部档案拿出来，在档案中将这个人删除，然后做旧放回去，一张四个人的老照片变成了三个人，以前的人民日报上的一版文章依旧，只是名字已经完全不同。这种事情苏联有过，我国也有过（虽然在这些事情下面配几张图会比较好，但是懒得配，具体请翻资料看看，基本素养）。我们嘲笑别国不能正视历史，可是我们自己都在篡改历史，天下乌鸦一般黑吧。在上面这种监察机制下，你在某个电线杆旁挖了一下鼻孔都能被看见，修改档案易如反掌，以后人工智能的普及，这种事情会变得更加简单。让一个人消失，还真的能够做到。所以，我们眼前的世界，不是真正的世界，就如上述乌托邦里的家伙一样，从小接触到的东西都是被挑选过的，夏虫不可以语冰，一个不知道自由为何物的人，不可以和他谈论自由。</p>
+<p>摄像头就像一条毒蛇一样钻进了大街小巷，终于也进入了学校，摄像头挂在教室黑板上，这个摄像头能看到教室的全景，智能化之后，用手机就能远程看到画面，还能隔空喊话，在搭载了面部识别之后，这个摄像头可以分析每个人的情绪状态，甚至能够分析到每个人的专心程度，想起了以前在寒假生活上面看的一个笑话（同学们头上戴着某装置在上课，某生上课开小差在想足球，头上的机器发出警告，并显示出足球的画面，该生手捂脑袋痛苦地说：不敢了，下次不敢了）没想到这笑话还真快要成为了现实。</p>
+<p>并非一味做喷子，而是觉得社会正在朝着这个方向发展，996的热度，把程序员当作一个机器在使用，只要能够提高产量，疯狂压榨，一个螺丝钉垮了，下面还有无数螺丝钉以在此公司工作为荣，何必等生锈，我的员工都是我的兄弟，我从不会开除我的兄弟，请假的员工是偷懒的员工（请假的员工会影响公司的收益），偷懒的员工不是我的兄弟。先是IT行业，接着是教育（衡水不就已经是这样了吗，某学校：学习要把生死置之度外，严打早恋）接着下一个是什么呢，呵呵~</p>
+<h5 id="抛弃肉身的桎梏"><a href="#抛弃肉身的桎梏" class="headerlink" title="抛弃肉身的桎梏"></a>抛弃肉身的桎梏</h5><p>在未来简史里面提到，人的科技会把“智人”变成“智神”，而神嘛……（天庭不许恋爱）在那样一个高度集中的乌托邦里面，感情这东西实在是太妨碍组织的安排了，于是，每个人都被安排得明明白白，有了感情的人去接受再教育，也就是洗脑，忘掉有关这段感情有关的一切。试想现在的人类已经是成天面对手机电脑等媒介了，通过这些屏幕同外界进行信息交互，肉身在人类的社会需要中似乎不再那么重要，变成了工具。在未来，人工智能和物联网技术的大量应用，一些低级的劳动者（参见底特律变人）将会由机器人取代，以前的银行职员是个吃香的行业，现在去柜台取钱的，只剩下了老大爷老大妈了，到后面自动驾驶普及了，大量出租车司机也会下岗，工厂全自动生产普及了，大量工人也会失去工作，那时候社会会产生大量的无用阶级，他们没有工作，整天闲着能干什么呢，于是出现了“奶头乐”，出现了消磨精神的产物。那时候贫富差距会更加巨大，富的更富有，穷的更加贫穷，而且，两个阶级开始固化，跨越这条阶级的鸿沟变得更加巨大，在三十几年前，改革开放的初期，人人都有机会，只要敢拼，就能实现自己的阶级跨越，然而到了现在这个知识社会，有胆敢拼不再是一条坦途，穷人会更加没有机会接触到超越自身阶级的思想与文化（控制你能看到什么不能看到什么是一件很简单的事情），沉迷于“奶头乐”之中，把自身的命运完全交给了国家和社会保障制度，富人会变得更加富有，占领社会的大部分财富，接触到更多原来接触不到的思想和知识。越来越富的富人慢慢成为社会的主宰，进而左右政界，按照满足富人利益的方式重新分配利益，甚至改变人类命运走向，人工智能大面积普及之后，穷人要么继续草芥一般活着，要么，随便一场灾难，然后成为社会的累赘被丢掉，毕竟，物竞天择，优胜劣汰的道理，”生似蜉蝣，消失了叫地球会转得更久，何必等生锈，无聊的奋斗，无权留在方舟，在洪流下怎出走”。</p>
+<p>在高度文明化的社会中，推翻上层的统治会变得更加困难，由于国家机器已经触及到了每个人的隐私，你底裤什么颜色没准他都能告诉你，任何一个不安的苗头一旦出现，就会被使用雷霆的手段扑灭，以前使用大刀长矛，普通百姓还能硬刚政府军，还能告诉你说人多力量大。众人拾柴火焰高，到后面的枪炮时代，信息时代，现代战争的恐怖才开始袭来，一支训练有素全副武装的小队屠村不是问题，要是某个地方失控了，一颗远程导弹的事情，实在不行，核平一切，起义的故事只能够从历史书上面看到，现在想要重新推演变成了几乎不可能的事情，如果还抱有幻想的看看饥饿游戏三部曲，仔细思考一下就会知道到底现不现实。</p>
+<p>人类的科技已经开始大幅度延长人类的寿命，以前的平均寿命是30岁，现在人活到60岁是一件很常见的事情，很多以前的不治之症在今天都有了解决的方案，医疗水平的提升让人向神这个方面更加迈进，然而由于本身基因结构的问题，人还无法达到永生的技术，在盗墓笔记里面提到过这样一种永生的方案：意识永生，一个人老的不行的时候，把这个人的意识附到另一具年轻的躯体上面。虽然是新的躯体，但是意识还是老人的意识，这就是另一个层面上的永生（不想长篇大论讲这个，具体查阅盗墓笔记终极的真相），人的衰老是因为细胞在分裂到了海夫里克极限——56次的时候，细胞会自动分泌毒素，干掉自己。但是脑组织里面的意识仍然是人类没有弄清楚的一个谜团，意识似乎不会随着人的衰老而衰老，（老年痴呆的情况是因为脑细胞都受损了，意识本身不会得病，意识的载体出现了问题，于是意识自然就跟着GG了），如果能够将意识分离出来，使用人工的材料作为意识的载体，那么这是否是另一个层面的永生？国家队里面的外星人就是纯意识生命体。但是一旦脱离了身体，脱离了对人的理性思维“有害”的原始冲动，脱离了感情，又一个变相的缸中脑。即便是这项技术出现了，以后能够应用的也一定是“重要人物”，首先就是政治统治的“老大哥”，然后是各种领袖人物……但是抛弃了肉身之后，我国传统对此有个称谓，鬼。</p>
+<h4 id="关于爱情"><a href="#关于爱情" class="headerlink" title="关于爱情"></a>关于爱情</h4><p>从未有过成功恋爱的经历，纯属胡言乱语……</p>
+<h5 id="darling"><a href="#darling" class="headerlink" title="darling"></a>darling</h5><p>不得不说，国家队里面关于爱情，关于性别的探讨有很多。有时候很羡慕那个能够找到02的广啊，只要是darling，管他是人是妖都无所谓啦。“那似乎是比翼鸟，这种鸟天生单翼，须靠雌雄二鸟相互依偎，否则无法翱翔天际，是种有缺陷的生物。 但是，不知为何，我却认为这种生活方式是美好的，感受到了其中的美妙。”从进化的角度而言，自然界为什么大部分生物都具有两性繁殖？这个高中生物就能给出答案，两性繁殖能够增加基因的多样性，而这种基因重组，基因的不确定性，却是进化的原动力，基因变异从而表现出不同的性状，符合环境的留下来，不符合环境的被淘汰，在那样的一个乌托邦中，几乎消除了所有的不确定性，所以，没有了进化的原动力也只不过是在原地踏步而已。从情感角度而言，那种能够了解过去，解开心结，共同创造未来的爱情，简直羡煞我等单身狗，这才是爱情应该有的样子。具体我不剧透了，看了就明白这是一个什么样的爱情，啊我死了。一个人无法到达的地方，两个人在一起就能够到达。许下在一起的约定，即使分离，无论距离，也要赌上一切去寻找对方。我想要保护02。</p>
+<h5 id="单身狗碎碎念"><a href="#单身狗碎碎念" class="headerlink" title="单身狗碎碎念"></a>单身狗碎碎念</h5><p>看到小胖墩被心绿了的时候突然想到，舔够舔到最后不得house，因为爱情从来都不是靠舔来得到的，人们都说爱一个女孩就要百般对她好，其实爱情不是一个人的事情，而是两个人共同去选择的道路，靠一个人背着另一个人走，怎么可能走得长远，男孩不可能做一辈子的舔狗，女孩也不能一辈子当个巨婴，如果不爱的话，舔是没有任何作用的，还不如早点放手，做回自己。如果表达了心意但是没有在一起，只能说明两个人当中有一个人不想走这条路，那个人不是你的darling，然而这条路是两个人的，一旦一个人出现问题，“FRANXX”就会失去控制，在一起以后也是痛苦，不如早点放手，免得耽误别人，耽误自己。</p>
+<p>我们每个人，一定是都有一个darling的吧，只是“人海茫茫让我没日没夜迷失方向”，由于经历背叛，我对爱情，对其他人非常缺乏安全感，无法将自己的后背交给别人，后面虽然被治愈，发誓说要做一个温柔的人，但心里面还是一朝被蛇咬，十年怕井绳，因此我错过了许多美好的事情，从来不敢去追女生，只敢做一个“中老年妇女的偶像”，也就是云备胎，高中阶段没有形影不离的朋友，上了大学也是依旧。我拒绝了一段美好的爱情，当起了更加广泛的妇女之友，同别人的交际也只是局限于好那么一阵子。同时，我也不适合做一个领导，由于无法放心他人，一个团队的所有事情我都会在超出能力范围之内自己做，啥都揽在自己的怀里，结果人的精力有限，经常是一个团队项目做的稀烂，还不如一个人的时候干的事情。因此我似乎也在内心里面期待着我的darling，能够把自己的后背交给对方的darling，一个能够整天腻在一起的darling。啊，醒醒，该起床了，梦里啥都有。</p>
+<p>啊，darling是存在的吧，没有遇见，人海茫茫，没你的世界好好坏坏，只是无味空白。借用何以笙箫默里面的话：我要站在最高的地方，让你看到。“一定站在最显眼路牌，等着我，一定会来”</p>
+
       
 
       
@@ -487,9 +819,36 @@
         <h1 id="DDCTF-re1-writeup"><a href="#DDCTF-re1-writeup" class="headerlink" title="DDCTF re1 writeup"></a>DDCTF re1 writeup</h1><p>下载下来是一个叫做reverse1_final的文件，打开发现是windows x86文件，直接用IDA无法反编译，提示如下</p>
 <p><img src="assets/1555338436435.png" alt="1555338436435"></p>
 <p>怀疑被加壳了，拖进PEID里面查看PE信息</p>
-        
-          <a class="article-more-a" href="/2019/04/15/DDCTF re1 writeup/#more">more >></a>
-        
+<p><img src="assets/1555338503650.png" alt="1555338503650"></p>
+<p>EP段是UPX1，说明是UPX的壳，下载解压器，拖进去解压得到新的文件，发现新的文件已经无法正常运行，拖入IDA反汇编，先找到main函数，然后一通改名字</p>
+<p><img src="assets/1555338607923-1555342113031.png" alt="1555338607923"></p>
+<p>发现是对v4进行一系列操作后同<code>DDCTF{reverseME}</code> 进行比较，输入进入str_in，然后v4就是解密后的内容，进入该函数</p>
+<p><img src="assets/1555338706423-1555342128134.png" alt="1555338706423"></p>
+<p>发现就是对输入的字符串进行读取，让然后去匹配data里面的数值，data大概就是密码表，双击进入data是可以发现data没有在源码里面固定。</p>
+<p>乱打乱撞，进入data里面发现这样</p>
+<p><img src="assets/1555338881770.png" alt="1555338881770"></p>
+<p>没有发现密码表，然后在下面翻，居然让我发现了类似密码表的东西</p>
+<p><img src="assets/1555338967854.png" alt="1555338967854"></p>
+<p>这串字符八九不离十就是密码表了，然后写脚本进行输出</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;string.h&gt;</span></span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="keyword">char</span> key[] = &#123;<span class="string">"DDCTF&#123;reverseME&#125;"</span>&#125;;</span><br><span class="line">	<span class="keyword">char</span> alpha[] = &#123;<span class="string">"~&#125;|&#123;zyxwvutsrqponmlkjihgfedcba`_^]\\[ZYXWVUTSRQPONMLKJIHGFEDCBA@?&gt;=&lt;;:9876543210/.-,+*)(，&amp;%$#\"!"</span>&#125; ;</span><br><span class="line">	<span class="keyword">for</span> (<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;<span class="built_in">strlen</span>(key);i++)&#123;</span><br><span class="line">		<span class="keyword">for</span>(<span class="keyword">int</span> j=<span class="number">0</span>;j&lt;<span class="built_in">strlen</span>(alpha);j++)&#123;</span><br><span class="line">			<span class="keyword">if</span>(key[i]==alpha[j]) <span class="built_in">printf</span>(<span class="string">"%d "</span>,j);</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line"> &#125;</span><br></pre></td></tr></table></figure>
+<p>运行结果如下<code>58 58 59 42 56 3 12 25 8 25 12 11 25 49 57 1</code></p>
+<p>根本不像是能打进去的字符串，于是进入ollydbg，发现这个地址是随机化了的，不好下断点，于是用PEtools 关闭地址空间随机化</p>
+<p><img src="assets/1555339857870.png" alt="1555339857870"></p>
+<p><img src="assets/1555339900874.png" alt="1555339900874"></p>
+<p>然后保存，在关键函数<code>sub_401000</code>处下断点，然后输入测试数据就是密码表的前面几个字符<code>ABCDEFG</code> 进行测试</p>
+<p><img src="assets/1555340063958.png" alt="1555340063958"></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">loc_401020:</span><br><span class="line">movsx   eax, byte ptr [ebx+ecx]</span><br><span class="line">mov     dl, ds:data[eax]</span><br><span class="line">mov     eax, ebp</span><br><span class="line">mov     [ecx], dl</span><br><span class="line">inc     edi</span><br><span class="line">inc     ecx</span><br><span class="line">lea     esi, [eax+1]</span><br></pre></td></tr></table></figure>
+<p>这一块就是从堆栈里面找到<code>data[eax]</code>里面的内容，eax就是偏移量，然后eax是由ebx+ecx得到的，此时的寄存器信息如下</p>
+<p><img src="assets/1555340618407.png" alt="1555340618407"></p>
+<p>发现A指向的是]，于是修改C</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;string.h&gt;</span></span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="keyword">char</span> key[] = &#123;<span class="string">"ABCDEFG"</span>&#125;;</span><br><span class="line">	<span class="keyword">char</span> alpha[] = &#123;<span class="string">"~&#125;|&#123;zyxwvutsrqponmlkjihgfedcba`_^],[ZYXWVUTSRQPONMLKJIHGFEDCBA@?&gt;=&lt;;:9876543210/.-,+*)(，&amp;%$#\"!"</span>&#125; ;</span><br><span class="line">	<span class="keyword">for</span> (<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;<span class="built_in">strlen</span>(key);i++)&#123;</span><br><span class="line">		<span class="keyword">for</span>(<span class="keyword">int</span> j=<span class="number">0</span>;j&lt;<span class="built_in">strlen</span>(alpha);j++)&#123;</span><br><span class="line">			<span class="keyword">if</span>(key[i]==alpha[j]) <span class="built_in">printf</span>(<span class="string">"%c "</span>,j-<span class="string">'='</span>+<span class="string">']'</span>);</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line"> &#125;</span><br></pre></td></tr></table></figure>
+<p>采用这种方式来找到偏移量，是<code>-&#39;=&#39;+&#39;]&#39;</code> 然后在OD里面验证一下，发现符合<code>] \ [ Z Y X W</code>然后把key换成<code>DDCTF{reverseME}</code> 放到OD里面进行验证</p>
+<p><img src="assets/1555341082709.png" alt="1555341082709"></p>
+<p><img src="assets/1555341096937.png" alt="1555341096937"></p>
+<p><img src="assets/1555341224597.png" alt="1555341224597"></p>
+<p>成功拿到Flag~~</p>
+<p>撒花<em>★,°</em>:.☆(￣▽￣)/$:<em>.°★</em> 。</p>
+
       
 
       
