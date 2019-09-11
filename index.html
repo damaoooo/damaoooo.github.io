@@ -164,6 +164,109 @@
           <div id="js-content" class="content-ll">
             
   
+    <article id="post-自己编写代码与UDP模拟软件交互详解" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2019/09/11/自己编写代码与UDP模拟软件交互详解/">自己编写代码与UDP模拟软件交互详解</a>
+    </h1>
+  
+
+        
+        <a href="/2019/09/11/自己编写代码与UDP模拟软件交互详解/" class="archive-article-date">
+  	<time datetime="2019-09-10T16:28:54.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-09-11</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="自己编写代码与UDP模拟软件交互详解"><a href="#自己编写代码与UDP模拟软件交互详解" class="headerlink" title="自己编写代码与UDP模拟软件交互详解"></a>自己编写代码与UDP模拟软件交互详解</h1><h2 id="环境说明"><a href="#环境说明" class="headerlink" title="环境说明"></a>环境说明</h2><p>windows 10 x64（这个应该问题不大）</p>
+<p>python实现</p>
+<p>以阶段一的两台设备为例</p>
+<p>打开两个模拟软件，软件1选择<code>设备1接口0</code>，软件2选择<code>设备2接口0</code>，然后分别点击<code>重载参数</code>来获取参数，效果如图</p>
+<p><img src="assets\1568209292017.png" alt="1568209292017"></p>
+<p>随后<strong>两边都</strong>点击<code>接通连路</code>，并<code>测试连通性</code>，试着传输几个数据，发现效果不错</p>
+<p><img src="assets/1568209364913.png" alt="1568209364913"></p>
+<h2 id="端口解释"><a href="#端口解释" class="headerlink" title="端口解释"></a>端口解释</h2><p><img src="assets/1568209436119.png" alt="1568209436119"></p>
+<h3 id="关系说明"><a href="#关系说明" class="headerlink" title="关系说明"></a>关系说明</h3><p>举个简单的类比大家就知道了</p>
+<p>上层端口控制物理层，就如同<code>老板</code>与<code>跑腿的</code>的关系，跑腿的并不处理信息而是只负责传输软件上写的<code>对方端口</code>就是告诉跑腿的<strong>要传到哪儿</strong>。</p>
+<p>举个例子，软件1的上层端口要发送<code>11111111</code>给软件2，然后上层端口就把这个信息交给软件1物理层<code>本地端口11100</code>，然后对方端口设置的是<code>12100</code>，物理层就只需要把这个交给<code>12100</code>也就是软件2的物理层就完事儿了。</p>
+<p>软件2的物理层接收到了这个消息之后立马报告给老板，也就是物理层2的<code>上层端口12400</code></p>
+<p>至此，信息的发送就完成了。</p>
+<p>什么？软件1怎么知道软件2有没有收到包？模拟软件的名字都写了，这是<code>UDP</code>发包，不管那么多的。</p>
+<h2 id="python-实现"><a href="#python-实现" class="headerlink" title="python 实现"></a>python 实现</h2><p>也就是说我们有2个上层端口，两个相连通的物理端口，OK，也就是说我们需要两个程序来分别绑定两个上层端口</p>
+<p><strong>软件1</strong></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> socket</span><br><span class="line">sk = socket.socket(socket.AF_INET,socket.SOCK_DGRAM)<span class="comment">#指定UDP传输模式</span></span><br><span class="line">ipPort1 = (<span class="string">'127.0.0.1'</span>,<span class="number">11400</span>)<span class="comment">#绑定软件1的上层端口</span></span><br><span class="line">sk.bind(ipPort1)</span><br><span class="line">localIpPort1 = (<span class="string">'127.0.0.1'</span>,<span class="number">11100</span>)</span><br><span class="line">content = <span class="string">b'1111111111111111'</span></span><br><span class="line">print(<span class="string">'start to send...'</span>)</span><br><span class="line">sk.sendto(content,localIpPort1)<span class="comment">#给本地端口11100发送content的字符串</span></span><br></pre></td></tr></table></figure>
+<p><strong>软件2</strong></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> socket</span><br><span class="line">sk = socket.socket(socket.AF_INET,socket.SOCK_DGRAM)<span class="comment">#指定UDP传输模式</span></span><br><span class="line">ipPort2 = (<span class="string">'127.0.0.1'</span>,<span class="number">12400</span>)</span><br><span class="line">localIpPort2 = (<span class="string">'127.0.0.1'</span>,<span class="number">12100</span>)</span><br><span class="line">sk.bind(ipPort2)</span><br><span class="line">print(<span class="string">'start to recv...'</span>)</span><br><span class="line">hexdata = eval(<span class="string">'0x'</span>+bytes.hex(sk.recv(<span class="number">1024</span>)))<span class="comment">#接收到的字符串转化为二进制并打印</span></span><br><span class="line">print(bin(hexdata)[<span class="number">2</span>:])</span><br></pre></td></tr></table></figure>
+<p>分别保存为<code>1.py</code>和<code>2.py</code>然后在<code>powershell</code>中运行<em>（这是我写套接字比较喜欢的运行方式，你也可以在<code>cmd</code>和其他环境下运行，问题不大）</em> ,运行截图如下</p>
+<p><img src="assets/1568211684420.png" alt="1568211684420"></p>
+<p>分别截图</p>
+<p><img src="assets/1568211732852.png" alt="1568211732852"></p>
+<p><img src="assets/1568211741592.png" alt="1568211741592"></p>
+<p>看样子似乎比较成功获取了软件1发送给软件2的消息，而且我们看下面的状态信息</p>
+<p><img src="assets/1568211768102.png" alt="1568211768102"></p>
+<p>至此我们成功通过软件的方式实现了操控UDP发包的过程</p>
+<p>我们再从软件2给软件1发消息试试，这个时候我们临时写的<code>python</code>就要改一下了，而且，比特之间的传输已经证明是可行的了，我们搞♂点<code>新兄弟</code></p>
+<p><strong>软件1</strong></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> socket</span><br><span class="line">sk = socket.socket(socket.AF_INET,socket.SOCK_DGRAM)</span><br><span class="line">ipPort1 = (<span class="string">'127.0.0.1'</span>,<span class="number">11400</span>)</span><br><span class="line">sk.bind(ipPort1)</span><br><span class="line">localIpPort1 = (<span class="string">'127.0.0.1'</span>,<span class="number">11100</span>)</span><br><span class="line">print(<span class="string">'start to recv...'</span>)</span><br><span class="line">recvdata = sk.recv(<span class="number">1024</span>).decode(<span class="string">'utf-8'</span>)</span><br><span class="line">print(recvdata)</span><br></pre></td></tr></table></figure>
+<p><strong>软件2</strong></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> socket</span><br><span class="line">sk = socket.socket(socket.AF_INET,socket.SOCK_DGRAM)</span><br><span class="line">ipPort2 = (<span class="string">'127.0.0.1'</span>,<span class="number">12400</span>)</span><br><span class="line">localIpPort2 = (<span class="string">'127.0.0.1'</span>,<span class="number">12100</span>)</span><br><span class="line">sk.bind(ipPort2)</span><br><span class="line">content = <span class="string">'Deep dark fantasy'</span></span><br><span class="line">print(<span class="string">'start to send...'</span>)</span><br><span class="line">sk.sendto(content.encode(<span class="string">'utf-8'</span>),localIpPort2)</span><br></pre></td></tr></table></figure>
+<p>然后在<code>powershell</code>中先运行<code>1.py</code>，然后在另一个<code>powershell</code>中运行<code>2.py</code>，截图如下</p>
+<p><img src="assets/1568212522862.png" alt="1568212522862"></p>
+<p>模拟端口截图如下</p>
+<p><img src="assets/1568212570598.png" alt="1568212570598"></p>
+<p>接收端出现的乱码正是因为还没有进行<strong>帧定位</strong>的结果，这个就是后话了。</p>
+<p>后面还想到了一些很有趣的玩法，比如把软件1的<code>对方地址</code>直接填写到软件2的上层地址上面，具体实现过程就不表了。</p>
+<p><img src="assets/1568212819661.png" alt="1568212819661"></p>
+<p>果然，也能收到，这就相当于是软件1的跑腿的直接给软件2的老板送信，自然软件2的老板能收到信息了。</p>
+<p>完结撒花(●ˇ∀ˇ●)</p>
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+      
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2019/09/11/自己编写代码与UDP模拟软件交互详解/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
     <article id="post-Github 学习总结" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
@@ -424,6 +527,79 @@
 
 
   
+    <article id="post-各个位上的数字相加" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2019/08/21/各个位上的数字相加/">各个位上的数字相加</a>
+    </h1>
+  
+
+        
+        <a href="/2019/08/21/各个位上的数字相加/" class="archive-article-date">
+  	<time datetime="2019-08-20T16:28:54.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-08-21</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>给定一个非负整数 <code>num</code>，反复将各个位上的数字相加，直到结果为一位数。</p>
+<p>示例:</p>
+<p>输入: 38<br>输出: 2<br>解释: 各位相加的过程为：3 + 8 = 11, 1 + 1 = 2。 由于 2 是一位数，所以返回 2。</p>
+<p>这个直接用循环来做非常快，题目进阶要求说不使用循环和递归，且要求时间复杂度<code>O(1)</code>之内解决</p>
+<p>直接上很秀的解法</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">func</span><span class="params">(num)</span>:</span></span><br><span class="line">	<span class="keyword">return</span> (num%<span class="number">9</span>) <span class="keyword">or</span> (<span class="number">9</span>*bool(num))</span><br></pre></td></tr></table></figure>
+<p>假设原来的数是<code>abcd</code>即，<code>1000*a+100*b+10*c+d</code>之后我们需要的数字是<code>a+b+c+d</code></p>
+<p>所以<code>a+b+c+d</code>=<code>(1000*a+100*b+10*c+d)-(999*a+99*b+9*c)=&#39;abcd&#39;-9*(111*a+11*b+c)</code> 就相当于<code>a+b+c+d=num%9</code></p>
+<p>如果<code>num</code>是9的倍数怎么办呢？<code>num</code>是0怎么办呢？</p>
+<p>9的倍数的各位数的和就是9，而此时<code>num%9==0</code>，所以直接使用<code>9*bool(num)</code></p>
+<p>最后一个<code>or</code> 把句子缩写到一行，<code>leecode</code>大神写的代码真是太优雅了</p>
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+      
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2019/08/21/各个位上的数字相加/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
     <article id="post-重新分组密钥" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
@@ -475,79 +651,6 @@
       
         <p class="article-more-link">
           <a class="article-more-a" href="/2019/08/21/重新分组密钥/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
-    <article id="post-各个位上的数字相加" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2019/08/21/各个位上的数字相加/">各个位上的数字相加</a>
-    </h1>
-  
-
-        
-        <a href="/2019/08/21/各个位上的数字相加/" class="archive-article-date">
-  	<time datetime="2019-08-20T16:28:54.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-08-21</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>给定一个非负整数 <code>num</code>，反复将各个位上的数字相加，直到结果为一位数。</p>
-<p>示例:</p>
-<p>输入: 38<br>输出: 2<br>解释: 各位相加的过程为：3 + 8 = 11, 1 + 1 = 2。 由于 2 是一位数，所以返回 2。</p>
-<p>这个直接用循环来做非常快，题目进阶要求说不使用循环和递归，且要求时间复杂度<code>O(1)</code>之内解决</p>
-<p>直接上很秀的解法</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">func</span><span class="params">(num)</span>:</span></span><br><span class="line">	<span class="keyword">return</span> (num%<span class="number">9</span>) <span class="keyword">or</span> (<span class="number">9</span>*bool(num))</span><br></pre></td></tr></table></figure>
-<p>假设原来的数是<code>abcd</code>即，<code>1000*a+100*b+10*c+d</code>之后我们需要的数字是<code>a+b+c+d</code></p>
-<p>所以<code>a+b+c+d</code>=<code>(1000*a+100*b+10*c+d)-(999*a+99*b+9*c)=&#39;abcd&#39;-9*(111*a+11*b+c)</code> 就相当于<code>a+b+c+d=num%9</code></p>
-<p>如果<code>num</code>是9的倍数怎么办呢？<code>num</code>是0怎么办呢？</p>
-<p>9的倍数的各位数的和就是9，而此时<code>num%9==0</code>，所以直接使用<code>9*bool(num)</code></p>
-<p>最后一个<code>or</code> 把句子缩写到一行，<code>leecode</code>大神写的代码真是太优雅了</p>
-
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-      
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2019/08/21/各个位上的数字相加/">展开全文 >></a>
         </p>
       
 
@@ -859,100 +962,6 @@
       
         <p class="article-more-link">
           <a class="article-more-a" href="/2019/05/02/国家队观后感/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
-    <article id="post-DDCTF re1 writeup" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2019/04/15/DDCTF re1 writeup/">DDCTF_re1_writeup</a>
-    </h1>
-  
-
-        
-        <a href="/2019/04/15/DDCTF re1 writeup/" class="archive-article-date">
-  	<time datetime="2019-04-15T15:15:21.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-04-15</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h1 id="DDCTF-re1-writeup"><a href="#DDCTF-re1-writeup" class="headerlink" title="DDCTF re1 writeup"></a>DDCTF re1 writeup</h1><p>下载下来是一个叫做reverse1_final的文件，打开发现是windows x86文件，直接用IDA无法反编译，提示如下</p>
-<p><img src="assets/1555338436435.png" alt="1555338436435"></p>
-<p>怀疑被加壳了，拖进PEID里面查看PE信息</p>
-<p><img src="assets/1555338503650.png" alt="1555338503650"></p>
-<p>EP段是UPX1，说明是UPX的壳，下载解压器，拖进去解压得到新的文件，发现新的文件已经无法正常运行，拖入IDA反汇编，先找到main函数，然后一通改名字</p>
-<p><img src="assets/1555338607923-1555342113031.png" alt="1555338607923"></p>
-<p>发现是对v4进行一系列操作后同<code>DDCTF{reverseME}</code> 进行比较，输入进入str_in，然后v4就是解密后的内容，进入该函数</p>
-<p><img src="assets/1555338706423-1555342128134.png" alt="1555338706423"></p>
-<p>发现就是对输入的字符串进行读取，让然后去匹配data里面的数值，data大概就是密码表，双击进入data是可以发现data没有在源码里面固定。</p>
-<p>乱打乱撞，进入data里面发现这样</p>
-<p><img src="assets/1555338881770.png" alt="1555338881770"></p>
-<p>没有发现密码表，然后在下面翻，居然让我发现了类似密码表的东西</p>
-<p><img src="assets/1555338967854.png" alt="1555338967854"></p>
-<p>这串字符八九不离十就是密码表了，然后写脚本进行输出</p>
-<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;string.h&gt;</span></span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="keyword">char</span> key[] = &#123;<span class="string">"DDCTF&#123;reverseME&#125;"</span>&#125;;</span><br><span class="line">	<span class="keyword">char</span> alpha[] = &#123;<span class="string">"~&#125;|&#123;zyxwvutsrqponmlkjihgfedcba`_^]\\[ZYXWVUTSRQPONMLKJIHGFEDCBA@?&gt;=&lt;;:9876543210/.-,+*)(，&amp;%$#\"!"</span>&#125; ;</span><br><span class="line">	<span class="keyword">for</span> (<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;<span class="built_in">strlen</span>(key);i++)&#123;</span><br><span class="line">		<span class="keyword">for</span>(<span class="keyword">int</span> j=<span class="number">0</span>;j&lt;<span class="built_in">strlen</span>(alpha);j++)&#123;</span><br><span class="line">			<span class="keyword">if</span>(key[i]==alpha[j]) <span class="built_in">printf</span>(<span class="string">"%d "</span>,j);</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line"> &#125;</span><br></pre></td></tr></table></figure>
-<p>运行结果如下<code>58 58 59 42 56 3 12 25 8 25 12 11 25 49 57 1</code></p>
-<p>根本不像是能打进去的字符串，于是进入ollydbg，发现这个地址是随机化了的，不好下断点，于是用PEtools 关闭地址空间随机化</p>
-<p><img src="assets/1555339857870.png" alt="1555339857870"></p>
-<p><img src="assets/1555339900874.png" alt="1555339900874"></p>
-<p>然后保存，在关键函数<code>sub_401000</code>处下断点，然后输入测试数据就是密码表的前面几个字符<code>ABCDEFG</code> 进行测试</p>
-<p><img src="assets/1555340063958.png" alt="1555340063958"></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">loc_401020:</span><br><span class="line">movsx   eax, byte ptr [ebx+ecx]</span><br><span class="line">mov     dl, ds:data[eax]</span><br><span class="line">mov     eax, ebp</span><br><span class="line">mov     [ecx], dl</span><br><span class="line">inc     edi</span><br><span class="line">inc     ecx</span><br><span class="line">lea     esi, [eax+1]</span><br></pre></td></tr></table></figure>
-<p>这一块就是从堆栈里面找到<code>data[eax]</code>里面的内容，eax就是偏移量，然后eax是由ebx+ecx得到的，此时的寄存器信息如下</p>
-<p><img src="assets/1555340618407.png" alt="1555340618407"></p>
-<p>发现A指向的是]，于是修改C</p>
-<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;string.h&gt;</span></span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="keyword">char</span> key[] = &#123;<span class="string">"ABCDEFG"</span>&#125;;</span><br><span class="line">	<span class="keyword">char</span> alpha[] = &#123;<span class="string">"~&#125;|&#123;zyxwvutsrqponmlkjihgfedcba`_^],[ZYXWVUTSRQPONMLKJIHGFEDCBA@?&gt;=&lt;;:9876543210/.-,+*)(，&amp;%$#\"!"</span>&#125; ;</span><br><span class="line">	<span class="keyword">for</span> (<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;<span class="built_in">strlen</span>(key);i++)&#123;</span><br><span class="line">		<span class="keyword">for</span>(<span class="keyword">int</span> j=<span class="number">0</span>;j&lt;<span class="built_in">strlen</span>(alpha);j++)&#123;</span><br><span class="line">			<span class="keyword">if</span>(key[i]==alpha[j]) <span class="built_in">printf</span>(<span class="string">"%c "</span>,j-<span class="string">'='</span>+<span class="string">']'</span>);</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line"> &#125;</span><br></pre></td></tr></table></figure>
-<p>采用这种方式来找到偏移量，是<code>-&#39;=&#39;+&#39;]&#39;</code> 然后在OD里面验证一下，发现符合<code>] \ [ Z Y X W</code>然后把key换成<code>DDCTF{reverseME}</code> 放到OD里面进行验证</p>
-<p><img src="assets/1555341082709.png" alt="1555341082709"></p>
-<p><img src="assets/1555341096937.png" alt="1555341096937"></p>
-<p><img src="assets/1555341224597.png" alt="1555341224597"></p>
-<p>成功拿到Flag~~</p>
-<p>撒花<em>★,°</em>:.☆(￣▽￣)/$:<em>.°★</em> 。</p>
-
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-      
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2019/04/15/DDCTF re1 writeup/">展开全文 >></a>
         </p>
       
 
