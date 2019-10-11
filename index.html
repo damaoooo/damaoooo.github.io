@@ -184,7 +184,8 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <h1 id="同防火墙的斗争记"><a href="#同防火墙的斗争记" class="headerlink" title="同防火墙的斗争记"></a>同防火墙的斗争记</h1><p>心血来潮决定自己去搞一个VPS自己建立翻墙服务，免得天天去为了翻墙去到处找免费VPN，焦头烂额速度还慢，因此就看教程去学习搭建免费VPS进行翻墙，由于我的图床替换脚本被怀疑DDOS了，一天只能上传10张图，就很难顶，有些地方就不截图文字的方式</p>
+        <h1 id="同防火墙的斗争记"><a href="#同防火墙的斗争记" class="headerlink" title="同防火墙的斗争记"></a>同防火墙的斗争记</h1><p>由于很多资料百度不好查到，而且wiki，还有很多dalao 的blog上面的学习资料要Google才搜得到，因此科学上网就成为了刚需。</p>
+<p>心血来潮决定自己去搞一个VPS自己建立翻墙服务，免得天天去为了翻墙去到处找免费VPN，焦头烂额速度还慢，因此就看教程去学习搭建免费VPS进行翻墙，由于我的图床替换脚本被怀疑DDOS了，一天只能上传10张图，就很难顶，有些地方就不截图文字的方式</p>
 <h2 id="一、Shadow-Socks-BBR-plus"><a href="#一、Shadow-Socks-BBR-plus" class="headerlink" title="一、Shadow Socks + BBR plus"></a>一、Shadow Socks + BBR plus</h2><p>教程<code>[https://medium.com/@jackme256/%E7%A7%91%E5%AD%A6%E4%B8%8A%E7%BD%91-vultr-vps-%E6%90%AD%E5%BB%BA-shadowsocks-ss-%E6%95%99%E7%A8%8B-%E6%96%B0%E6%89%8B%E5%90%91-968613081aae](https://medium.com/@jackme256/科学上网-vultr-vps-搭建-shadowsocks-ss-教程-新手向-968613081aae)</code></p>
 <p>最开始的网站教的就是去申请一个VPS<code>VPS可以理解为别人开了一堆服务器给你用，你就花钱租一个服务器的使用权</code>，那个教程网站推荐的是<code>vultr</code>，个人觉得还不错，便宜的<code>2.5d/mo</code>已经没了，就只有<code>5d/mo</code></p>
 <p><img src="https://i.loli.net/2019/10/12/eknvMSjBmhf84I2.png" alt="eknvMSjBmhf84I2.png"></p>
@@ -592,6 +593,87 @@
 
 
   
+    <article id="post-判断是否是完全平方数" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2019/08/21/判断是否是完全平方数/">判断是否是完全平方数</a>
+    </h1>
+  
+
+        
+        <a href="/2019/08/21/判断是否是完全平方数/" class="archive-article-date">
+  	<time datetime="2019-08-20T16:28:54.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-08-21</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>给定一个正整数 num，编写一个函数，如果 num 是一个完全平方数，则返回 True，否则返回 False。</p>
+<p>说明：不要使用任何内置的库函数，如  sqrt。</p>
+<p>示例 1：</p>
+<p>输入：16<br>输出：True<br>示例 2：</p>
+<p>输入：14<br>输出：False</p>
+<p>最开始想到的是使用<code>sqrt()</code>直接判断，什么？不能使用sqrt()?</p>
+<p>不能使用任何内置的库函数，所以使用math.log的方案也挂掉了，老老实实去凑吧</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">func</span><span class="params">(num)</span>:</span></span><br><span class="line">    <span class="keyword">if</span>(num&lt;<span class="number">0</span>):</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">False</span></span><br><span class="line">    <span class="keyword">if</span>(num&lt;=<span class="number">2</span>):</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">True</span></span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">1</span>,num//<span class="number">2</span>):</span><br><span class="line">        <span class="keyword">if</span>(i*i==num):</span><br><span class="line">            <span class="keyword">return</span> <span class="literal">True</span></span><br><span class="line">        <span class="keyword">if</span>(i*i&gt;num):</span><br><span class="line">            <span class="keyword">return</span> <span class="literal">False</span></span><br></pre></td></tr></table></figure>
+<p>虽然我觉得他肯定要卡你时间复杂度    </p>
+<p>果然后面他给我报错，<code>MemoryError</code>不过是发生在<code>Line 7</code>也就是<code>for i in range(1,num//2):</code>这一行就让我感觉有点意外</p>
+<p>后来看到了公式，有点东西</p>
+<p><code>4 = 1+3</code></p>
+<p><code>9 = 1+3+5</code></p>
+<p><code>16 = 1+3+5+7</code></p>
+<p>以此类推</p>
+<p><code>n^2 = 1+3+5+……+(2n-1)</code></p>
+<p>所以我们就挨着挨着减下来就好了</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">func</span><span class="params">(num)</span>:</span></span><br><span class="line">    <span class="keyword">if</span>(num&lt;<span class="number">0</span>):</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">False</span></span><br><span class="line">    i = <span class="number">1</span></span><br><span class="line">    <span class="keyword">while</span>(num&gt;<span class="number">0</span>):</span><br><span class="line">        num-=i</span><br><span class="line">        i+=<span class="number">2</span></span><br><span class="line">    <span class="keyword">return</span> num==<span class="number">0</span></span><br></pre></td></tr></table></figure>
+<p>只需要执行n次就可以了</p>
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+      
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2019/08/21/判断是否是完全平方数/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
     <article id="post-不使用运算符 + 和 - ，计算两整数 a 、b 之和" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
@@ -650,87 +732,6 @@
       
         <p class="article-more-link">
           <a class="article-more-a" href="/2019/08/21/不使用运算符 + 和 - ，计算两整数 a 、b 之和/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
-    <article id="post-判断是否是完全平方数" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2019/08/21/判断是否是完全平方数/">判断是否是完全平方数</a>
-    </h1>
-  
-
-        
-        <a href="/2019/08/21/判断是否是完全平方数/" class="archive-article-date">
-  	<time datetime="2019-08-20T16:28:54.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-08-21</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>给定一个正整数 num，编写一个函数，如果 num 是一个完全平方数，则返回 True，否则返回 False。</p>
-<p>说明：不要使用任何内置的库函数，如  sqrt。</p>
-<p>示例 1：</p>
-<p>输入：16<br>输出：True<br>示例 2：</p>
-<p>输入：14<br>输出：False</p>
-<p>最开始想到的是使用<code>sqrt()</code>直接判断，什么？不能使用sqrt()?</p>
-<p>不能使用任何内置的库函数，所以使用math.log的方案也挂掉了，老老实实去凑吧</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">func</span><span class="params">(num)</span>:</span></span><br><span class="line">    <span class="keyword">if</span>(num&lt;<span class="number">0</span>):</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">False</span></span><br><span class="line">    <span class="keyword">if</span>(num&lt;=<span class="number">2</span>):</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">True</span></span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">1</span>,num//<span class="number">2</span>):</span><br><span class="line">        <span class="keyword">if</span>(i*i==num):</span><br><span class="line">            <span class="keyword">return</span> <span class="literal">True</span></span><br><span class="line">        <span class="keyword">if</span>(i*i&gt;num):</span><br><span class="line">            <span class="keyword">return</span> <span class="literal">False</span></span><br></pre></td></tr></table></figure>
-<p>虽然我觉得他肯定要卡你时间复杂度    </p>
-<p>果然后面他给我报错，<code>MemoryError</code>不过是发生在<code>Line 7</code>也就是<code>for i in range(1,num//2):</code>这一行就让我感觉有点意外</p>
-<p>后来看到了公式，有点东西</p>
-<p><code>4 = 1+3</code></p>
-<p><code>9 = 1+3+5</code></p>
-<p><code>16 = 1+3+5+7</code></p>
-<p>以此类推</p>
-<p><code>n^2 = 1+3+5+……+(2n-1)</code></p>
-<p>所以我们就挨着挨着减下来就好了</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">func</span><span class="params">(num)</span>:</span></span><br><span class="line">    <span class="keyword">if</span>(num&lt;<span class="number">0</span>):</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">False</span></span><br><span class="line">    i = <span class="number">1</span></span><br><span class="line">    <span class="keyword">while</span>(num&gt;<span class="number">0</span>):</span><br><span class="line">        num-=i</span><br><span class="line">        i+=<span class="number">2</span></span><br><span class="line">    <span class="keyword">return</span> num==<span class="number">0</span></span><br></pre></td></tr></table></figure>
-<p>只需要执行n次就可以了</p>
-
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-      
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2019/08/21/判断是否是完全平方数/">展开全文 >></a>
         </p>
       
 
