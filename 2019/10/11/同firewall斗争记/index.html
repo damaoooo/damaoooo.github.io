@@ -22,7 +22,7 @@
 <meta property="og:image" content="https://i.loli.net/2019/10/12/DNM6ThaB2r8jU7o.png">
 <meta property="og:image" content="https://i.loli.net/2019/10/12/1VjIWMCsX6kt4iO.png">
 <meta property="og:image" content="https://i.loli.net/2019/10/12/hqu8rWc1JEpyOlK.png">
-<meta property="og:updated_time" content="2019-10-11T17:28:53.210Z">
+<meta property="og:updated_time" content="2019-10-11T17:32:58.579Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="同firewall斗争记">
 <meta name="twitter:description" content="同防火墙的斗争记心血来潮决定自己去搞一个VPS自己建立翻墙服务，免得天天去为了翻墙去到处找免费VPN，焦头烂额速度还慢，因此就看教程去学习搭建免费VPS进行翻墙，由于我的图床替换脚本被怀疑DDOS了，一天只能上传10张图，就很难顶，有些地方就不截图文字的方式 一、Shadow Socks + BBR plus教程[https://medium.com/@jackme256/%E7%A7%91%E5">
@@ -269,6 +269,8 @@
 <p>然后再特殊时期，上午开，下午就封了</p>
 <h2 id="v2ray-mkcp-udp2raw"><a href="#v2ray-mkcp-udp2raw" class="headerlink" title="v2ray + mkcp + udp2raw"></a>v2ray + mkcp + udp2raw</h2><p>上面说了udp容易被封禁的原因嘛，就是因为大量的UDP发包，又惹到了GFW又惹到了运营商，所以有个工具就是帮我们把UDP伪装成TCP协议，使用至今没被GG，两全其美，awsl</p>
 <p>项目地址（有中文，毕竟国内这方面的需求比较大）：<code>https://github.com/wangyu-/udp2raw-tunnel/blob/master/doc/README.zh-cn.md</code></p>
+<p>不过碰巧我又找到了一键安装脚本</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">bash &lt;(curl -s -L https://233blog.com/udp2raw.sh)</span><br></pre></td></tr></table></figure>
 <p>原理就是先让你的数据通过你的udp2raw客户端，然后再让udp2raw客户端与服务端之间进行通信，然后达到伪装的效果。</p>
 <p>使用方法文档上面已经写得比我好，那么不再多说，希望大家去看文档的时候不要关掉我这个窗口就好了</p>
 <p>缺点就是你需要再本地开一个框框来作为本地udp2raw客户端，而且你的ssh一旦关掉，那么你的服务端也没了，而且手机更没法用</p>
