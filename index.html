@@ -164,6 +164,92 @@
           <div id="js-content" class="content-ll">
             
   
+    <article id="post-WSL下GO环境搭建遇到的坑" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2019/10/24/WSL下GO环境搭建遇到的坑/">WSL下GO环境搭建遇到的坑</a>
+    </h1>
+  
+
+        
+        <a href="/2019/10/24/WSL下GO环境搭建遇到的坑/" class="archive-article-date">
+  	<time datetime="2019-10-24T14:34:44.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-10-24</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="WSL下GO环境搭建遇到的坑"><a href="#WSL下GO环境搭建遇到的坑" class="headerlink" title="WSL下GO环境搭建遇到的坑"></a>WSL下GO环境搭建遇到的坑</h1><p>Windows下面写Go要安装的东西实在是太多了，而且由于Windows下面缺乏像<code>apt</code>这样的包管理器，所以在Linux下面写go似乎要爽得多，于是我搞了一个wsl下的Ubuntu 18.04 tls+vscode，中途遇上了好几个坑，记录下来</p>
+<p><strong>以下内容仅适用于win10 1903及以上版本</strong></p>
+<h2 id="安装WSL环境"><a href="#安装WSL环境" class="headerlink" title="安装WSL环境"></a>安装WSL环境</h2><p>网上教程一抓一大把。</p>
+<p>在<code>windows程序和功能</code>中勾上<code>windows subsystem for linux</code>然后确定，装好了之后重启，进系统自带的<code>microsoft store</code>，找个ubuntu装上。值得一提的是，这个<strong>没有图形界面</strong></p>
+<p>然后强烈建议换源，由于神秘因素，用默认的源保管你连gcc都装不上</p>
+<p>这是我用的清华的源，还挺不错，教程也很详细</p>
+<p><code>https://mirror.tuna.tsinghua.edu.cn/help/ubuntu/</code></p>
+<h2 id="WSL下GO环境变量的配置"><a href="#WSL下GO环境变量的配置" class="headerlink" title="WSL下GO环境变量的配置"></a>WSL下GO环境变量的配置</h2><p>首先是Ubuntu下面安装golang，运行<code>sudo apt-get install golang</code>即可</p>
+<p>安装好了之后就是环境变量的配置了，网上CSDN的教程东说西说，坑了我很多，最后自己实践出真知，其实只需要安装之后运行<code>go env</code></p>
+<p>如图</p>
+<p><img src="https://i.loli.net/2019/10/24/ZF2Va9XOvir8ko3.png" alt="ZF2Va9XOvir8ko3.png"></p>
+<p>找到你的<code>GOROOT</code>，复制下来，然后输入<code>sudo vim ~/.bashrc</code>,在最后一行添加如下</p>
+<p><code>export GOROOT=&quot;usr/lib/go-1.10&quot;</code>(就是你上面写的<code>GOROOT</code>的目录)</p>
+<p>然后<code>source ~/.bashrc</code>一下，就完成了环境变量的配置</p>
+<p>然后运行<code>go version</code>，如果出现系统信息，就说明装好了</p>
+<h2 id="WINDOWS下vscode与WSL交互"><a href="#WINDOWS下vscode与WSL交互" class="headerlink" title="WINDOWS下vscode与WSL交互"></a>WINDOWS下vscode与WSL交互</h2><p>在VSCODE中安装<code>Remote-WSL</code>的应用，一键安装，好了之后你的界面就会出现左边的远程图标和左下角的远程图标</p>
+<p><img src="https://i.loli.net/2019/10/24/pY1rTWo8EZisk5x.png" alt="pY1rTWo8EZisk5x.png"></p>
+<p>然后按照提示进入wsl中去运行<code>code .</code>，结果报错<code>Command &#39;code&#39; not found</code></p>
+<p>然后我去了stackoverflow上面找到了解决方案</p>
+<p>WSL下运行<code>export PATH=&quot;$PATH:/Applications/Visual Studio Code.app/Contents/Resources/app/bin&quot;</code></p>
+<p>你也可以将这个环境变量加入到<code>~/.bashrc</code>中(还不会用Vim？上一篇文章讲过一点点基础用法)</p>
+<p>然后运行<code>code .</code>就可以安装vscode 的 Linux服务端了。</p>
+<p>随后的事情就是按照<code>remote-WSL</code>下面的提示来写代码就是了。</p>
+<p>用<code>windows</code>下的vscode写代码在<code>Ubuntu</code>下跑Go语言 ，还能直接debug，真是太爽了。</p>
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+      
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2019/10/24/WSL下GO环境搭建遇到的坑/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
     <article id="post-同firewall斗争记" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
@@ -520,79 +606,6 @@
 
 
   
-    <article id="post-各个位上的数字相加" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2019/08/21/各个位上的数字相加/">各个位上的数字相加</a>
-    </h1>
-  
-
-        
-        <a href="/2019/08/21/各个位上的数字相加/" class="archive-article-date">
-  	<time datetime="2019-08-20T16:28:54.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-08-21</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>给定一个非负整数 <code>num</code>，反复将各个位上的数字相加，直到结果为一位数。</p>
-<p>示例:</p>
-<p>输入: 38<br>输出: 2<br>解释: 各位相加的过程为：3 + 8 = 11, 1 + 1 = 2。 由于 2 是一位数，所以返回 2。</p>
-<p>这个直接用循环来做非常快，题目进阶要求说不使用循环和递归，且要求时间复杂度<code>O(1)</code>之内解决</p>
-<p>直接上很秀的解法</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">func</span><span class="params">(num)</span>:</span></span><br><span class="line">	<span class="keyword">return</span> (num%<span class="number">9</span>) <span class="keyword">or</span> (<span class="number">9</span>*bool(num))</span><br></pre></td></tr></table></figure>
-<p>假设原来的数是<code>abcd</code>即，<code>1000*a+100*b+10*c+d</code>之后我们需要的数字是<code>a+b+c+d</code></p>
-<p>所以<code>a+b+c+d</code>=<code>(1000*a+100*b+10*c+d)-(999*a+99*b+9*c)=&#39;abcd&#39;-9*(111*a+11*b+c)</code> 就相当于<code>a+b+c+d=num%9</code></p>
-<p>如果<code>num</code>是9的倍数怎么办呢？<code>num</code>是0怎么办呢？</p>
-<p>9的倍数的各位数的和就是9，而此时<code>num%9==0</code>，所以直接使用<code>9*bool(num)</code></p>
-<p>最后一个<code>or</code> 把句子缩写到一行，<code>leecode</code>大神写的代码真是太优雅了</p>
-
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-      
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2019/08/21/各个位上的数字相加/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
     <article id="post-判断是否是完全平方数" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
@@ -645,6 +658,79 @@
       
         <p class="article-more-link">
           <a class="article-more-a" href="/2019/08/21/判断是否是完全平方数/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
+    <article id="post-各个位上的数字相加" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2019/08/21/各个位上的数字相加/">各个位上的数字相加</a>
+    </h1>
+  
+
+        
+        <a href="/2019/08/21/各个位上的数字相加/" class="archive-article-date">
+  	<time datetime="2019-08-20T16:28:54.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-08-21</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>给定一个非负整数 <code>num</code>，反复将各个位上的数字相加，直到结果为一位数。</p>
+<p>示例:</p>
+<p>输入: 38<br>输出: 2<br>解释: 各位相加的过程为：3 + 8 = 11, 1 + 1 = 2。 由于 2 是一位数，所以返回 2。</p>
+<p>这个直接用循环来做非常快，题目进阶要求说不使用循环和递归，且要求时间复杂度<code>O(1)</code>之内解决</p>
+<p>直接上很秀的解法</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">func</span><span class="params">(num)</span>:</span></span><br><span class="line">	<span class="keyword">return</span> (num%<span class="number">9</span>) <span class="keyword">or</span> (<span class="number">9</span>*bool(num))</span><br></pre></td></tr></table></figure>
+<p>假设原来的数是<code>abcd</code>即，<code>1000*a+100*b+10*c+d</code>之后我们需要的数字是<code>a+b+c+d</code></p>
+<p>所以<code>a+b+c+d</code>=<code>(1000*a+100*b+10*c+d)-(999*a+99*b+9*c)=&#39;abcd&#39;-9*(111*a+11*b+c)</code> 就相当于<code>a+b+c+d=num%9</code></p>
+<p>如果<code>num</code>是9的倍数怎么办呢？<code>num</code>是0怎么办呢？</p>
+<p>9的倍数的各位数的和就是9，而此时<code>num%9==0</code>，所以直接使用<code>9*bool(num)</code></p>
+<p>最后一个<code>or</code> 把句子缩写到一行，<code>leecode</code>大神写的代码真是太优雅了</p>
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+      
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2019/08/21/各个位上的数字相加/">展开全文 >></a>
         </p>
       
 
@@ -963,79 +1049,6 @@
       
         <p class="article-more-link">
           <a class="article-more-a" href="/2019/07/25/趣题2/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
-    <article id="post-趣题1" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2019/07/25/趣题1/">返回阶乘结果尾数中零的数量</a>
-    </h1>
-  
-
-        
-        <a href="/2019/07/25/趣题1/" class="archive-article-date">
-  	<time datetime="2019-07-24T18:34:33.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-07-25</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>给定一个整数 n，返回 n! 结果尾数中零的数量。</p>
-<p>示例 1:</p>
-<p>输入: 3<br>输出: 0<br>解释: 3! = 6, 尾数中没有零。<br>示例 2:</p>
-<p>输入: 5<br>输出: 1<br>解释: 5! = 120, 尾数中有 1 个零.<br>说明: 你算法的时间复杂度应为 O(log n) 。</p>
-<p>首先想的是暴力列举</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> math</span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">func</span><span class="params">(n)</span>:</span></span><br><span class="line">    num = math.factorial(n)</span><br><span class="line">    res = <span class="number">0</span></span><br><span class="line">    <span class="keyword">while</span>(num&gt;<span class="number">0</span>):</span><br><span class="line">        k = num%<span class="number">10</span></span><br><span class="line">        <span class="keyword">if</span>(k==<span class="number">0</span>):</span><br><span class="line">            res = res+<span class="number">1</span></span><br><span class="line">        num = num //<span class="number">10</span></span><br><span class="line">    <span class="keyword">return</span> res</span><br></pre></td></tr></table></figure>
-<p>这样一来如果输入一个999之类的，绝对爆了时间复杂度，题目要求说时间复杂度要O(log n)，然后想到能产生0 的数就只有5为结尾的，<code>5×2=10</code> <code>25×4=100</code> <code>125×8=1000</code> 所以能不能数一下这个n!里面包含有多少个5和多少个2呢，一个一个数也不太现实，就想到了类似于素数筛的算法把2和5的倍数筛出来，代码如下</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">func</span><span class="params">(n)</span>:</span></span><br><span class="line">    num2=<span class="number">0</span></span><br><span class="line">    num5=<span class="number">0</span></span><br><span class="line">    i = <span class="number">1</span></span><br><span class="line">    <span class="keyword">while</span>(pow(<span class="number">2</span>,i)&lt;=n):</span><br><span class="line">        num2+=i</span><br><span class="line">        i+=<span class="number">1</span></span><br><span class="line">    i = <span class="number">1</span></span><br><span class="line">    <span class="keyword">while</span>(pow(<span class="number">5</span>,i)&lt;=n):</span><br><span class="line">        num5+=i</span><br><span class="line">        i+=<span class="number">1</span></span><br><span class="line">    <span class="keyword">return</span>(min([num2,num5]))</span><br></pre></td></tr></table></figure>
-<p>后来一看，遇上10*9这样的，在<code>pow()</code>那一步就错了，emmm……</p>
-<p>然后看题解，只需要将每个数字因式分解，找到<code>2×5</code> 的而个数即可，又因为2一定比5多，只需要找有多少个5即可，代码如下</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">func</span><span class="params">(n)</span>:</span></span><br><span class="line">    num = n</span><br><span class="line">    res = <span class="number">0</span></span><br><span class="line">    <span class="keyword">while</span>(num%<span class="number">5</span>==<span class="number">0</span>):</span><br><span class="line">        res+=num//<span class="number">5</span></span><br><span class="line">        num/=<span class="number">5</span></span><br><span class="line">    <span class="keyword">return</span> res</span><br></pre></td></tr></table></figure>
-
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-      
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2019/07/25/趣题1/">展开全文 >></a>
         </p>
       
 
