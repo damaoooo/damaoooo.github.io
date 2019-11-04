@@ -164,6 +164,79 @@
           <div id="js-content" class="content-ll">
             
   
+    <article id="post-趣题2" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2019/07/25/趣题2/">相同元素下标之差</a>
+    </h1>
+  
+
+        
+        <a href="/2019/07/25/趣题2/" class="archive-article-date">
+  	<time datetime="2019-07-24T18:34:44.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-07-25</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>给定一个整数数组和一个整数 k，判断数组中是否存在两个不同的索引 i 和 j，使得 <code>nums [i] = nums [j]</code>，并且 i 和 j 的差的绝对值最大为 k。</p>
+<p>这个题目花费了我不少时间，</p>
+<p>首先暴力找他肯定要爆你的时间复杂度，所以我一开始的想法就是：</p>
+<p>如果数组里面由两个相同的值，这两个相同的值的下标之差j-i&lt;=k就能达到要求，那么我要是存在一个<code>k+1</code>的能满足要求呢，<code>k+2</code>的呢？如果我在<code>k+1</code>,<code>k+2</code>……之后找到了相同元素不就可以了吗，不过这样的时间复杂度也不小，一个元素至少1次</p>
+<p>于是看看官方题解，说是建立一个长度为k的容器，然后装元素，一旦找到，就<code>return true</code>，如果没找到就<code>return false</code></p>
+<p>我的python代码如下</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">func</span><span class="params">(nums,k)</span>:</span></span><br><span class="line">    a = []</span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> nums:</span><br><span class="line">        <span class="keyword">if</span>((i <span class="keyword">not</span> <span class="keyword">in</span> a) <span class="keyword">and</span> (len(a)&lt;k)):</span><br><span class="line">            a.append(i)</span><br><span class="line">        <span class="keyword">elif</span>((i <span class="keyword">not</span> <span class="keyword">in</span> a) <span class="keyword">and</span> len(a)==k):</span><br><span class="line">            a.pop(<span class="number">0</span>)</span><br><span class="line">            a.append(i)</span><br><span class="line">        <span class="keyword">elif</span>(i <span class="keyword">in</span> a):</span><br><span class="line">            <span class="keyword">return</span> <span class="literal">True</span></span><br><span class="line">       <span class="keyword">return</span> <span class="literal">False</span></span><br></pre></td></tr></table></figure>
+<p>我以为这就好了，每个元素只用读一次判断好几次就可以了，没想到，还是爆了时间复杂度，大约是因为<code>len(a)</code>这个函数还有in这个会占用一定的时间复杂度。因此再次查看题解，发现了一个很秀的解法</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">func</span><span class="params">(nums,k)</span>:</span></span><br><span class="line">    r, d = k + <span class="number">1</span>, &#123;&#125;</span><br><span class="line">    <span class="keyword">for</span> i, n <span class="keyword">in</span> enumerate(nums):<span class="comment">#i是下标，n是下标指向的元素</span></span><br><span class="line">        r, d[n] = min(r, i - d.get(n, -k - <span class="number">1</span>)), i</span><br><span class="line">    <span class="keyword">return</span> r &lt;= k</span><br></pre></td></tr></table></figure>
+<p>港真这个我看了好久，然后终于想明白了</p>
+<p>i是每次的下标，然后如果找到了相同元素，当前下表<code>（i）</code>和相同元素的下标<code>d.get(n)</code>做差，然后就可以求得差值，最后同<code>k</code>进行比较即可</p>
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+      
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2019/07/25/趣题2/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
     <article id="post-趣题1" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
