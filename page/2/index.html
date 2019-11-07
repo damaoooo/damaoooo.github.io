@@ -164,6 +164,84 @@
           <div id="js-content" class="content-ll">
             
   
+    <article id="post-趣题3" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2019/07/25/趣题3/">两元素去重</a>
+    </h1>
+  
+
+        
+        <a href="/2019/07/25/趣题3/" class="archive-article-date">
+  	<time datetime="2019-07-24T18:34:53.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-07-25</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>给定一个非空整数数组，除了某个元素只出现一次以外，其余每个元素均出现两次。找出那个只出现了一次的元素。</p>
+<p>说明：</p>
+<p>你的算法应该具有线性时间复杂度。 你可以不使用额外空间来实现吗？</p>
+<p>示例 1:</p>
+<p>输入: [2,2,1]<br>输出: 1<br>示例 2:</p>
+<p>输入: [4,1,2,1,2]<br>输出: 4</p>
+<p>一开始我的想法是暴力枚举，python代码如下：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> nums:</span><br><span class="line">    <span class="keyword">if</span>(nums.count(i)==<span class="number">1</span>):</span><br><span class="line">        <span class="keyword">return</span> i</span><br></pre></td></tr></table></figure>
+<p>后来一想，要求具有线性时间复杂度，对python的<code>list.count()</code> 不是很了解，万一这玩意本身的时间复杂度是O(n)，然后一来不就O(n^n)了？</p>
+<p>随后想到先把这个数组排个序，然后模拟栈来实现（需要使用2个<code>int</code>的空间来存放结果）</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">func</span><span class="params">(nums)</span>:</span></span><br><span class="line">    nums = sorted(nums)</span><br><span class="line">    cnt = <span class="number">2</span></span><br><span class="line">    stack = nums[<span class="number">0</span>]</span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> nums:</span><br><span class="line">        <span class="keyword">if</span>(i==stack):</span><br><span class="line">            cnt = cnt<span class="number">-1</span></span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            cnt = cnt+<span class="number">1</span></span><br><span class="line">            <span class="keyword">if</span>(cnt==<span class="number">2</span>):</span><br><span class="line">                <span class="keyword">return</span> stack</span><br><span class="line">            stack = i</span><br><span class="line">    <span class="keyword">return</span> nums[<span class="number">-1</span>]</span><br></pre></td></tr></table></figure>
+<p>居然很神奇的过了，用时88ms,超过22.81%，内存14.8MB超过48.18%。不过这显然不符合题目要求</p>
+<p>想不出办法了，看看题解里面，有个叫做<code>Hash表</code>的算法，想到了在离散数学里面似乎看到过这玩意，就是比如<code>[3,1,2,4,5]</code>这个数组，根据值来确定存放元素的地址，3就放在a[3]的位置（1开始算）</p>
+<p>这样的话，python里面用dict就可以实现,暂且不表</p>
+<p>最骚的是直接用XOR，XOR还能满足交换律？！长见识了，考虑到每个重复元素只出现2次，就tql</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">func</span><span class="params">(nums)</span>:</span></span><br><span class="line">	ans = <span class="number">0</span></span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> nums:</span><br><span class="line">        ans = ans^i</span><br><span class="line">    <span class="keyword">return</span> ans</span><br></pre></td></tr></table></figure>
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+      
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2019/07/25/趣题3/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
     <article id="post-趣题2" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
