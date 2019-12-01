@@ -7,29 +7,56 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <link rel="dns-prefetch" href="http://yoursite.com">
-  <title>分区表与文件结构 | Mr.周半仙的blog</title>
+  <title>恶意代码分析实战笔记 | Mr.周半仙的blog</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="分区表与文件结构[TOC] 以下内容仅对MBR分区的机械硬盘适用 基本名词磁道 扇区 柱面 磁头 这张图就可以很清楚的解释上面的名词 簇一个扇区一般是512B，一般来说磁盘的最小操作单位是扇区，对于操作系统来说最小单位就是簇，如果一个簇是2扇区，那么最小单元就是1k，即便是一个文件只有5B，它也占用1K，不同的操作系统使用的簇各有区别。 大小端序0X12345678 大端序：12 34 56 78">
+  <meta name="description" content="恶意代码分析实战解题笔记LAB01-01.dll和LAB01-01.exe 文件分析首先拖到www.virustotal.com里面进行在线分析，得到如下结果  大多数杀毒引擎分析出这是一个特洛伊木马病毒 分析LAB01-01.exe得到的结果如下  和上面的结果类似 然后再虚拟机上进行分析  LAB01-01.dll文件没有加壳，就是个普通的VS6编译出的dll，里面的代码区段也很明显，多了个重">
 <meta name="keywords" content=" ">
 <meta property="og:type" content="article">
-<meta property="og:title" content="分区表与文件结构">
-<meta property="og:url" content="http://yoursite.com/2019/11/04/分区表与文件结构/index.html">
+<meta property="og:title" content="恶意代码分析实战笔记">
+<meta property="og:url" content="http://yoursite.com/2019/12/01/实验三/index.html">
 <meta property="og:site_name" content="Mr.周半仙的blog">
-<meta property="og:description" content="分区表与文件结构[TOC] 以下内容仅对MBR分区的机械硬盘适用 基本名词磁道 扇区 柱面 磁头 这张图就可以很清楚的解释上面的名词 簇一个扇区一般是512B，一般来说磁盘的最小操作单位是扇区，对于操作系统来说最小单位就是簇，如果一个簇是2扇区，那么最小单元就是1k，即便是一个文件只有5B，它也占用1K，不同的操作系统使用的簇各有区别。 大小端序0X12345678 大端序：12 34 56 78">
+<meta property="og:description" content="恶意代码分析实战解题笔记LAB01-01.dll和LAB01-01.exe 文件分析首先拖到www.virustotal.com里面进行在线分析，得到如下结果  大多数杀毒引擎分析出这是一个特洛伊木马病毒 分析LAB01-01.exe得到的结果如下  和上面的结果类似 然后再虚拟机上进行分析  LAB01-01.dll文件没有加壳，就是个普通的VS6编译出的dll，里面的代码区段也很明显，多了个重">
 <meta property="og:locale" content="default">
-<meta property="og:image" content="https://upload-images.jianshu.io/upload_images/2843224-46fb935cd31addbd.png">
-<meta property="og:image" content="https://i.loli.net/2019/11/04/aVI3uRzhfc5FKy1.png">
-<meta property="og:image" content="https://i.loli.net/2019/11/04/I2ry5oaXMZNqEKn.png">
-<meta property="og:image" content="https://i.loli.net/2019/11/04/qPGM19fBE4Aa6Zv.png">
-<meta property="og:image" content="http://www.blogfshare.com/wp-content/uploads/images/FAT32_C88E/image_thumb.png">
-<meta property="og:image" content="https://i.loli.net/2019/11/04/LDhE93XoMJWUGiz.png">
-<meta property="og:image" content="http://www.blogfshare.com/wp-content/uploads/images/FAT32_C88E/wps7380.tmp_thumb.png">
-<meta property="og:image" content="http://www.blogfshare.com/wp-content/uploads/images/FAT32_C88E/image_thumb_4.png">
-<meta property="og:updated_time" content="2019-11-04T10:04:33.568Z">
+<meta property="og:image" content="https://raw.githubusercontent.com/damaoooo/imageBed/master/assets/image-20191201015128319.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/damaoooo/imageBed/master/assets/image-20191201015401592.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/damaoooo/imageBed/master/assets/image-20191201015743894.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/damaoooo/imageBed/master/assets/image-20191201015854401.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/damaoooo/imageBed/master/assets/image-20191201020213238.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/damaoooo/imageBed/master/assets/image-20191201020523141.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/damaoooo/imageBed/master/assets/image-20191201021058507.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/damaoooo/imageBed/master/assets/image-20191201021627627.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/damaoooo/imageBed/master/assets/image-20191201023013670.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/damaoooo/imageBed/master/assets/image-20191201022726924.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/damaoooo/imageBed/master/assets/image-20191201023140215.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/damaoooo/imageBed/master/assets/image-20191201023324229.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/damaoooo/imageBed/master/assets/image-20191201023428540.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/damaoooo/imageBed/master/assets/image-20191201023535092.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/damaoooo/imageBed/master/assets/image-20191201024237851.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/damaoooo/imageBed/master/assets/image-20191201025127570.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/damaoooo/imageBed/master/assets/image-20191201025459146.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/damaoooo/imageBed/master/assets/image-20191201030147123.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/damaoooo/imageBed/master/assets/image-20191201030338150.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/damaoooo/imageBed/master/assets/image-20191201030619188.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/damaoooo/imageBed/master/assets/image-20191201031223878.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/damaoooo/imageBed/master/assets/image-20191201031547803.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/damaoooo/imageBed/master/assets/image-20191201032031719.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/damaoooo/imageBed/master/assets/image-20191201032228890.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/damaoooo/imageBed/master/assets/image-20191201032336500.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/damaoooo/imageBed/master/assets/image-20191201032950875.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/damaoooo/imageBed/master/assets/image-20191201033048021.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/damaoooo/imageBed/master/assets/image-20191201033305211.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/damaoooo/imageBed/master/assets/image-20191201113735463.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/damaoooo/imageBed/master/assets/image-20191201114110519.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/damaoooo/imageBed/master/assets/image-20191201114642739.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/damaoooo/imageBed/master/assets/image-20191201115135826.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/damaoooo/imageBed/master/assets/image-20191201115334824.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/damaoooo/imageBed/master/assets/image-20191201115449765.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/damaoooo/imageBed/master/assets/image-20191201115701299.png">
+<meta property="og:updated_time" content="2019-12-01T07:08:13.687Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="分区表与文件结构">
-<meta name="twitter:description" content="分区表与文件结构[TOC] 以下内容仅对MBR分区的机械硬盘适用 基本名词磁道 扇区 柱面 磁头 这张图就可以很清楚的解释上面的名词 簇一个扇区一般是512B，一般来说磁盘的最小操作单位是扇区，对于操作系统来说最小单位就是簇，如果一个簇是2扇区，那么最小单元就是1k，即便是一个文件只有5B，它也占用1K，不同的操作系统使用的簇各有区别。 大小端序0X12345678 大端序：12 34 56 78">
-<meta name="twitter:image" content="https://upload-images.jianshu.io/upload_images/2843224-46fb935cd31addbd.png">
+<meta name="twitter:title" content="恶意代码分析实战笔记">
+<meta name="twitter:description" content="恶意代码分析实战解题笔记LAB01-01.dll和LAB01-01.exe 文件分析首先拖到www.virustotal.com里面进行在线分析，得到如下结果  大多数杀毒引擎分析出这是一个特洛伊木马病毒 分析LAB01-01.exe得到的结果如下  和上面的结果类似 然后再虚拟机上进行分析  LAB01-01.dll文件没有加壳，就是个普通的VS6编译出的dll，里面的代码区段也很明显，多了个重">
+<meta name="twitter:image" content="https://raw.githubusercontent.com/damaoooo/imageBed/master/assets/image-20191201015128319.png">
   
     <link rel="alternative" href="/atom.xml" title="Mr.周半仙的blog" type="application/atom+xml">
   
@@ -172,157 +199,118 @@
             <canvas data-colors="#eaeaea" data-sectionHeight="100" data-contentId="js-content" id="myCanvas1" class="anm-canvas"></canvas>
           </div>
           <div id="js-content" class="content-ll">
-            <article id="post-分区表与文件结构" class="article article-type-post " itemscope itemprop="blogPost">
+            <article id="post-实验三" class="article article-type-post " itemscope itemprop="blogPost">
   <div class="article-inner">
     
       <header class="article-header">
         
   
     <h1 class="article-title" itemprop="name">
-      分区表与文件结构
+      恶意代码分析实战笔记
     </h1>
   
 
         
-        <a href="/2019/11/04/分区表与文件结构/" class="archive-article-date">
-  	<time datetime="2019-11-04T10:03:46.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-11-04</time>
+        <a href="/2019/12/01/实验三/" class="archive-article-date">
+  	<time datetime="2019-12-01T07:08:53.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-12-01</time>
 </a>
         
       </header>
     
     <div class="article-entry" itemprop="articleBody">
       
-        <h1 id="分区表与文件结构"><a href="#分区表与文件结构" class="headerlink" title="分区表与文件结构"></a>分区表与文件结构</h1><p>[TOC]</p>
-<p><strong>以下内容仅对MBR分区的机械硬盘适用</strong></p>
-<h2 id="基本名词"><a href="#基本名词" class="headerlink" title="基本名词"></a>基本名词</h2><h3 id="磁道-扇区-柱面-磁头"><a href="#磁道-扇区-柱面-磁头" class="headerlink" title="磁道 扇区 柱面 磁头"></a>磁道 扇区 柱面 磁头</h3><p><img src="https://upload-images.jianshu.io/upload_images/2843224-46fb935cd31addbd.png" alt="img"></p>
-<p>这张图就可以很清楚的解释上面的名词</p>
-<h3 id="簇"><a href="#簇" class="headerlink" title="簇"></a>簇</h3><p>一个扇区一般是512B，一般来说磁盘的最小操作单位是扇区，对于操作系统来说最小单位就是簇，如果一个簇是2扇区，那么最小单元就是1k，即便是一个文件只有5B，它也占用1K，不同的操作系统使用的簇各有区别。</p>
-<h3 id="大小端序"><a href="#大小端序" class="headerlink" title="大小端序"></a>大小端序</h3><p><code>0X12345678</code></p>
-<p>大端序：<code>12 34 56 78</code>，方便人的阅读顺序，但是对机器就不太有利了</p>
-<p>小端序：<code>78 56 34 12</code>，方便机器的阅读顺序，比如<code>A[0]</code>就指代的是<code>78</code>，但是不符合人的阅读顺序</p>
-<h2 id="分区表"><a href="#分区表" class="headerlink" title="分区表"></a>分区表</h2><h3 id="MBR"><a href="#MBR" class="headerlink" title="MBR"></a>MBR</h3><p>MBR全称<code>master boot record</code> 主引导记录，一般记录在<code>0</code>磁道，<code>0</code>柱面，<code>1</code>扇区中，一个扇区是512B，MBR的组成就是</p>
-<table>
-<thead>
-<tr>
-<th>引导程序机器码</th>
-<th>分区表×4</th>
-<th>定位符/有效位</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>446B</td>
-<td>64B</td>
-<td>2B 0X55AA</td>
-</tr>
-</tbody>
-</table>
-<p>其中引导程序可以通过反汇编得出</p>
-<h4 id="引导程序"><a href="#引导程序" class="headerlink" title="引导程序"></a>引导程序</h4><p>在WINHEX中打开磁盘（由于本机是GPT分区的，所以格式很奇怪，就在虚拟机里面开了个XP进行分析）</p>
-<p><img src="https://i.loli.net/2019/11/04/aVI3uRzhfc5FKy1.png" alt="aVI3uRzhfc5FKy1.png"></p>
-<p>然后可以看到下面的<code>0X55AA</code>表示结束</p>
-<p>然后把这些数据dump到新文件里面用IDA打开进行分析</p>
-<p><img src="https://i.loli.net/2019/11/04/I2ry5oaXMZNqEKn.png" alt="I2ry5oaXMZNqEKn.png"></p>
-<p>具体流程我就不多表述了，汇编慢慢啃。大概过程就是说</p>
-<p>在BIOS7C00处设立栈顶指针</p>
-<p>拷贝错误信息</p>
-<p>检查结尾是否为<code>0x55AA</code>，不是的话就报错</p>
-<p>检查每一个分区是否是引导分区，是的话就交给分区去引导，不是的话就报错</p>
-<p>值得注意的是这里面有很多调用<code>INT 13</code>中断向量表的地方，而且微软还出了一个<code>extend int 13</code>的东西。好在IDA里面有自动解释这个<code>int 13</code>是干什么的，翻PPT也讲到这个是干嘛的。</p>
-<p><img src="https://i.loli.net/2019/11/04/qPGM19fBE4Aa6Zv.png" alt="qPGM19fBE4Aa6Zv.png"></p>
-<h4 id="分区表-1"><a href="#分区表-1" class="headerlink" title="分区表"></a>分区表</h4><p>DPT<code>Disk Partition Table</code></p>
-<p>占用4*16个字节，我们选定16个字节，对每一个字节进行分析<code>80 01 01 00 0B FE BF FC 3F 00 00 00 7E 86 BB 00</code></p>
-<table>
-<thead>
-<tr>
-<th>0x00 80</th>
-<th>0x01 01</th>
-<th>0x02 01</th>
-<th>0x03 00</th>
-<th>0x04  0B</th>
-<th>0x05  FE</th>
-<th>0x06     BF</th>
-<th>0x07 FC</th>
-<th>0x08 -0x0B</th>
-<th>0x0C-0x0F</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>引导标志，00-非活动分区，80-活动分区</td>
-<td>起始磁道号</td>
-<td>起始扇区号</td>
-<td>起始柱面号</td>
-<td>分区类型   0B-FAT32,04-FAT16,07-NTFS</td>
-<td>结束磁道号</td>
-<td>结束扇区号</td>
-<td>结束柱面号</td>
-<td>相对首扇区的扇区数（小端序）</td>
-<td>占用总扇区数（小端序）</td>
-</tr>
-</tbody>
-</table>
-<p>现在来分析我的虚拟磁盘的信息</p>
-<p><code>80 01 01 00 07 FE FF FF 3F 00 00 00 98 A1 7F 07</code></p>
-<p>80代表活动分区，里面有系统引导</p>
-<p>01 01 00 代表起始磁道扇区柱面号，操作系统干的事儿，不用管</p>
-<p>07 代表是NTFS的分区</p>
-<p>FE FF FF 代表结束的磁道扇区柱面号，不管</p>
-<p>00 00 00 3F 代表相对扇区号，也不用管</p>
-<p>98 A1 7F 07 变成小端序就是<code>0x077fa198</code>用计算器算一下<code>0x077fa198 *512 /1024 / 1024 / 1024 =60G</code> 刚好等于分区大小</p>
-<h4 id="检验标志"><a href="#检验标志" class="headerlink" title="检验标志"></a>检验标志</h4><p><code>0x55AA</code>如果分区表损坏就可以根据这个来对分区表进行定位修复，但是如果这玩意也丢了的话，那么恢复起来问题就有点大</p>
-<h3 id="DBR"><a href="#DBR" class="headerlink" title="DBR"></a>DBR</h3><p>启动记录<code>Dos Boot Record</code> 负责引导操作系统，跟在MBR的后面，一般位于<code>0</code>磁道，<code>1</code>扇区，<code>1</code>柱面</p>
-<p>一般每一个分区都有一个DBR与之对应，FAT32的DBR有5部分组成</p>
-<p>网上找来一张图讲的挺清楚</p>
-<p><img src="http://www.blogfshare.com/wp-content/uploads/images/FAT32_C88E/image_thumb.png" alt="image"></p>
-<p>下图是本机的DBR</p>
-<p><img src="https://i.loli.net/2019/11/04/LDhE93XoMJWUGiz.png" alt="LDhE93XoMJWUGiz.png"></p>
-<h4 id="跳转指令"><a href="#跳转指令" class="headerlink" title="跳转指令"></a>跳转指令</h4><p>前面3个字节，例图中是EB 58 90,我通过反汇编得出他的汇编是<code>jmp label1</code>，是把系统jump到引导代码</p>
-<h4 id="OEM厂商代码"><a href="#OEM厂商代码" class="headerlink" title="OEM厂商代码"></a>OEM厂商代码</h4><p>这个代表不同厂商，我还不知道这玩意怎么用的，Google直接搜似乎也没搜到结果</p>
-<h4 id="BPB"><a href="#BPB" class="headerlink" title="BPB"></a>BPB</h4><p>磁盘参数块<code>BIOS Parameter Block</code>,包含这一分区的信息，多的我就不打字了，就直接上图</p>
-<p><img src="http://www.blogfshare.com/wp-content/uploads/images/FAT32_C88E/wps7380.tmp_thumb.png" alt="wps7380.tmp"></p>
-<p>下面来分析我自己的硬盘</p>
-<p>02 00：一个扇区占用512字节</p>
-<p>08：每簇8个扇区，也就是4K</p>
-<p>00 00：保留扇区数，这里没有</p>
-<p>由于是NTFS格式的，所以就没有FAT32中的表项</p>
-<p>于是就继续分析上面例图里面的</p>
-<p>02：FAT数，一般是一个主FAT一个备份FAT</p>
-<p>00 00：这是FAT32嘛，就全0，FAT12/16才用到这个</p>
-<p>00 00：同上</p>
-<p>F8：硬盘</p>
-<p>00 00：每个FAT扇区数，这个也是对FAT12/16而言的</p>
-<p>00 3F：每个磁道上面有3F，也就是63个扇区</p>
-<p>00 80：一共有0x80，也就是128个磁头</p>
-<p>00 00 1F 80：隐藏扇区0x1F80个</p>
-<p>03 A8 E4 00：一共有0x3A8E400个扇区，也就是30G</p>
-<p>00 00 1D 48：每个FAT有0x1D48个扇区</p>
-<p>00：扩展标志</p>
-<p>00 00：文件系统版本</p>
-<p>00 00 00 02：根目录簇号</p>
-<p>00 01：文件系统信息扇区号</p>
-<p>00 08：备份引导扇区</p>
-<p>后12个字节为0：保留</p>
-<p>00：软盘驱动器</p>
-<p>01：未知</p>
-<p>29：扩展引导标签</p>
-<p>78 7B 52 18：分区引导序号</p>
-<p>4B 49 4E 47 53 54 4F 4E 20 20 20:卷标的ASCII码KINGSTON</p>
-<p>46 41 54 33 32 20 20 20：系统ID  FAT32</p>
-<p>扩展DBR就不再介绍了，这篇文章有很详细的说明</p>
-<p><a href="http://www.blogfshare.com/detail-fat32-filesys.html" target="_blank" rel="noopener">http://www.blogfshare.com/detail-fat32-filesys.html</a></p>
-<h3 id="FAT表"><a href="#FAT表" class="headerlink" title="FAT表"></a>FAT表</h3><p>为了为了在磁盘上管理文件，我们就有一个FAT<code>File Allocate Table</code>文件分配表，专门用来管理和分配文件空间和大小的，就类似与一个索引表之类的东西，每一个簇在FAT表中都映射有唯一数字，FAT文件的末尾就以<code>FF FF FF 0F</code>结束</p>
-<p>特点就是标志簇号，每一个文件的一个簇的簇号指向的都是下一个，类似于单向链表一样，文件末尾就以</p>
-<p>以前的分区是FAT16，也就是说用16个数字来表示分区,这样下来撑死65536个数字，每个簇0.5K也就是32M，完全不够，即便是每个簇4K也只是256M，DOS可能够用，XP时代就开始不够了</p>
-<p>之前就是FAT32，4294967296个数字，分区大小可以跑到2T，但是由于单个文件不支持4G以上，也GG了，而且现在4T的硬盘都出来了，也被淘汰了</p>
-<p><img src="http://www.blogfshare.com/wp-content/uploads/images/FAT32_C88E/image_thumb_4.png" alt="image"></p>
-<p>这就是FAT32的样例图，同样是在上面那个网站上面弄下来的，非常经典</p>
-<p>然后用的最广的可能就是NTFS分区了，移动介质就是FAT64,也被称为<code>exFAT</code>。</p>
-<h3 id="FDT"><a href="#FDT" class="headerlink" title="FDT"></a>FDT</h3><p>FDT<code>File Directory Table</code>文件目录表，专门用来记录文件的名字啊，路径啊之类的，具体的看上面的网站，值得注意的点就是有两个特殊项，<code>.</code>代表当前目录，<code>..</code>代表上一层目录，类似于一个树形结构</p>
-<h3 id="数据区"><a href="#数据区" class="headerlink" title="数据区"></a>数据区</h3><p>就是存放大量数据的区域，值得一提的是，以前机械硬盘的数据恢复就是根据这个得来的。</p>
-<p>我们在删除文件的时候，文件的数据并没有在磁盘中被删除，而是系统把目录区里面的信息给删掉，因此就给了数据恢复的可乘之机，如果太久了，以前存放数据的这一块又被用起来了，被覆盖了，那么就再也回不来了。</p>
-<h2 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h2><p><a href="http://www.blogfshare.com/detail-fat32-filesys.html" target="_blank" rel="noopener">http://www.blogfshare.com/detail-fat32-filesys.html</a></p>
-<p><a href="http://read.pudn.com/downloads132/doc/fileformat/563484/FAT16.pdf" target="_blank" rel="noopener">http://read.pudn.com/downloads132/doc/fileformat/563484/FAT16.pdf</a></p>
+        <h1 id="恶意代码分析实战解题笔记"><a href="#恶意代码分析实战解题笔记" class="headerlink" title="恶意代码分析实战解题笔记"></a>恶意代码分析实战解题笔记</h1><h2 id="LAB01-01-dll和LAB01-01-exe-文件分析"><a href="#LAB01-01-dll和LAB01-01-exe-文件分析" class="headerlink" title="LAB01-01.dll和LAB01-01.exe 文件分析"></a>LAB01-01.dll和LAB01-01.exe 文件分析</h2><p>首先拖到<code>www.virustotal.com</code>里面进行在线分析，得到如下结果</p>
+<p><img src="https://raw.githubusercontent.com/damaoooo/imageBed/master/assets/image-20191201015128319.png" alt="image-20191201015128319.png"></p>
+<p>大多数杀毒引擎分析出这是一个特洛伊木马病毒</p>
+<p>分析LAB01-01.exe得到的结果如下</p>
+<p><img src="https://raw.githubusercontent.com/damaoooo/imageBed/master/assets/image-20191201015401592.png" alt="image-20191201015401592.png"></p>
+<p>和上面的结果类似</p>
+<p>然后再虚拟机上进行分析</p>
+<p><img src="https://raw.githubusercontent.com/damaoooo/imageBed/master/assets/image-20191201015743894.png" alt="image-20191201015743894.png"></p>
+<p>LAB01-01.dll文件没有加壳，就是个普通的VS6编译出的<code>dll</code>，里面的代码区段也很明显，多了个重定位区段。</p>
+<p><img src="https://raw.githubusercontent.com/damaoooo/imageBed/master/assets/image-20191201015854401.png" alt="image-20191201015854401.png"></p>
+<p>LAB01-01.exe这个文件也没有加壳，就是普通VC6编译出的EXE，代码区段也很明显</p>
+<p>通过strings查看LAB01-01.exe里的关键字符串</p>
+<p><img src="https://raw.githubusercontent.com/damaoooo/imageBed/master/assets/image-20191201020213238.png" alt="image-20191201020213238.png"></p>
+<p>除了基本的<code>KERNEL32.DLL</code>和<code>MSVCRT.DLL</code>之外，还看到了调用<code>CreateFileA</code>，<code>CopyFileA</code>等可疑的API，通过字符分析，猜测是把程序的<code>lab01-01.dll</code>复制到<code>C:\Windows\system32\kernel132.dll</code>，改个名字，然后查找，调用该程序。</p>
+<p>这个分析完了之后再看看dll里的字符</p>
+<p><img src="https://raw.githubusercontent.com/damaoooo/imageBed/master/assets/image-20191201020523141.png" alt="image-20191201020523141.png"></p>
+<p>看到了<code>WS2_32.dll</code>是用于网络套接字编程的一个DLL，然后还有一个私有IP地址，估计是用于通信的IP地址，看到了<code>CreateMutexA</code>，<code>OpenMutexA</code>等API，是用于互斥锁的一个原子操作，后面还有创建句柄等等，怀疑是驻留后台的进程</p>
+<p>使用Dependency Walker查看DLL里面调用的函数</p>
+<p><img src="https://raw.githubusercontent.com/damaoooo/imageBed/master/assets/image-20191201021058507.png" alt="image-20191201021058507.png"></p>
+<p>调用了<code>互斥锁</code>，<code>打开和关闭句柄</code>，<code>创建进程</code>，<code>休眠函数</code>，怀疑是驻留后台</p>
+<p>然后我们拖进大杀器，IDA里面进行分析</p>
+<p><img src="https://raw.githubusercontent.com/damaoooo/imageBed/master/assets/image-20191201021627627.png" alt="image-20191201021627627.png"></p>
+<p>一通乱逆之后，证实之前的思路</p>
+<p>一开始如果运行的参数不是<code>WARNING_THIS_WILL_DESTROY_YOUR_MACHINE</code>,就不会运行这个程序</p>
+<p>将<code>LAB01-01.dll</code>伪装成<code>kerne132.dll</code>并复制到原本的<code>kernel32.dll</code>中，然后调用这个dll，进行木马程序</p>
+<h2 id="LAB01-02-exe-文件分析"><a href="#LAB01-02-exe-文件分析" class="headerlink" title="LAB01-02.exe 文件分析"></a>LAB01-02.exe 文件分析</h2><h3 id="1-放进www-virustotal-com里面观察"><a href="#1-放进www-virustotal-com里面观察" class="headerlink" title="1.放进www.virustotal.com里面观察"></a>1.放进<code>www.virustotal.com</code>里面观察</h3><p><img src="https://raw.githubusercontent.com/damaoooo/imageBed/master/assets/image-20191201023013670.png" alt="image-20191201023013670.png"></p>
+<p>提示是另一种木马病毒</p>
+<h3 id="2-首先看查壳"><a href="#2-首先看查壳" class="headerlink" title="2.首先看查壳"></a>2.首先看查壳</h3><p><img src="https://raw.githubusercontent.com/damaoooo/imageBed/master/assets/image-20191201022726924.png" alt="image-20191201022726924.png"></p>
+<p><img src="https://raw.githubusercontent.com/damaoooo/imageBed/master/assets/image-20191201023140215.png" alt="image-20191201023140215.png"></p>
+<p>说明是加了UPX的壳，这是个很简单的壳，高手用ESP定律就能够手动脱壳，但是我等渣渣就只能够借助工具来脱壳。没有<code>.text</code>等常见的代码段，说明无法正常进行反汇编分析</p>
+<p>运行<code>upx -o newFilename -d originalFilename</code>进行脱壳</p>
+<p><img src="https://raw.githubusercontent.com/damaoooo/imageBed/master/assets/image-20191201023324229.png" alt="image-20191201023324229.png"></p>
+<p>然后再拖进<code>PEiD</code>里面查看</p>
+<p><img src="https://raw.githubusercontent.com/damaoooo/imageBed/master/assets/image-20191201023428540.png" alt="image-20191201023428540.png"></p>
+<h3 id="7-立竿见影，然后我们查看字符串"><a href="#7-立竿见影，然后我们查看字符串" class="headerlink" title="7.立竿见影，然后我们查看字符串"></a>7.立竿见影，然后我们查看字符串</h3><p><img src="https://raw.githubusercontent.com/damaoooo/imageBed/master/assets/image-20191201023535092.png" alt="image-20191201023535092.png"></p>
+<h3 id="3-查看导入函数"><a href="#3-查看导入函数" class="headerlink" title="3. 查看导入函数"></a>3. 查看导入函数</h3><p>我们可以看见一些函数，如<code>WININET.DLL</code>网络编程，获取模块名称，创建进程，创建互斥锁，打开IE浏览器，IE浏览器打开URL，下面还有这个URL的具体内容。</p>
+<h3 id="4-感染迹象"><a href="#4-感染迹象" class="headerlink" title="4.感染迹象"></a>4.感染迹象</h3><p>猜想，感染迹象就是大概是病毒会控制用户的电脑打开如图所示的网站。</p>
+<h3 id="6-使用Study-PE进行分析"><a href="#6-使用Study-PE进行分析" class="headerlink" title="6.使用Study_PE进行分析"></a>6.使用Study_PE进行分析</h3><p><img src="https://raw.githubusercontent.com/damaoooo/imageBed/master/assets/image-20191201024237851.png" alt="image-20191201024237851.png"></p>
+<p>导入函数有常见的<code>CreatMutexA</code>,<code>SystemTimeToFileTime</code>,<code>ExitProcess</code>,<code>CreateThread</code>等等</p>
+<p><code>wininet.dll</code>是Windows的应用程序网络模块，负责网络通信，比如图中的打开URL</p>
+<p><code>advapi32.dll</code>是负责高级API接口的部分，负责注册表，函数与对象，事件日志等等</p>
+<h3 id="7-Malservice字符串的作用"><a href="#7-Malservice字符串的作用" class="headerlink" title="7.Malservice字符串的作用"></a>7.Malservice字符串的作用</h3><p>猜测病毒是把自己变成一个服务挂在系统后台，在某个时间一到就运行自己。</p>
+<p>在IDA里打开分析</p>
+<p><img src="https://raw.githubusercontent.com/damaoooo/imageBed/master/assets/image-20191201025127570.png" alt="image-20191201025127570.png"></p>
+<p>果然是把自己变成一个服务然后运行</p>
+<p><img src="https://raw.githubusercontent.com/damaoooo/imageBed/master/assets/image-20191201025459146.png" alt="image-20191201025459146.png"></p>
+<p>再通过分析调用，更加证实了猜想，并且明白了这个互斥锁的名字是<code>HGL345</code>，然后创建服务之后会弹出20次这个网站。</p>
+<h2 id="lab01-03-exe分析"><a href="#lab01-03-exe分析" class="headerlink" title="lab01-03.exe分析"></a>lab01-03.exe分析</h2><h2 id="1-上传分析"><a href="#1-上传分析" class="headerlink" title="1. 上传分析"></a>1. 上传分析</h2><p><img src="https://raw.githubusercontent.com/damaoooo/imageBed/master/assets/image-20191201030147123.png" alt="image-20191201030147123.png"></p>
+<p>报了一堆毒，第一个居然就是可疑就打法了，然后后面两个都说是木马病毒</p>
+<h3 id="2-查壳脱壳"><a href="#2-查壳脱壳" class="headerlink" title="2.查壳脱壳"></a>2.查壳脱壳</h3><p><img src="https://raw.githubusercontent.com/damaoooo/imageBed/master/assets/image-20191201030338150.png" alt="image-20191201030338150.png"></p>
+<p>发现没有段名称，然后是一个FSG1.0，立即询问万能的Google</p>
+<p><img src="https://raw.githubusercontent.com/damaoooo/imageBed/master/assets/image-20191201030619188.png" alt="image-20191201030619188.png"></p>
+<p>网上都是手动脱壳，于是只好实用我收集到的脱壳机进行脱壳</p>
+<p><img src="https://raw.githubusercontent.com/damaoooo/imageBed/master/assets/image-20191201031223878.png" alt="image-20191201031223878.png"></p>
+<p>脱壳成功。</p>
+<p>使用Dependency walker查看导入表，发现两个很奇怪的dll文件</p>
+<p><img src="https://raw.githubusercontent.com/damaoooo/imageBed/master/assets/image-20191201031547803.png" alt="image-20191201031547803.png"></p>
+<p>查询这两个DLL是干嘛的，发现是用来连接和嵌入对象的，这个就是高级的面向对象编程的一些函数了，查看调用表也没发现什么奇怪的东西，于是查看其他的DLL</p>
+<p><img src="https://raw.githubusercontent.com/damaoooo/imageBed/master/assets/image-20191201032031719.png" alt="image-20191201032031719.png"></p>
+<p>然而并没有发现什么奇特的函数，无非就是对文件的增删改查，还有蜂鸣报警。通过查看Strings 也并没有发现什么特别之处，除了有一个可疑的网址</p>
+<p><img src="https://raw.githubusercontent.com/damaoooo/imageBed/master/assets/image-20191201032228890.png" alt="image-20191201032228890.png"></p>
+<p>于是我们使用IDA进行分析</p>
+<p><img src="https://raw.githubusercontent.com/damaoooo/imageBed/master/assets/image-20191201032336500.png" alt="image-20191201032336500.png"></p>
+<p>大概就是创建一个对象，然后有个<code>SysAllocString()</code>这个函数不知道是干嘛的，翻微软官方文档发现就是个<code>Ole32.dll</code>下的复制操作。</p>
+<h3 id="4-感染迹象-1"><a href="#4-感染迹象-1" class="headerlink" title="4.感染迹象"></a>4.感染迹象</h3><p>大致猜测就是一个在内存中分配这个网站，然后创建一个关于网站的对象的操作。估计是访问这个网站。</p>
+<p>在虚拟机中运行，果真如此</p>
+<h2 id="lab01-04-exe-分析"><a href="#lab01-04-exe-分析" class="headerlink" title="lab01-04.exe 分析"></a>lab01-04.exe 分析</h2><h3 id="1-上传分析-1"><a href="#1-上传分析-1" class="headerlink" title="1. 上传分析"></a>1. 上传分析</h3><p><img src="https://raw.githubusercontent.com/damaoooo/imageBed/master/assets/image-20191201032950875.png" alt="image-20191201032950875.png"></p>
+<p>爆了一堆毒，估计是一个木马，还有提示说是一个木马下载器，专门下载其他木马的</p>
+<h3 id="2-查壳脱壳-1"><a href="#2-查壳脱壳-1" class="headerlink" title="2. 查壳脱壳"></a>2. 查壳脱壳</h3><p><img src="https://raw.githubusercontent.com/damaoooo/imageBed/master/assets/image-20191201033048021.png" alt="image-20191201033048021.png"></p>
+<p>非常幸运，没有壳</p>
+<h3 id="3-查看这个文件什么时候被编译的"><a href="#3-查看这个文件什么时候被编译的" class="headerlink" title="3.查看这个文件什么时候被编译的"></a>3.查看这个文件什么时候被编译的</h3><p><img src="https://raw.githubusercontent.com/damaoooo/imageBed/master/assets/image-20191201033305211.png" alt="image-20191201033305211.png"></p>
+<p>网站上面已经说的很清楚了 2019-08-30 22.26.59被创建的</p>
+<h3 id="4-查看导入函数暗示程序的功能"><a href="#4-查看导入函数暗示程序的功能" class="headerlink" title="4.查看导入函数暗示程序的功能"></a>4.查看导入函数暗示程序的功能</h3><p><img src="https://raw.githubusercontent.com/damaoooo/imageBed/master/assets/image-20191201113735463.png" alt="image-20191201113735463.png"></p>
+<p>对文件增删改查，然后还有创建远程线程，估计是用于远控，还有获取程序地址，获取<code>temp</code>目录等等，没有看出什么奇怪的迹象，但是这个文件获取的权限比较大</p>
+<p>通过strings查看文件</p>
+<p><img src="https://raw.githubusercontent.com/damaoooo/imageBed/master/assets/image-20191201114110519.png" alt="image-20191201114110519.png"></p>
+<p>发现特殊网址和打开URL的一个DLL</p>
+<h3 id="5-被感染的迹象"><a href="#5-被感染的迹象" class="headerlink" title="5.被感染的迹象"></a>5.被感染的迹象</h3><p>看见了一个网址和URL进程，里面包含了一个EXE，猜测是这个程序会下载这个URL里面的这个程序到电脑的temp目录下面</p>
+<h3 id="6-抽取该资源"><a href="#6-抽取该资源" class="headerlink" title="6. 抽取该资源"></a>6. 抽取该资源</h3><p>使用PEview查看到在<code>.rsrc</code>的一段话里面有一个奇怪的段</p>
+<p><img src="https://raw.githubusercontent.com/damaoooo/imageBed/master/assets/image-20191201114642739.png" alt="image-20191201114642739.png"></p>
+<p>和前面有一个一样的说明语句，说明是可执行的部分</p>
+<p>然后在Resource Hacker拖出来分析</p>
+<p><img src="https://raw.githubusercontent.com/damaoooo/imageBed/master/assets/image-20191201115135826.png" alt="image-20191201115135826.png"></p>
+<p>刚好就是这个段</p>
+<p>然后在PEID里面分析</p>
+<p><img src="https://raw.githubusercontent.com/damaoooo/imageBed/master/assets/image-20191201115334824.png" alt="image-20191201115334824.png"></p>
+<p>很幸运，也没有加壳</p>
+<p>然后我们用strings找关键字符串</p>
+<p><img src="https://raw.githubusercontent.com/damaoooo/imageBed/master/assets/image-20191201115449765.png" alt="image-20191201115449765.png"></p>
+<p>还是那个网址，说明关键操作就隐藏在这个文件当中，使用IDA分析</p>
+<p><img src="https://raw.githubusercontent.com/damaoooo/imageBed/master/assets/image-20191201115701299.png" alt="image-20191201115701299.png"></p>
+<p>大致可以看出，是把这个文件下载到系统<code>tmp</code>目录中，然后伪装成为一个<code>\System32\wupdmgrd.exe</code>，并在命令行中执行这个文件。</p>
 
       
 
@@ -381,7 +369,7 @@
     <a class="close js-modal-close" href="javascript:;"><i class="icon icon-close"></i></a>
     <p>扫一扫，分享到微信</p>
     <div class="wx-qrcode">
-      <img src="//pan.baidu.com/share/qrcode?url=http://yoursite.com/2019/11/04/分区表与文件结构/" alt="微信分享二维码">
+      <img src="//pan.baidu.com/share/qrcode?url=http://yoursite.com/2019/12/01/实验三/" alt="微信分享二维码">
     </div>
 </div>
 
@@ -395,18 +383,9 @@
   
 <nav id="article-nav">
   
-    <a href="/2019/11/07/实验一 存储/" id="article-nav-newer" class="article-nav-link-wrap">
-      <i class="icon-circle-left"></i>
-      <div class="article-nav-title">
-        
-          计算机存储实验
-        
-      </div>
-    </a>
   
-  
-    <a href="/2019/10/24/WSL下GO环境搭建遇到的坑/" id="article-nav-older" class="article-nav-link-wrap">
-      <div class="article-nav-title">WSL下GO环境搭建遇到的坑</div>
+    <a href="/2019/11/07/实验一 存储/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">计算机存储实验</div>
       <i class="icon-circle-right"></i>
     </a>
   
@@ -433,7 +412,7 @@
                 </span>
                 <span class="tooltip-content">
                     <div class="toc-article">
-                    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#分区表与文件结构"><span class="toc-number">1.</span> <span class="toc-text">分区表与文件结构</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#基本名词"><span class="toc-number">1.1.</span> <span class="toc-text">基本名词</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#磁道-扇区-柱面-磁头"><span class="toc-number">1.1.1.</span> <span class="toc-text">磁道 扇区 柱面 磁头</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#簇"><span class="toc-number">1.1.2.</span> <span class="toc-text">簇</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#大小端序"><span class="toc-number">1.1.3.</span> <span class="toc-text">大小端序</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#分区表"><span class="toc-number">1.2.</span> <span class="toc-text">分区表</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#MBR"><span class="toc-number">1.2.1.</span> <span class="toc-text">MBR</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#引导程序"><span class="toc-number">1.2.1.1.</span> <span class="toc-text">引导程序</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#分区表-1"><span class="toc-number">1.2.1.2.</span> <span class="toc-text">分区表</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#检验标志"><span class="toc-number">1.2.1.3.</span> <span class="toc-text">检验标志</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#DBR"><span class="toc-number">1.2.2.</span> <span class="toc-text">DBR</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#跳转指令"><span class="toc-number">1.2.2.1.</span> <span class="toc-text">跳转指令</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#OEM厂商代码"><span class="toc-number">1.2.2.2.</span> <span class="toc-text">OEM厂商代码</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#BPB"><span class="toc-number">1.2.2.3.</span> <span class="toc-text">BPB</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#FAT表"><span class="toc-number">1.2.3.</span> <span class="toc-text">FAT表</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#FDT"><span class="toc-number">1.2.4.</span> <span class="toc-text">FDT</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#数据区"><span class="toc-number">1.2.5.</span> <span class="toc-text">数据区</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#参考资料"><span class="toc-number">1.3.</span> <span class="toc-text">参考资料</span></a></li></ol></li></ol>
+                    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#恶意代码分析实战解题笔记"><span class="toc-number">1.</span> <span class="toc-text">恶意代码分析实战解题笔记</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#LAB01-01-dll和LAB01-01-exe-文件分析"><span class="toc-number">1.1.</span> <span class="toc-text">LAB01-01.dll和LAB01-01.exe 文件分析</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#LAB01-02-exe-文件分析"><span class="toc-number">1.2.</span> <span class="toc-text">LAB01-02.exe 文件分析</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-放进www-virustotal-com里面观察"><span class="toc-number">1.2.1.</span> <span class="toc-text">1.放进www.virustotal.com里面观察</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-首先看查壳"><span class="toc-number">1.2.2.</span> <span class="toc-text">2.首先看查壳</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#7-立竿见影，然后我们查看字符串"><span class="toc-number">1.2.3.</span> <span class="toc-text">7.立竿见影，然后我们查看字符串</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-查看导入函数"><span class="toc-number">1.2.4.</span> <span class="toc-text">3. 查看导入函数</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-感染迹象"><span class="toc-number">1.2.5.</span> <span class="toc-text">4.感染迹象</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#6-使用Study-PE进行分析"><span class="toc-number">1.2.6.</span> <span class="toc-text">6.使用Study_PE进行分析</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#7-Malservice字符串的作用"><span class="toc-number">1.2.7.</span> <span class="toc-text">7.Malservice字符串的作用</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#lab01-03-exe分析"><span class="toc-number">1.3.</span> <span class="toc-text">lab01-03.exe分析</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#1-上传分析"><span class="toc-number">1.4.</span> <span class="toc-text">1. 上传分析</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#2-查壳脱壳"><span class="toc-number">1.4.1.</span> <span class="toc-text">2.查壳脱壳</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-感染迹象-1"><span class="toc-number">1.4.2.</span> <span class="toc-text">4.感染迹象</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#lab01-04-exe-分析"><span class="toc-number">1.5.</span> <span class="toc-text">lab01-04.exe 分析</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-上传分析-1"><span class="toc-number">1.5.1.</span> <span class="toc-text">1. 上传分析</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-查壳脱壳-1"><span class="toc-number">1.5.2.</span> <span class="toc-text">2. 查壳脱壳</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-查看这个文件什么时候被编译的"><span class="toc-number">1.5.3.</span> <span class="toc-text">3.查看这个文件什么时候被编译的</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-查看导入函数暗示程序的功能"><span class="toc-number">1.5.4.</span> <span class="toc-text">4.查看导入函数暗示程序的功能</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5-被感染的迹象"><span class="toc-number">1.5.5.</span> <span class="toc-text">5.被感染的迹象</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#6-抽取该资源"><span class="toc-number">1.5.6.</span> <span class="toc-text">6. 抽取该资源</span></a></li></ol></li></ol></li></ol>
                     </div>
                 </span>
             </div>
@@ -450,8 +429,8 @@
   <div id="cloud-tie-wrapper" class="cloud-tie-wrapper"></div>
 <script>
   var cloudTieConfig = {
-    url: "http://yoursite.com/2019/11/04/分区表与文件结构/", 
-    sourceId: "分区表与文件结构",
+    url: "http://yoursite.com/2019/12/01/实验三/", 
+    sourceId: "实验三",
     productKey: "true",
     target: "cloud-tie-wrapper"
   };

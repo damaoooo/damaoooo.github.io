@@ -9,13 +9,13 @@
   <link rel="dns-prefetch" href="http://yoursite.com">
   <title>计算机存储实验 | Mr.周半仙的blog</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="实验一 存储[TOC] 任务一  MBS引导扇区读取命令在MS-DOS中输入debug进入debug 模式，通过调用INT 13功能来获取MBS信息 123456789-A 100mov ax,0201mov bx,0600mov cx,0001mov dx,0080int 13int 3-G;通过查看运行的汇编指令来判断是否执行-D 600 800;通过查看数据的方式来查看刚才保存进入缓冲区的数">
+  <meta name="description" content="分区表与文件结构[TOC] 任务一  MBS引导扇区读取命令在MS-DOS中输入debug进入debug 模式，通过调用INT 13功能来获取MBS信息 123456789-A 100mov ax,0201mov bx,0600mov cx,0001mov dx,0080int 13int 3-G;通过查看运行的汇编指令来判断是否执行-D 600 800;通过查看数据的方式来查看刚才保存进入缓冲区">
 <meta name="keywords" content=" ">
 <meta property="og:type" content="article">
 <meta property="og:title" content="计算机存储实验">
 <meta property="og:url" content="http://yoursite.com/2019/11/07/实验一 存储/index.html">
 <meta property="og:site_name" content="Mr.周半仙的blog">
-<meta property="og:description" content="实验一 存储[TOC] 任务一  MBS引导扇区读取命令在MS-DOS中输入debug进入debug 模式，通过调用INT 13功能来获取MBS信息 123456789-A 100mov ax,0201mov bx,0600mov cx,0001mov dx,0080int 13int 3-G;通过查看运行的汇编指令来判断是否执行-D 600 800;通过查看数据的方式来查看刚才保存进入缓冲区的数">
+<meta property="og:description" content="分区表与文件结构[TOC] 任务一  MBS引导扇区读取命令在MS-DOS中输入debug进入debug 模式，通过调用INT 13功能来获取MBS信息 123456789-A 100mov ax,0201mov bx,0600mov cx,0001mov dx,0080int 13int 3-G;通过查看运行的汇编指令来判断是否执行-D 600 800;通过查看数据的方式来查看刚才保存进入缓冲区">
 <meta property="og:locale" content="default">
 <meta property="og:image" content="https://i.loli.net/2019/11/07/KRx7LDndS9Yolkt.png">
 <meta property="og:image" content="https://i.loli.net/2019/11/07/6MK9QvJOkwcNWf1.png">
@@ -43,10 +43,10 @@
 <meta property="og:image" content="https://i.loli.net/2019/11/07/Yz3Scr6k5JBdyeC.png">
 <meta property="og:image" content="https://i.loli.net/2019/11/07/7YDw1k5PMU2XApe.png">
 <meta property="og:image" content="https://i.loli.net/2019/11/07/LY5pN38cegzyvma.png">
-<meta property="og:updated_time" content="2019-11-07T13:57:27.655Z">
+<meta property="og:updated_time" content="2019-12-01T07:07:13.204Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="计算机存储实验">
-<meta name="twitter:description" content="实验一 存储[TOC] 任务一  MBS引导扇区读取命令在MS-DOS中输入debug进入debug 模式，通过调用INT 13功能来获取MBS信息 123456789-A 100mov ax,0201mov bx,0600mov cx,0001mov dx,0080int 13int 3-G;通过查看运行的汇编指令来判断是否执行-D 600 800;通过查看数据的方式来查看刚才保存进入缓冲区的数">
+<meta name="twitter:description" content="分区表与文件结构[TOC] 任务一  MBS引导扇区读取命令在MS-DOS中输入debug进入debug 模式，通过调用INT 13功能来获取MBS信息 123456789-A 100mov ax,0201mov bx,0600mov cx,0001mov dx,0080int 13int 3-G;通过查看运行的汇编指令来判断是否执行-D 600 800;通过查看数据的方式来查看刚才保存进入缓冲区">
 <meta name="twitter:image" content="https://i.loli.net/2019/11/07/KRx7LDndS9Yolkt.png">
   
     <link rel="alternative" href="/atom.xml" title="Mr.周半仙的blog" type="application/atom+xml">
@@ -210,7 +210,7 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <h1 id="实验一-存储"><a href="#实验一-存储" class="headerlink" title="实验一 存储"></a>实验一 存储</h1><p>[TOC]</p>
+        <h1 id="分区表与文件结构"><a href="#分区表与文件结构" class="headerlink" title="分区表与文件结构"></a>分区表与文件结构</h1><p>[TOC]</p>
 <h2 id="任务一-MBS引导扇区"><a href="#任务一-MBS引导扇区" class="headerlink" title="任务一  MBS引导扇区"></a>任务一  MBS引导扇区</h2><h3 id="读取命令"><a href="#读取命令" class="headerlink" title="读取命令"></a>读取命令</h3><p>在MS-DOS中输入<code>debug</code>进入debug 模式，通过调用<code>INT 13</code>功能来获取MBS信息</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">-A 100</span><br><span class="line">mov ax,0201</span><br><span class="line">mov bx,0600</span><br><span class="line">mov cx,0001</span><br><span class="line">mov dx,0080</span><br><span class="line">int 13</span><br><span class="line">int 3</span><br><span class="line">-G;通过查看运行的汇编指令来判断是否执行</span><br><span class="line">-D 600 800;通过查看数据的方式来查看刚才保存进入缓冲区的数据</span><br></pre></td></tr></table></figure>
 <p>由于MS-DOS屏幕无法滚动因此采用查看两次两张图片拼接的方式来显示数据</p>
@@ -451,9 +451,18 @@
   
 <nav id="article-nav">
   
+    <a href="/2019/12/01/实验三/" id="article-nav-newer" class="article-nav-link-wrap">
+      <i class="icon-circle-left"></i>
+      <div class="article-nav-title">
+        
+          恶意代码分析实战笔记
+        
+      </div>
+    </a>
   
-    <a href="/2019/11/04/分区表与文件结构/" id="article-nav-older" class="article-nav-link-wrap">
-      <div class="article-nav-title">分区表与文件结构</div>
+  
+    <a href="/2019/10/24/WSL下GO环境搭建遇到的坑/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">WSL下GO环境搭建遇到的坑</div>
       <i class="icon-circle-right"></i>
     </a>
   
@@ -480,7 +489,7 @@
                 </span>
                 <span class="tooltip-content">
                     <div class="toc-article">
-                    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#实验一-存储"><span class="toc-number">1.</span> <span class="toc-text">实验一 存储</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#任务一-MBS引导扇区"><span class="toc-number">1.1.</span> <span class="toc-text">任务一  MBS引导扇区</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#读取命令"><span class="toc-number">1.1.1.</span> <span class="toc-text">读取命令</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#分析含义"><span class="toc-number">1.1.2.</span> <span class="toc-text">分析含义</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#任务二-DBS和BPB"><span class="toc-number">1.2.</span> <span class="toc-text">任务二 DBS和BPB</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#任务三-读取FAT表"><span class="toc-number">1.3.</span> <span class="toc-text">任务三 读取FAT表</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#任务四-查找文件"><span class="toc-number">1.4.</span> <span class="toc-text">任务四 查找文件</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#任务五-删除文件"><span class="toc-number">1.5.</span> <span class="toc-text">任务五 删除文件</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#任务六-文件恢复"><span class="toc-number">1.6.</span> <span class="toc-text">任务六  文件恢复</span></a></li></ol></li></ol>
+                    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#分区表与文件结构"><span class="toc-number">1.</span> <span class="toc-text">分区表与文件结构</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#任务一-MBS引导扇区"><span class="toc-number">1.1.</span> <span class="toc-text">任务一  MBS引导扇区</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#读取命令"><span class="toc-number">1.1.1.</span> <span class="toc-text">读取命令</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#分析含义"><span class="toc-number">1.1.2.</span> <span class="toc-text">分析含义</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#任务二-DBS和BPB"><span class="toc-number">1.2.</span> <span class="toc-text">任务二 DBS和BPB</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#任务三-读取FAT表"><span class="toc-number">1.3.</span> <span class="toc-text">任务三 读取FAT表</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#任务四-查找文件"><span class="toc-number">1.4.</span> <span class="toc-text">任务四 查找文件</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#任务五-删除文件"><span class="toc-number">1.5.</span> <span class="toc-text">任务五 删除文件</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#任务六-文件恢复"><span class="toc-number">1.6.</span> <span class="toc-text">任务六  文件恢复</span></a></li></ol></li></ol>
                     </div>
                 </span>
             </div>
