@@ -7,15 +7,15 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <link rel="dns-prefetch" href="http://yoursite.com">
-  <title>恶意代码分析实战笔记 | Mr.周半仙的blog</title>
+  <title>恶意代码分析实战笔记(一) | Mr.周半仙的blog</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="恶意代码分析实战解题笔记LAB01-01.dll和LAB01-01.exe 文件分析首先拖到www.virustotal.com里面进行在线分析，得到如下结果  大多数杀毒引擎分析出这是一个特洛伊木马病毒 分析LAB01-01.exe得到的结果如下  和上面的结果类似 然后再虚拟机上进行分析  LAB01-01.dll文件没有加壳，就是个普通的VS6编译出的dll，里面的代码区段也很明显，多了个重">
+  <meta name="description" content="恶意代码分析实战解题笔记（一）LAB01-01.dll和LAB01-01.exe 文件分析首先拖到www.virustotal.com里面进行在线分析，得到如下结果  大多数杀毒引擎分析出这是一个特洛伊木马病毒 分析LAB01-01.exe得到的结果如下  和上面的结果类似 然后再虚拟机上进行分析  LAB01-01.dll文件没有加壳，就是个普通的VS6编译出的dll，里面的代码区段也很明显，多">
 <meta name="keywords" content=" ">
 <meta property="og:type" content="article">
-<meta property="og:title" content="恶意代码分析实战笔记">
+<meta property="og:title" content="恶意代码分析实战笔记(一)">
 <meta property="og:url" content="http://yoursite.com/2019/12/01/实验三/index.html">
 <meta property="og:site_name" content="Mr.周半仙的blog">
-<meta property="og:description" content="恶意代码分析实战解题笔记LAB01-01.dll和LAB01-01.exe 文件分析首先拖到www.virustotal.com里面进行在线分析，得到如下结果  大多数杀毒引擎分析出这是一个特洛伊木马病毒 分析LAB01-01.exe得到的结果如下  和上面的结果类似 然后再虚拟机上进行分析  LAB01-01.dll文件没有加壳，就是个普通的VS6编译出的dll，里面的代码区段也很明显，多了个重">
+<meta property="og:description" content="恶意代码分析实战解题笔记（一）LAB01-01.dll和LAB01-01.exe 文件分析首先拖到www.virustotal.com里面进行在线分析，得到如下结果  大多数杀毒引擎分析出这是一个特洛伊木马病毒 分析LAB01-01.exe得到的结果如下  和上面的结果类似 然后再虚拟机上进行分析  LAB01-01.dll文件没有加壳，就是个普通的VS6编译出的dll，里面的代码区段也很明显，多">
 <meta property="og:locale" content="default">
 <meta property="og:image" content="https://raw.githubusercontent.com/damaoooo/imageBed/master/assets/image-20191201015128319.png">
 <meta property="og:image" content="https://raw.githubusercontent.com/damaoooo/imageBed/master/assets/image-20191201015401592.png">
@@ -52,10 +52,10 @@
 <meta property="og:image" content="https://raw.githubusercontent.com/damaoooo/imageBed/master/assets/image-20191201115334824.png">
 <meta property="og:image" content="https://raw.githubusercontent.com/damaoooo/imageBed/master/assets/image-20191201115449765.png">
 <meta property="og:image" content="https://raw.githubusercontent.com/damaoooo/imageBed/master/assets/image-20191201115701299.png">
-<meta property="og:updated_time" content="2019-12-01T07:08:13.687Z">
+<meta property="og:updated_time" content="2019-12-08T14:01:34.880Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="恶意代码分析实战笔记">
-<meta name="twitter:description" content="恶意代码分析实战解题笔记LAB01-01.dll和LAB01-01.exe 文件分析首先拖到www.virustotal.com里面进行在线分析，得到如下结果  大多数杀毒引擎分析出这是一个特洛伊木马病毒 分析LAB01-01.exe得到的结果如下  和上面的结果类似 然后再虚拟机上进行分析  LAB01-01.dll文件没有加壳，就是个普通的VS6编译出的dll，里面的代码区段也很明显，多了个重">
+<meta name="twitter:title" content="恶意代码分析实战笔记(一)">
+<meta name="twitter:description" content="恶意代码分析实战解题笔记（一）LAB01-01.dll和LAB01-01.exe 文件分析首先拖到www.virustotal.com里面进行在线分析，得到如下结果  大多数杀毒引擎分析出这是一个特洛伊木马病毒 分析LAB01-01.exe得到的结果如下  和上面的结果类似 然后再虚拟机上进行分析  LAB01-01.dll文件没有加壳，就是个普通的VS6编译出的dll，里面的代码区段也很明显，多">
 <meta name="twitter:image" content="https://raw.githubusercontent.com/damaoooo/imageBed/master/assets/image-20191201015128319.png">
   
     <link rel="alternative" href="/atom.xml" title="Mr.周半仙的blog" type="application/atom+xml">
@@ -206,7 +206,7 @@
         
   
     <h1 class="article-title" itemprop="name">
-      恶意代码分析实战笔记
+      恶意代码分析实战笔记(一)
     </h1>
   
 
@@ -219,7 +219,7 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <h1 id="恶意代码分析实战解题笔记"><a href="#恶意代码分析实战解题笔记" class="headerlink" title="恶意代码分析实战解题笔记"></a>恶意代码分析实战解题笔记</h1><h2 id="LAB01-01-dll和LAB01-01-exe-文件分析"><a href="#LAB01-01-dll和LAB01-01-exe-文件分析" class="headerlink" title="LAB01-01.dll和LAB01-01.exe 文件分析"></a>LAB01-01.dll和LAB01-01.exe 文件分析</h2><p>首先拖到<code>www.virustotal.com</code>里面进行在线分析，得到如下结果</p>
+        <h1 id="恶意代码分析实战解题笔记（一）"><a href="#恶意代码分析实战解题笔记（一）" class="headerlink" title="恶意代码分析实战解题笔记（一）"></a>恶意代码分析实战解题笔记（一）</h1><h2 id="LAB01-01-dll和LAB01-01-exe-文件分析"><a href="#LAB01-01-dll和LAB01-01-exe-文件分析" class="headerlink" title="LAB01-01.dll和LAB01-01.exe 文件分析"></a>LAB01-01.dll和LAB01-01.exe 文件分析</h2><p>首先拖到<code>www.virustotal.com</code>里面进行在线分析，得到如下结果</p>
 <p><img src="https://raw.githubusercontent.com/damaoooo/imageBed/master/assets/image-20191201015128319.png" alt="image-20191201015128319.png"></p>
 <p>大多数杀毒引擎分析出这是一个特洛伊木马病毒</p>
 <p>分析LAB01-01.exe得到的结果如下</p>
@@ -387,7 +387,7 @@
       <i class="icon-circle-left"></i>
       <div class="article-nav-title">
         
-          自己编写代码与UDP模拟软件交互详解
+          自动化markdown插入图床
         
       </div>
     </a>
@@ -421,7 +421,7 @@
                 </span>
                 <span class="tooltip-content">
                     <div class="toc-article">
-                    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#恶意代码分析实战解题笔记"><span class="toc-number">1.</span> <span class="toc-text">恶意代码分析实战解题笔记</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#LAB01-01-dll和LAB01-01-exe-文件分析"><span class="toc-number">1.1.</span> <span class="toc-text">LAB01-01.dll和LAB01-01.exe 文件分析</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#LAB01-02-exe-文件分析"><span class="toc-number">1.2.</span> <span class="toc-text">LAB01-02.exe 文件分析</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-放进www-virustotal-com里面观察"><span class="toc-number">1.2.1.</span> <span class="toc-text">1.放进www.virustotal.com里面观察</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-首先看查壳"><span class="toc-number">1.2.2.</span> <span class="toc-text">2.首先看查壳</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#7-立竿见影，然后我们查看字符串"><span class="toc-number">1.2.3.</span> <span class="toc-text">7.立竿见影，然后我们查看字符串</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-查看导入函数"><span class="toc-number">1.2.4.</span> <span class="toc-text">3. 查看导入函数</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-感染迹象"><span class="toc-number">1.2.5.</span> <span class="toc-text">4.感染迹象</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#6-使用Study-PE进行分析"><span class="toc-number">1.2.6.</span> <span class="toc-text">6.使用Study_PE进行分析</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#7-Malservice字符串的作用"><span class="toc-number">1.2.7.</span> <span class="toc-text">7.Malservice字符串的作用</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#lab01-03-exe分析"><span class="toc-number">1.3.</span> <span class="toc-text">lab01-03.exe分析</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#1-上传分析"><span class="toc-number">1.4.</span> <span class="toc-text">1. 上传分析</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#2-查壳脱壳"><span class="toc-number">1.4.1.</span> <span class="toc-text">2.查壳脱壳</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-感染迹象-1"><span class="toc-number">1.4.2.</span> <span class="toc-text">4.感染迹象</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#lab01-04-exe-分析"><span class="toc-number">1.5.</span> <span class="toc-text">lab01-04.exe 分析</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-上传分析-1"><span class="toc-number">1.5.1.</span> <span class="toc-text">1. 上传分析</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-查壳脱壳-1"><span class="toc-number">1.5.2.</span> <span class="toc-text">2. 查壳脱壳</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-查看这个文件什么时候被编译的"><span class="toc-number">1.5.3.</span> <span class="toc-text">3.查看这个文件什么时候被编译的</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-查看导入函数暗示程序的功能"><span class="toc-number">1.5.4.</span> <span class="toc-text">4.查看导入函数暗示程序的功能</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5-被感染的迹象"><span class="toc-number">1.5.5.</span> <span class="toc-text">5.被感染的迹象</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#6-抽取该资源"><span class="toc-number">1.5.6.</span> <span class="toc-text">6. 抽取该资源</span></a></li></ol></li></ol></li></ol>
+                    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#恶意代码分析实战解题笔记（一）"><span class="toc-number">1.</span> <span class="toc-text">恶意代码分析实战解题笔记（一）</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#LAB01-01-dll和LAB01-01-exe-文件分析"><span class="toc-number">1.1.</span> <span class="toc-text">LAB01-01.dll和LAB01-01.exe 文件分析</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#LAB01-02-exe-文件分析"><span class="toc-number">1.2.</span> <span class="toc-text">LAB01-02.exe 文件分析</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-放进www-virustotal-com里面观察"><span class="toc-number">1.2.1.</span> <span class="toc-text">1.放进www.virustotal.com里面观察</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-首先看查壳"><span class="toc-number">1.2.2.</span> <span class="toc-text">2.首先看查壳</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#7-立竿见影，然后我们查看字符串"><span class="toc-number">1.2.3.</span> <span class="toc-text">7.立竿见影，然后我们查看字符串</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-查看导入函数"><span class="toc-number">1.2.4.</span> <span class="toc-text">3. 查看导入函数</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-感染迹象"><span class="toc-number">1.2.5.</span> <span class="toc-text">4.感染迹象</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#6-使用Study-PE进行分析"><span class="toc-number">1.2.6.</span> <span class="toc-text">6.使用Study_PE进行分析</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#7-Malservice字符串的作用"><span class="toc-number">1.2.7.</span> <span class="toc-text">7.Malservice字符串的作用</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#lab01-03-exe分析"><span class="toc-number">1.3.</span> <span class="toc-text">lab01-03.exe分析</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#1-上传分析"><span class="toc-number">1.4.</span> <span class="toc-text">1. 上传分析</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#2-查壳脱壳"><span class="toc-number">1.4.1.</span> <span class="toc-text">2.查壳脱壳</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-感染迹象-1"><span class="toc-number">1.4.2.</span> <span class="toc-text">4.感染迹象</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#lab01-04-exe-分析"><span class="toc-number">1.5.</span> <span class="toc-text">lab01-04.exe 分析</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-上传分析-1"><span class="toc-number">1.5.1.</span> <span class="toc-text">1. 上传分析</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-查壳脱壳-1"><span class="toc-number">1.5.2.</span> <span class="toc-text">2. 查壳脱壳</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-查看这个文件什么时候被编译的"><span class="toc-number">1.5.3.</span> <span class="toc-text">3.查看这个文件什么时候被编译的</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-查看导入函数暗示程序的功能"><span class="toc-number">1.5.4.</span> <span class="toc-text">4.查看导入函数暗示程序的功能</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5-被感染的迹象"><span class="toc-number">1.5.5.</span> <span class="toc-text">5.被感染的迹象</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#6-抽取该资源"><span class="toc-number">1.5.6.</span> <span class="toc-text">6. 抽取该资源</span></a></li></ol></li></ol></li></ol>
                     </div>
                 </span>
             </div>

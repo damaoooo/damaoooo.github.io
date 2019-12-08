@@ -164,6 +164,162 @@
           <div id="js-content" class="content-ll">
             
   
+    <article id="post-实验四" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2019/12/08/实验四/">恶意代码分析实战笔记（二）</a>
+    </h1>
+  
+
+        
+        <a href="/2019/12/08/实验四/" class="archive-article-date">
+  	<time datetime="2019-12-08T14:08:53.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-12-08</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="恶意代码分析实战笔记（二）"><a href="#恶意代码分析实战笔记（二）" class="headerlink" title="恶意代码分析实战笔记（二）"></a>恶意代码分析实战笔记（二）</h1><h2 id="LAB03-01-exe"><a href="#LAB03-01-exe" class="headerlink" title="LAB03-01.exe"></a>LAB03-01.exe</h2><h3 id="1、找出这个恶意代码的导入函数与字符串列表？"><a href="#1、找出这个恶意代码的导入函数与字符串列表？" class="headerlink" title="1、找出这个恶意代码的导入函数与字符串列表？"></a>1、找出这个恶意代码的导入函数与字符串列表？</h3><p>使用strings查看字符串，发现一下内容</p>
+<p><img src="https://raw.githubusercontent.com/damaoooo/imageBed/master/assets/image-20191206215235177.png" alt="image-20191206215235177.png"></p>
+<p>发现了一个网址，然后导入的函数库使用了<code>VideoDriver</code>，<code>ws2_32.dll</code>，还有个<code>vmx32to64.exe</code>听名字是视频32位转64位，又发现了两个注册表项<code>SOFTWARE\Microsoft\Windows\CurrentVersion\Run</code>还有<code>SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\Shell Folders</code>，是开机启动项。然后在<code>Process Explorer</code>里面跑一下，查看DLL，发现<code>dnsapi.dll</code>是查询<code>DNS</code>的</p>
+<h3 id="2、这个恶意代码在主机上的感染迹象特征是什么？"><a href="#2、这个恶意代码在主机上的感染迹象特征是什么？" class="headerlink" title="2、这个恶意代码在主机上的感染迹象特征是什么？"></a>2、这个恶意代码在主机上的感染迹象特征是什么？</h3><p>修改注册表，在<code>HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Run\VideoDriver</code>写一个值<code>C:\WINDOWS\system32\vmx32to64.exe</code>，然后开机自启，在<code>C:\Windows\system32\vmx32to64.exe</code>写入该文件。</p>
+<p><img src="https://raw.githubusercontent.com/damaoooo/imageBed/master/assets/image-20191206223926717.png" alt="image-20191206223926717.png"></p>
+<p>通过检查HASH值，发现vmx32to64就是这个LAB03-01.exe</p>
+<p><img src="https://raw.githubusercontent.com/damaoooo/imageBed/master/assets/image-20191206225749132.png" alt="image-20191206225749132.png"></p>
+<p>发现在请求DNS，打开<code>apateDNS</code>检测发现Framework挂掉了，重新下载之后无果，查询资料发现这个软件没法在xp上面运行，好在我们还有wireshark</p>
+<p>在发送一个DNS请求<code>www.practicalsmalwareanalysis.com</code>的IP，wireshark抓包分析得比较清楚</p>
+<p><img src="https://raw.githubusercontent.com/damaoooo/imageBed/master/assets/image-20191206225336241.png" alt="image-20191206225336241.png"></p>
+<p>创建SSL，然后查询DNS，然后得到IP之后就开始和这个IP进行SSL的发包通信</p>
+<h3 id="3、这个恶意代码是否存在一些有用的网络特征码？如果存在，他们是什么？"><a href="#3、这个恶意代码是否存在一些有用的网络特征码？如果存在，他们是什么？" class="headerlink" title="3、这个恶意代码是否存在一些有用的网络特征码？如果存在，他们是什么？"></a>3、这个恶意代码是否存在一些有用的网络特征码？如果存在，他们是什么？</h3><p>string中发现的</p>
+<p><img src="https://raw.githubusercontent.com/damaoooo/imageBed/master/assets/image-20191206230330151.png" alt="image-20191206230330151.png"></p>
+<p><code>HTTP/1.0</code>，以及<code>503</code>,<code>200</code>都是HTTP中的网络特征码</p>
+<p>然后就是其他软件进行分析PEID分析走起，发现是有<code>junkcode</code>加壳的</p>
+<p><img src="https://raw.githubusercontent.com/damaoooo/imageBed/master/assets/image-20191206230517385.png" alt="image-20191206230517385.png"></p>
+<p>使用万能脱壳机来脱壳</p>
+<p><img src="https://raw.githubusercontent.com/damaoooo/imageBed/master/assets/image-20191208171245768.png" alt="image-20191208171245768.png"></p>
+<p>失败，看到还能使用OD手动脱壳，就去试一试</p>
+<p><img src="https://raw.githubusercontent.com/damaoooo/imageBed/master/assets/image-20191208172532449.png" alt="image-20191208172532449.png"></p>
+<p>函数的运行入口点很奇怪，F8几次之后就直接结束了，我们用F7跟进这个call</p>
+<p><img src="https://raw.githubusercontent.com/damaoooo/imageBed/master/assets/image-20191208172626746.png" alt="image-20191208172626746.png"></p>
+<p>很正常的一个函数入口，甚至还看到了push ascii “ws2_32”,然而在这个<code>ws2_32</code>这一处下F4，直接结束，手动脱壳失败。这个函数就这么分析到这里了</p>
+<h2 id="Lab03-02-dll"><a href="#Lab03-02-dll" class="headerlink" title="Lab03-02.dll"></a>Lab03-02.dll</h2><h3 id="1-你怎样才能让这个恶意代码自行安装？"><a href="#1-你怎样才能让这个恶意代码自行安装？" class="headerlink" title="1.你怎样才能让这个恶意代码自行安装？"></a>1.你怎样才能让这个恶意代码自行安装？</h3><p>使用系统自带的<code>rundll32.exe</code>，运行命令<code>rundll32.exe Lab03-02.dll,installA</code>，但是运行之前我们要知道为什么是InstallA，使用<code>PEView</code>查看文件的导出列表</p>
+<p><img src="https://raw.githubusercontent.com/damaoooo/imageBed/master/assets/image-20191208194318193.png" alt="image-20191208194318193.png"></p>
+<p>发现导出函数有<code>Install</code>,<code>ServiceMain</code>,<code>UninstallService</code>,<code>installA</code>,<code>UninstallA</code>，其中观察上面的install和一个服务有关，剩下的installA比较重要的分析对象。使用strings查看字符串</p>
+<p><img src="https://raw.githubusercontent.com/damaoooo/imageBed/master/assets/image-20191208194553684.png" alt="image-20191208194553684.png"></p>
+<p>发现里面有一堆关于注册表键值注册的操作，将其导入一个叫做<code>SOFTWARE\Microsoft\Windows NT\CurrentVersion\Svchost</code>里面</p>
+<p>然后使用IDA查看导入函数，用Dependency Walker有点慢</p>
+<p><img src="https://raw.githubusercontent.com/damaoooo/imageBed/master/assets/image-20191208195135808.png" alt="image-20191208195135808.png"></p>
+<p>发现了<code>GetCurrentDirectoryA</code>是获取当前目录</p>
+<p><code>CreateServiceA</code>，<code>DeleteServiceA</code>，创建和删除服务</p>
+<p><code>RegCloseKey</code>,<code>RegCreateKeyA</code>,<code>RegOpenKeyExA</code>,<code>RegQueryValueExA</code>,<code>RegSetValueExa</code>等等，是对注册表的值进行增删改查的操作</p>
+<p>然后在IDA里面查看字符串，发现了一些有趣的东西</p>
+<p><img src="https://raw.githubusercontent.com/damaoooo/imageBed/master/assets/image-20191208195653848.png" alt="image-20191208195653848.png"></p>
+<p>怀疑是<code>base64</code>加密的字符串，以及一个<code>base64</code>的字母表，说明这个程序里面还有base64,把这些base64字符串解出来是<code>connect</code>|<code>unsupport</code>|<code>sleep</code>|<code>cmd</code>|<code>quit</code>,说明这个程序还能够去调用cmd进行操作。当然，我们也发现了一个网站</p>
+<h3 id="2-在安装之后，你如何让这个恶意代码运行起来？"><a href="#2-在安装之后，你如何让这个恶意代码运行起来？" class="headerlink" title="2.在安装之后，你如何让这个恶意代码运行起来？"></a>2.在安装之后，你如何让这个恶意代码运行起来？</h3><p>运行命令<code>rundll32.exe Lab03-02.dll,installA</code>，但是在运行之前要对注册表加一个快照，因为这个程序会修改注册表，然后使用<code>net start IPRIP</code>就可以运行了</p>
+<p><img src="https://raw.githubusercontent.com/damaoooo/imageBed/master/assets/image-20191208201043909.png" alt="image-20191208201043909.png"></p>
+<p>其实运行<code>Install</code>和运行<code>InstallA</code>效果都一样</p>
+<p>然后运行完了之后查看注册表快照看看有什么变化</p>
+<p><img src="https://raw.githubusercontent.com/damaoooo/imageBed/master/assets/image-20191208201251439.png" alt="image-20191208201251439.png"></p>
+<h3 id="3、你怎么能找到这个恶意代码是在哪个进程下运行的？"><a href="#3、你怎么能找到这个恶意代码是在哪个进程下运行的？" class="headerlink" title="3、你怎么能找到这个恶意代码是在哪个进程下运行的？"></a>3、你怎么能找到这个恶意代码是在哪个进程下运行的？</h3><p>服务中多了个IPRIP的服务</p>
+<p><img src="https://raw.githubusercontent.com/damaoooo/imageBed/master/assets/image-20191208201558618.png" alt="image-20191208201558618.png"></p>
+<p><img src="https://raw.githubusercontent.com/damaoooo/imageBed/master/assets/image-20191208201638660.png" alt="image-20191208201638660.png"></p>
+<p>然后发现是附加在svchost.exe上面运行的，名字就是<code>Intranet Network Awareness (INA+)</code>，听起来还很正经</p>
+<p>然后我们使用<code>net start IPRIP</code>运行这个服务，并在Procmon里面找找这个服务还有文件名</p>
+<h3 id="4、你可以在procmon工具中设置什么样的过滤器，才能收集这个恶意代码的信息？"><a href="#4、你可以在procmon工具中设置什么样的过滤器，才能收集这个恶意代码的信息？" class="headerlink" title="4、你可以在procmon工具中设置什么样的过滤器，才能收集这个恶意代码的信息？"></a>4、你可以在procmon工具中设置什么样的过滤器，才能收集这个恶意代码的信息？</h3><p><img src="https://raw.githubusercontent.com/damaoooo/imageBed/master/assets/image-20191208202048425.png" alt="image-20191208202048425.png"></p>
+<p>成功找到附加在系统服务上的病毒程序</p>
+<h3 id="5、这个恶意代码在主机上的感染迹象特征是什么？"><a href="#5、这个恶意代码在主机上的感染迹象特征是什么？" class="headerlink" title="5、这个恶意代码在主机上的感染迹象特征是什么？"></a>5、这个恶意代码在主机上的感染迹象特征是什么？</h3><p>多了一个<code>IPRIP</code>的服务驻留在后台，然后通过wireshark抓包分析（ApateDNS无法在XP上面运行，安装了NET.framework一样的）</p>
+<p><img src="https://raw.githubusercontent.com/damaoooo/imageBed/master/assets/image-20191208202546910.png" alt="image-20191208202546910.png"></p>
+<h3 id="6、这个恶意代码是否存在一些有用的网络特征码？"><a href="#6、这个恶意代码是否存在一些有用的网络特征码？" class="headerlink" title="6、这个恶意代码是否存在一些有用的网络特征码？"></a>6、这个恶意代码是否存在一些有用的网络特征码？</h3><p>刚才看见的<code>connect</code>，以及<code>HTTP GET/1.1</code>等等</p>
+<h2 id="LAB03-03-exe"><a href="#LAB03-03-exe" class="headerlink" title="LAB03-03.exe"></a>LAB03-03.exe</h2><h3 id="1、当你使用Process-explorer工具进行监视时，你注意到了什么？"><a href="#1、当你使用Process-explorer工具进行监视时，你注意到了什么？" class="headerlink" title="1、当你使用Process explorer工具进行监视时，你注意到了什么？"></a>1、当你使用Process explorer工具进行监视时，你注意到了什么？</h3><p>首先我们先用IDA进行静态分析</p>
+<p><img src="https://raw.githubusercontent.com/damaoooo/imageBed/master/assets/image-20191208203902743.png" alt="image-20191208203902743.png"></p>
+<p>查看字符串，发现是一些简单的报错信息还有下面的乱码，然后查看导入函数表</p>
+<p><img src="https://raw.githubusercontent.com/damaoooo/imageBed/master/assets/image-20191208204104073.png" alt="image-20191208204104073.png"></p>
+<p>发现能够对内存，文件进行增删改查，然后使用ProcessExplorer进行监视</p>
+<p>发现运行的时候出现一个<code>Lab03-03.exe</code>，然后创建一个<code>svchost.exe</code>，然后这个<code>Lab03-03.exe</code>一瞬虚无，多来两次找到这个新的<code>svchost.exe</code></p>
+<p><img src="https://raw.githubusercontent.com/damaoooo/imageBed/master/assets/image-20191208204753308.png" alt="image-20191208204753308.png"></p>
+<p>这个伪装就非常的拙劣了，单独出来一个孤儿进程</p>
+<h3 id="2、你可以找出任何的内存修改行为吗？"><a href="#2、你可以找出任何的内存修改行为吗？" class="headerlink" title="2、你可以找出任何的内存修改行为吗？"></a>2、你可以找出任何的内存修改行为吗？</h3><p><img src="https://raw.githubusercontent.com/damaoooo/imageBed/master/assets/image-20191208204927957.png" alt="image-20191208204927957.png"></p>
+<p>源映像和内存中的影响还不一样，多了一些按键，估计是个键盘记录器</p>
+<h3 id="3、这个恶意代码在主机上的感染迹象特征是什么？"><a href="#3、这个恶意代码在主机上的感染迹象特征是什么？" class="headerlink" title="3、这个恶意代码在主机上的感染迹象特征是什么？"></a>3、这个恶意代码在主机上的感染迹象特征是什么？</h3><p>然后多了一个<code>practicalmalwareanalysys.log</code>，估计就是记录的日志文件了，打开看看</p>
+<p><img src="https://raw.githubusercontent.com/damaoooo/imageBed/master/assets/image-20191208205108968.png" alt="image-20191208205108968.png"></p>
+<p>还真是一个记录键盘的文件</p>
+<h3 id="4、这个恶意代码的目的是什么？"><a href="#4、这个恶意代码的目的是什么？" class="headerlink" title="4、这个恶意代码的目的是什么？"></a>4、这个恶意代码的目的是什么？</h3><p>记录键盘，生成日志文件，发送到一个目录中，但是没找到网络模块，不会上传出去，有点类似于灰鸽子木马</p>
+<h2 id="Lab03-04-exe"><a href="#Lab03-04-exe" class="headerlink" title="Lab03-04.exe"></a>Lab03-04.exe</h2><h3 id="1、当你运行这个文件时，会发生什么呢？"><a href="#1、当你运行这个文件时，会发生什么呢？" class="headerlink" title="1、当你运行这个文件时，会发生什么呢？"></a>1、当你运行这个文件时，会发生什么呢？</h3><p>首先我们还是先查壳然后IDA静态分析一下</p>
+<p><img src="https://raw.githubusercontent.com/damaoooo/imageBed/master/assets/image-20191208210413285.png" alt="image-20191208210413285.png"></p>
+<p>很幸运没加壳</p>
+<p>然后拖进IDA分析</p>
+<p><img src="https://raw.githubusercontent.com/damaoooo/imageBed/master/assets/image-20191208210608253.png" alt="image-20191208210608253.png"></p>
+<p>导入函数来看，有很明显的套接字的网络发送和接收操作。还能看到执行<code>Shell</code>命令的操作</p>
+<p>以及对文件，注册表进行增删改查。</p>
+<p>然后就是找字符串</p>
+<p><img src="https://raw.githubusercontent.com/damaoooo/imageBed/master/assets/image-20191208211538850.png" alt="image-20191208211538850.png"></p>
+<p><img src="https://raw.githubusercontent.com/damaoooo/imageBed/master/assets/image-20191208211634262.png" alt="image-20191208211634262.png"></p>
+<p>是一些很常见的报错信息，然后又一个网址<code>command.com</code>，还有星期，月份。另外还有唤起<code>cmd</code>，然后还有一个<code>\c del</code>的删除命令，我们转到调用这个<code>cmd.exe</code>的地方</p>
+<h3 id="2、是什么原因造成动态分析无法有效实施？"><a href="#2、是什么原因造成动态分析无法有效实施？" class="headerlink" title="2、是什么原因造成动态分析无法有效实施？"></a>2、是什么原因造成动态分析无法有效实施？</h3><p>因为这个程序会把自己给删掉</p>
+<h3 id="3、是否有其它方式来运行这个程序？"><a href="#3、是否有其它方式来运行这个程序？" class="headerlink" title="3、是否有其它方式来运行这个程序？"></a>3、是否有其它方式来运行这个程序？</h3><p>由于这个文件室友一个删除自己的操作，因此我们转到含有<code>cmd.exe</code>这个的调用函数处</p>
+<p><img src="https://raw.githubusercontent.com/damaoooo/imageBed/master/assets/image-20191208211811078.png" alt="image-20191208211811078.png"></p>
+<p>原来是执行一个<code>shell</code>命令<code>filename+\c del + &gt;&gt; NUL</code></p>
+<p>我们跳进这个函数的引用里面，发现就是<code>main()</code>引用的这个函数</p>
+<p><img src="https://raw.githubusercontent.com/damaoooo/imageBed/master/assets/image-20191208212319418.png" alt="image-20191208212319418.png"></p>
+<p>通过阅读程序逻辑，可以看到，是要运行时给好几个参数，然后还有一个参数校验程序，我们跳进这个最后一个参数的校验程序<code>sub_402510()</code>（为了逆向方便我会改名字）</p>
+<p>可以看到第一个校验程序是校验如果参数为3个时，最后一个要是<code>abcd</code></p>
+<p><img src="https://raw.githubusercontent.com/damaoooo/imageBed/master/assets/image-20191208213518610.png" alt="image-20191208213518610.png"></p>
+<p>然后是根据输入的第一个参数来执行操作，去逆向其他函数</p>
+<p><img src="https://raw.githubusercontent.com/damaoooo/imageBed/master/assets/image-20191208213949967.png" alt="image-20191208213949967.png"></p>
+<p>发现是打开然后查找<code>HKEY_LOCAL_MACHIME\SOFTWARE\Microsoft\XPS</code>的<code>Configuration</code>的值</p>
+<p><img src="https://raw.githubusercontent.com/damaoooo/imageBed/master/assets/image-20191208214833935.png" alt="image-20191208214833935.png"></p>
+<p>至此其中的一个运行方式就被我们摸出来了，在命令行里面执行这个程序，参数设置成一个<code>-cc</code>之类的，然后还要注册表中有这个值，就能够根据这个值来运行，大概运行的命令如下</p>
+<p><code>Lab03-04.exe -cc abcd</code></p>
+<p>我们做个实验看看</p>
+<p><img src="https://raw.githubusercontent.com/damaoooo/imageBed/master/assets/image-20191208215151854.png" alt="image-20191208215151854.png"></p>
+<p>疯狂运行，文件没少，既然能跑我们就可以通过OD结合IDA进行详细分析了，在此不表</p>
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+      
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2019/12/08/实验四/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
     <article id="post-自动化markdown插入图床" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
@@ -171,7 +327,7 @@
         
   
     <h1 itemprop="name">
-      <a class="article-title" href="/2019/12/01/自动化markdown插入图床/">自己编写代码与UDP模拟软件交互详解</a>
+      <a class="article-title" href="/2019/12/01/自动化markdown插入图床/">自动化markdown插入图床</a>
     </h1>
   
 
@@ -245,7 +401,7 @@
         
   
     <h1 itemprop="name">
-      <a class="article-title" href="/2019/12/01/实验三/">恶意代码分析实战笔记</a>
+      <a class="article-title" href="/2019/12/01/实验三/">恶意代码分析实战笔记(一)</a>
     </h1>
   
 
@@ -258,7 +414,7 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <h1 id="恶意代码分析实战解题笔记"><a href="#恶意代码分析实战解题笔记" class="headerlink" title="恶意代码分析实战解题笔记"></a>恶意代码分析实战解题笔记</h1><h2 id="LAB01-01-dll和LAB01-01-exe-文件分析"><a href="#LAB01-01-dll和LAB01-01-exe-文件分析" class="headerlink" title="LAB01-01.dll和LAB01-01.exe 文件分析"></a>LAB01-01.dll和LAB01-01.exe 文件分析</h2><p>首先拖到<code>www.virustotal.com</code>里面进行在线分析，得到如下结果</p>
+        <h1 id="恶意代码分析实战解题笔记（一）"><a href="#恶意代码分析实战解题笔记（一）" class="headerlink" title="恶意代码分析实战解题笔记（一）"></a>恶意代码分析实战解题笔记（一）</h1><h2 id="LAB01-01-dll和LAB01-01-exe-文件分析"><a href="#LAB01-01-dll和LAB01-01-exe-文件分析" class="headerlink" title="LAB01-01.dll和LAB01-01.exe 文件分析"></a>LAB01-01.dll和LAB01-01.exe 文件分析</h2><p>首先拖到<code>www.virustotal.com</code>里面进行在线分析，得到如下结果</p>
 <p><img src="https://raw.githubusercontent.com/damaoooo/imageBed/master/assets/image-20191201015128319.png" alt="image-20191201015128319.png"></p>
 <p>大多数杀毒引擎分析出这是一个特洛伊木马病毒</p>
 <p>分析LAB01-01.exe得到的结果如下</p>
@@ -1138,19 +1294,19 @@
 
 
   
-    <article id="post-不使用运算符 + 和 - ，计算两整数 a 、b 之和" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+    <article id="post-重新分组密钥" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
       <header class="article-header">
         
   
     <h1 itemprop="name">
-      <a class="article-title" href="/2019/08/21/不使用运算符 + 和 - ，计算两整数 a 、b 之和/">位运算计算整数之和</a>
+      <a class="article-title" href="/2019/08/21/重新分组密钥/">重新分组密钥</a>
     </h1>
   
 
         
-        <a href="/2019/08/21/不使用运算符 + 和 - ，计算两整数 a 、b 之和/" class="archive-article-date">
+        <a href="/2019/08/21/重新分组密钥/" class="archive-article-date">
   	<time datetime="2019-08-20T16:28:54.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-08-21</time>
 </a>
         
@@ -1158,112 +1314,24 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <p>不使用运算符 + 和 - ，计算两整数 a 、b 之和。</p>
-<p>示例 1:</p>
-<p>输入: a = 1, b = 2<br>输出: 3<br>示例 2:</p>
-<p>输入: a = -2, b = 3<br>输出: 1</p>
-<p>一开始看到这个两数相加我笑了，无非是<code>return a+b</code>嘛，但是看到不使用运算符<code>+</code>和<code>-</code>的时候我蒙圈了，？！，纳尼？</p>
-<p>于是我试着提交了一下<code>return a+b</code></p>
-<p>居然过了哈哈哈哈</p>
-<p>算了不耍无赖，正经看题，不准用<code>+</code>和<code>-</code>，那就只能用位运算了呗</p>
-<p><code>5 = 101</code></p>
-<p><code>3 = 011</code></p>
-<p><code>2 = 010</code></p>
-<p>需要找到一种位运算，在不进位的情况下满足<code>1?1=0,1?0=1,0?0=0</code>这个运算符就是<code>xor</code>，然后考虑进位的问题</p>
-<p>如果是进位的话，考虑一下情况</p>
-<p><code>7 = 111</code></p>
-<p><code>7 = 111</code></p>
-<p><code>14 = 1110</code></p>
-<p>使用<code>xor</code>得到的结果<code>111 xor 111 = 0</code> ，而<code></code>111 and 111 = 111`，所以，a+b = (a xor b)+(a&amp;b &lt;&lt; 1)</p>
-<p>写个迭代试试</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">getSum</span><span class="params">(a,b)</span>:</span></span><br><span class="line">    jin = (a&amp;b)&lt;&lt;<span class="number">1</span></span><br><span class="line">    zheng = (a^b)</span><br><span class="line">    <span class="keyword">if</span>(jin==<span class="number">0</span>):</span><br><span class="line">        <span class="keyword">return</span> zheng</span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        <span class="keyword">return</span> getSum(jin,zheng)</span><br></pre></td></tr></table></figure>
-<p>然而出现了一个问题，python里面计算负数出了问题</p>
-<p>我试着输出一下python里面负数的表示</p>
-<p><code>print(hex(-1))</code> 发现出来的结果是<code>&#39;-0x1&#39;</code>没有说是类似<code>FFFFFFFF</code>的表达</p>
-<p>于是查找题解，发现python是需要模拟32位溢出的情况，魔改代码如下</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">getSum</span><span class="params">(a,b)</span>:</span></span><br><span class="line">    jin = (a&amp;b)&lt;&lt;<span class="number">1</span></span><br><span class="line">    zheng = (a^b)</span><br><span class="line">    MASK =   <span class="number">0x100000000</span></span><br><span class="line">    MAX_INT = <span class="number">0x7FFFFFFF</span></span><br><span class="line">    MIN_INT = MAX_INT + <span class="number">1</span></span><br><span class="line">    jin = jin % MASK</span><br><span class="line">    zheng = zheng %MASK</span><br><span class="line">    <span class="keyword">if</span>(jin==<span class="number">0</span>):</span><br><span class="line">        <span class="keyword">if</span>(zheng&gt;&gt;<span class="number">28</span>==<span class="number">0xf</span>):</span><br><span class="line">            zheng^=<span class="number">0xffffffff</span></span><br><span class="line">            zheng = ~zheng</span><br><span class="line">            <span class="keyword">return</span> zheng</span><br><span class="line">        <span class="keyword">return</span> zheng</span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        <span class="keyword">return</span> getSum(jin,zheng)</span><br></pre></td></tr></table></figure>
-<p>后来又发现<code>python</code>这个弄出来全部都是<strong>无符号整数</strong> 然后强制转化成<strong>带符号整数</strong>进行输出就可以了</p>
-
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-      
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2019/08/21/不使用运算符 + 和 - ，计算两整数 a 、b 之和/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
-    <article id="post-判断是否是完全平方数" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2019/08/21/判断是否是完全平方数/">判断是否是完全平方数</a>
-    </h1>
-  
-
-        
-        <a href="/2019/08/21/判断是否是完全平方数/" class="archive-article-date">
-  	<time datetime="2019-08-20T16:28:54.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-08-21</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>给定一个正整数 num，编写一个函数，如果 num 是一个完全平方数，则返回 True，否则返回 False。</p>
-<p>说明：不要使用任何内置的库函数，如  sqrt。</p>
+        <p>给定一个密钥字符串S，只包含字母，数字以及 ‘-‘（破折号）。N 个 ‘-‘ 将字符串分成了 N+1 组。给定一个数字 K，重新格式化字符串，除了第一个分组以外，每个分组要包含 K 个字符，第一个分组至少要包含 1 个字符。两个分组之间用 ‘-‘（破折号）隔开，并且将所有的小写字母转换为大写字母。</p>
+<p>给定非空字符串 S 和数字 K，按照上面描述的规则进行格式化。</p>
 <p>示例 1：</p>
-<p>输入：16<br>输出：True<br>示例 2：</p>
-<p>输入：14<br>输出：False</p>
-<p>最开始想到的是使用<code>sqrt()</code>直接判断，什么？不能使用sqrt()?</p>
-<p>不能使用任何内置的库函数，所以使用math.log的方案也挂掉了，老老实实去凑吧</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">func</span><span class="params">(num)</span>:</span></span><br><span class="line">    <span class="keyword">if</span>(num&lt;<span class="number">0</span>):</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">False</span></span><br><span class="line">    <span class="keyword">if</span>(num&lt;=<span class="number">2</span>):</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">True</span></span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">1</span>,num//<span class="number">2</span>):</span><br><span class="line">        <span class="keyword">if</span>(i*i==num):</span><br><span class="line">            <span class="keyword">return</span> <span class="literal">True</span></span><br><span class="line">        <span class="keyword">if</span>(i*i&gt;num):</span><br><span class="line">            <span class="keyword">return</span> <span class="literal">False</span></span><br></pre></td></tr></table></figure>
-<p>虽然我觉得他肯定要卡你时间复杂度    </p>
-<p>果然后面他给我报错，<code>MemoryError</code>不过是发生在<code>Line 7</code>也就是<code>for i in range(1,num//2):</code>这一行就让我感觉有点意外</p>
-<p>后来看到了公式，有点东西</p>
-<p><code>4 = 1+3</code></p>
-<p><code>9 = 1+3+5</code></p>
-<p><code>16 = 1+3+5+7</code></p>
-<p>以此类推</p>
-<p><code>n^2 = 1+3+5+……+(2n-1)</code></p>
-<p>所以我们就挨着挨着减下来就好了</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">func</span><span class="params">(num)</span>:</span></span><br><span class="line">    <span class="keyword">if</span>(num&lt;<span class="number">0</span>):</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">False</span></span><br><span class="line">    i = <span class="number">1</span></span><br><span class="line">    <span class="keyword">while</span>(num&gt;<span class="number">0</span>):</span><br><span class="line">        num-=i</span><br><span class="line">        i+=<span class="number">2</span></span><br><span class="line">    <span class="keyword">return</span> num==<span class="number">0</span></span><br></pre></td></tr></table></figure>
-<p>只需要执行n次就可以了</p>
+<p>输入：S = “5F3Z-2e-9-w”, K = 4</p>
+<p>输出：”5F3Z-2E9W”</p>
+<p>解释：字符串 S 被分成了两个部分，每部分 4 个字符；<br>     注意，两个额外的破折号需要删掉。<br>示例 2：</p>
+<p>输入：S = “2-5g-3-J”, K = 2</p>
+<p>输出：”2-5G-3J”</p>
+<p>解释：字符串 S 被分成了 3 个部分，按照前面的规则描述，第一部分的字符可以少于给定的数量，其余部分皆为 2 个字符。</p>
+<p>只能说这个题目没有解释清楚，一开始我以为是第一组保持不变，然后后面的转大写然后去按照K个字母来进行分组，思路就是先读取这个字符串第一个’-‘的位置，然后把后面的’-‘全部去除掉，然后根据K来进行插入’-‘即可</p>
+<p>python代码如下：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">func</span><span class="params">(S,K)</span>:</span></span><br><span class="line">    S = list(S.upper())</span><br><span class="line">    first = <span class="number">0</span></span><br><span class="line">    lens = len(S)</span><br><span class="line">    offset = <span class="number">0</span></span><br><span class="line">    popList = []</span><br><span class="line">    popoffset = <span class="number">0</span></span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> range(lens):</span><br><span class="line">        <span class="keyword">if</span>(S[i]==<span class="string">'-'</span> <span class="keyword">and</span> first!=<span class="number">1</span>):</span><br><span class="line">            first = <span class="number">1</span></span><br><span class="line">            offset = i</span><br><span class="line">        <span class="keyword">elif</span>(S[i]==<span class="string">'-'</span>):</span><br><span class="line">            popList.append(i)</span><br><span class="line">            lens-=<span class="number">1</span></span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> popList:</span><br><span class="line">        S.pop(i-popoffset)</span><br><span class="line">        popoffset+=<span class="number">1</span></span><br><span class="line">    res = lens-(offset+<span class="number">1</span>)</span><br><span class="line">    res_char_num = K</span><br><span class="line">    insertList = []</span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> range(offset+<span class="number">1</span>,lens):</span><br><span class="line">        <span class="keyword">if</span>((i-offset<span class="number">-1</span>)%res_char_num==<span class="number">0</span> <span class="keyword">and</span> (i-offset<span class="number">-1</span>)!= <span class="number">0</span>):</span><br><span class="line">            insertList.append(i)</span><br><span class="line">    insertOffset = <span class="number">0</span></span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> insertList:</span><br><span class="line">        S.insert(i+insertOffset,<span class="string">'-'</span>)</span><br><span class="line">        insertOffset+=<span class="number">1</span></span><br><span class="line">    <span class="keyword">return</span> <span class="string">''</span>.join(S)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">S = <span class="string">'5F3Z-2e-9-w'</span></span><br><span class="line">K = <span class="number">4</span></span><br><span class="line">print(func(S,K))</span><br></pre></td></tr></table></figure>
+<p>没想到报错了,我寻思我这个很符合题意啊</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">执行结果：解答错误 显示详情</span><br><span class="line">输入:</span><br><span class="line">&quot;2-4A0r7-4k&quot;</span><br><span class="line">4</span><br><span class="line">输出</span><br><span class="line">&quot;2-4A0R-74K&quot;</span><br><span class="line">预期结果</span><br><span class="line">&quot;24A0-R74K&quot;</span><br></pre></td></tr></table></figure>
+<p>看了题解才知道，这个题目的意思就是，前面第一组的长度<code>S&lt;=K</code> 后面每一组的长度<code>S==k</code>，这个锅要怪出题人没有解释清楚</p>
+<p>然后修改代码，去掉’-‘，从后往前找到插入’-‘的位置插入即可</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">func</span><span class="params">(S,K)</span>:</span></span><br><span class="line">    S = list(S.upper().replace(<span class="string">'-'</span>,<span class="string">''</span>))</span><br><span class="line">    insertList = []</span><br><span class="line">    insertOffset = <span class="number">0</span></span><br><span class="line">    n = <span class="number">1</span></span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> range(len(S)<span class="number">-1</span>,<span class="number">0</span>,<span class="number">-1</span>):</span><br><span class="line">        <span class="keyword">if</span>(n%K==<span class="number">0</span>):</span><br><span class="line">            insertList.append(i)</span><br><span class="line">        n+=<span class="number">1</span></span><br><span class="line">    insertList.sort()</span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> insertList:</span><br><span class="line">        S.insert(i+insertOffset,<span class="string">'-'</span>)</span><br><span class="line">        insertOffset+=<span class="number">1</span></span><br><span class="line">    <span class="keyword">return</span> <span class="string">''</span>.join(S)</span><br><span class="line">S = <span class="string">'5F3Z-2e-9-w'</span></span><br><span class="line">K = <span class="number">4</span></span><br><span class="line">print(func(S,K))</span><br></pre></td></tr></table></figure>
+<p>通过</p>
 
       
 
@@ -1276,7 +1344,7 @@
 
       
         <p class="article-more-link">
-          <a class="article-more-a" href="/2019/08/21/判断是否是完全平方数/">展开全文 >></a>
+          <a class="article-more-a" href="/2019/08/21/重新分组密钥/">展开全文 >></a>
         </p>
       
 
