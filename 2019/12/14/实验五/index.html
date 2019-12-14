@@ -7,19 +7,66 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <link rel="dns-prefetch" href="http://yoursite.com">
-  <title>Mr.周半仙的blog</title>
+  <title>恶意代码分析实战（三） | Mr.周半仙的blog</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="大二搬砖狗一只……">
+  <meta name="description" content="恶意代码分析实战（三）1：DllMain的地址是什么？ 2：使用Imports窗口并浏览到gethostbyname, 导入函数定位到什么地址？ 3：有多少函数调用了gethostbyname? 4: 将精力集中在位于0x10001757处的对gethostbyname的调用，你能找出那个DNS请求将被触发吗？ 在这儿，找DNS，前面PUSH了这样一个字符串，跟进去    这个就是要DNS查询的地">
 <meta name="keywords" content=" ">
-<meta property="og:type" content="website">
-<meta property="og:title" content="Mr.周半仙的blog">
-<meta property="og:url" content="http://yoursite.com/index.html">
+<meta property="og:type" content="article">
+<meta property="og:title" content="恶意代码分析实战（三）">
+<meta property="og:url" content="http://yoursite.com/2019/12/14/实验五/index.html">
 <meta property="og:site_name" content="Mr.周半仙的blog">
-<meta property="og:description" content="大二搬砖狗一只……">
+<meta property="og:description" content="恶意代码分析实战（三）1：DllMain的地址是什么？ 2：使用Imports窗口并浏览到gethostbyname, 导入函数定位到什么地址？ 3：有多少函数调用了gethostbyname? 4: 将精力集中在位于0x10001757处的对gethostbyname的调用，你能找出那个DNS请求将被触发吗？ 在这儿，找DNS，前面PUSH了这样一个字符串，跟进去    这个就是要DNS查询的地">
 <meta property="og:locale" content="default">
+<meta property="og:image" content="https://raw.githubusercontent.com/damaoooo/imageBed/master/assets/image-20191213173917324.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/damaoooo/imageBed/master/assets/image-20191213174017362.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/damaoooo/imageBed/master/assets/image-20191213174044141.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/damaoooo/imageBed/master/assets/image-20191213180757726.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/damaoooo/imageBed/master/assets/image-20191213180828528.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/damaoooo/imageBed/master/assets/image-20191213180859421.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/damaoooo/imageBed/master/assets/image-20191213180904886.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/damaoooo/imageBed/master/assets/image-20191213212713210.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/damaoooo/imageBed/master/assets/image-20191213213025628.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/damaoooo/imageBed/master/assets/image-20191213213438591.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/damaoooo/imageBed/master/assets/image-20191213213936548.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/damaoooo/imageBed/master/assets/image-20191213223357790.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/damaoooo/imageBed/master/assets/image-20191213223110763.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/damaoooo/imageBed/master/assets/image-20191213223836408.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/damaoooo/imageBed/master/assets/image-20191213223847953.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/damaoooo/imageBed/master/assets/image-20191213224323988.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/damaoooo/imageBed/master/assets/image-20191213224352251.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/damaoooo/imageBed/master/assets/image-20191213224534691.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/damaoooo/imageBed/master/assets/image-20191214141604980.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/damaoooo/imageBed/master/assets/image-20191214145022619.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/damaoooo/imageBed/master/assets/image-20191214145217009.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/damaoooo/imageBed/master/assets/image-20191214145325997.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/damaoooo/imageBed/master/assets/image-20191214145536247.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/damaoooo/imageBed/master/assets/image-20191214150758268.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/damaoooo/imageBed/master/assets/image-20191214151035079.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/damaoooo/imageBed/master/assets/image-20191214151445007.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/damaoooo/imageBed/master/assets/image-20191214152132352.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/damaoooo/imageBed/master/assets/image-20191214152152206.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/damaoooo/imageBed/master/assets/image-20191214152906311.png">
+<meta property="og:image" content="http://www.atomsec.org/wp-content/uploads/2018/06/%E5%9B%BE%E7%89%87123.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/damaoooo/imageBed/master/assets/image-20191214153227893.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/damaoooo/imageBed/master/assets/image-20191214153248408.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/damaoooo/imageBed/master/assets/image-20191214153355596.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/damaoooo/imageBed/master/assets/image-20191214154045868.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/damaoooo/imageBed/master/assets/image-20191214155026920.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/damaoooo/imageBed/master/assets/image-20191214155409861.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/damaoooo/imageBed/master/assets/image-20191214155604603.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/damaoooo/imageBed/master/assets/image-20191214155733402.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/damaoooo/imageBed/master/assets/image-20191214155814569.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/damaoooo/imageBed/master/assets/image-20191214160029679.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/damaoooo/imageBed/master/assets/image-20191214160558499.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/damaoooo/imageBed/master/assets/image-20191214161136943.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/damaoooo/imageBed/master/assets/image-20191214161218525.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/damaoooo/imageBed/master/assets/image-20191214161326717.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/damaoooo/imageBed/master/assets/image-20191214161458729.png">
+<meta property="og:updated_time" content="2019-12-14T08:37:50.392Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Mr.周半仙的blog">
-<meta name="twitter:description" content="大二搬砖狗一只……">
+<meta name="twitter:title" content="恶意代码分析实战（三）">
+<meta name="twitter:description" content="恶意代码分析实战（三）1：DllMain的地址是什么？ 2：使用Imports窗口并浏览到gethostbyname, 导入函数定位到什么地址？ 3：有多少函数调用了gethostbyname? 4: 将精力集中在位于0x10001757处的对gethostbyname的调用，你能找出那个DNS请求将被触发吗？ 在这儿，找DNS，前面PUSH了这样一个字符串，跟进去    这个就是要DNS查询的地">
+<meta name="twitter:image" content="https://raw.githubusercontent.com/damaoooo/imageBed/master/assets/image-20191213173917324.png">
   
     <link rel="alternative" href="/atom.xml" title="Mr.周半仙的blog" type="application/atom+xml">
   
@@ -162,16 +209,14 @@
             <canvas data-colors="#eaeaea" data-sectionHeight="100" data-contentId="js-content" id="myCanvas1" class="anm-canvas"></canvas>
           </div>
           <div id="js-content" class="content-ll">
-            
-  
-    <article id="post-实验五" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+            <article id="post-实验五" class="article article-type-post " itemscope itemprop="blogPost">
   <div class="article-inner">
     
       <header class="article-header">
         
   
-    <h1 itemprop="name">
-      <a class="article-title" href="/2019/12/14/实验五/">恶意代码分析实战（三）</a>
+    <h1 class="article-title" itemprop="name">
+      恶意代码分析实战（三）
     </h1>
   
 
@@ -298,16 +343,75 @@
       
 
       
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2019/12/14/实验五/">展开全文 >></a>
-        </p>
-      
 
+      
+        
+<div class="share-btn share-icons tooltip-left">
+  <div class="tooltip tooltip-east">
+    <span class="tooltip-item">
+      <a href="javascript:;" class="share-sns share-outer">
+        <i class="icon icon-share"></i>
+      </a>
+    </span>
+    <span class="tooltip-content">
+      <div class="share-wrap">
+        <div class="share-icons">
+          <a class="weibo share-sns" href="javascript:;" data-type="weibo">
+            <i class="icon icon-weibo"></i>
+          </a>
+          <a class="weixin share-sns wxFab" href="javascript:;" data-type="weixin">
+            <i class="icon icon-weixin"></i>
+          </a>
+          <a class="qq share-sns" href="javascript:;" data-type="qq">
+            <i class="icon icon-qq"></i>
+          </a>
+          <a class="douban share-sns" href="javascript:;" data-type="douban">
+            <i class="icon icon-douban"></i>
+          </a>
+          <a class="qzone share-sns" href="javascript:;" data-type="qzone">
+            <i class="icon icon-qzone"></i>
+          </a>
+          <a class="facebook share-sns" href="javascript:;" data-type="facebook">
+            <i class="icon icon-facebook"></i>
+          </a>
+          <a class="twitter share-sns" href="javascript:;" data-type="twitter">
+            <i class="icon icon-twitter"></i>
+          </a>
+          <a class="google share-sns" href="javascript:;" data-type="google">
+            <i class="icon icon-google"></i>
+          </a>
+        </div>
+      </div>
+    </span>
+  </div>
+</div>
+
+<div class="page-modal wx-share js-wx-box">
+    <a class="close js-modal-close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <div class="wx-qrcode">
+      <img src="//pan.baidu.com/share/qrcode?url=http://yoursite.com/2019/12/14/实验五/" alt="微信分享二维码">
+    </div>
+</div>
+
+<div class="mask js-mask"></div>
       
       <div class="clearfix"></div>
     </div>
   </div>
 </article>
+
+  
+<nav id="article-nav">
+  
+  
+    <a href="/2019/12/08/实验四/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">恶意代码分析实战笔记（二）</div>
+      <i class="icon-circle-right"></i>
+    </a>
+  
+</nav>
+
 
 <aside class="wrap-side-operation">
     <div class="mod-side-operation">
@@ -322,1155 +426,43 @@
         </div>
         
         
-    </div>
-</aside>
-
-
-
-
-  
-    <article id="post-实验四" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2019/12/08/实验四/">恶意代码分析实战笔记（二）</a>
-    </h1>
-  
-
-        
-        <a href="/2019/12/08/实验四/" class="archive-article-date">
-  	<time datetime="2019-12-08T14:08:53.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-12-08</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h1 id="恶意代码分析实战笔记（二）"><a href="#恶意代码分析实战笔记（二）" class="headerlink" title="恶意代码分析实战笔记（二）"></a>恶意代码分析实战笔记（二）</h1><h2 id="LAB03-01-exe"><a href="#LAB03-01-exe" class="headerlink" title="LAB03-01.exe"></a>LAB03-01.exe</h2><h3 id="1、找出这个恶意代码的导入函数与字符串列表？"><a href="#1、找出这个恶意代码的导入函数与字符串列表？" class="headerlink" title="1、找出这个恶意代码的导入函数与字符串列表？"></a>1、找出这个恶意代码的导入函数与字符串列表？</h3><p>使用strings查看字符串，发现一下内容</p>
-<p><img src="https://raw.githubusercontent.com/damaoooo/imageBed/master/assets/image-20191206215235177.png" alt="image-20191206215235177.png"></p>
-<p>发现了一个网址，然后导入的函数库使用了<code>VideoDriver</code>，<code>ws2_32.dll</code>，还有个<code>vmx32to64.exe</code>听名字是视频32位转64位，又发现了两个注册表项<code>SOFTWARE\Microsoft\Windows\CurrentVersion\Run</code>还有<code>SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\Shell Folders</code>，是开机启动项。然后在<code>Process Explorer</code>里面跑一下，查看DLL，发现<code>dnsapi.dll</code>是查询<code>DNS</code>的</p>
-<h3 id="2、这个恶意代码在主机上的感染迹象特征是什么？"><a href="#2、这个恶意代码在主机上的感染迹象特征是什么？" class="headerlink" title="2、这个恶意代码在主机上的感染迹象特征是什么？"></a>2、这个恶意代码在主机上的感染迹象特征是什么？</h3><p>修改注册表，在<code>HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Run\VideoDriver</code>写一个值<code>C:\WINDOWS\system32\vmx32to64.exe</code>，然后开机自启，在<code>C:\Windows\system32\vmx32to64.exe</code>写入该文件。</p>
-<p><img src="https://raw.githubusercontent.com/damaoooo/imageBed/master/assets/image-20191206223926717.png" alt="image-20191206223926717.png"></p>
-<p>通过检查HASH值，发现vmx32to64就是这个LAB03-01.exe</p>
-<p><img src="https://raw.githubusercontent.com/damaoooo/imageBed/master/assets/image-20191206225749132.png" alt="image-20191206225749132.png"></p>
-<p>发现在请求DNS，打开<code>apateDNS</code>检测发现Framework挂掉了，重新下载之后无果，查询资料发现这个软件没法在xp上面运行，好在我们还有wireshark</p>
-<p>在发送一个DNS请求<code>www.practicalsmalwareanalysis.com</code>的IP，wireshark抓包分析得比较清楚</p>
-<p><img src="https://raw.githubusercontent.com/damaoooo/imageBed/master/assets/image-20191206225336241.png" alt="image-20191206225336241.png"></p>
-<p>创建SSL，然后查询DNS，然后得到IP之后就开始和这个IP进行SSL的发包通信</p>
-<h3 id="3、这个恶意代码是否存在一些有用的网络特征码？如果存在，他们是什么？"><a href="#3、这个恶意代码是否存在一些有用的网络特征码？如果存在，他们是什么？" class="headerlink" title="3、这个恶意代码是否存在一些有用的网络特征码？如果存在，他们是什么？"></a>3、这个恶意代码是否存在一些有用的网络特征码？如果存在，他们是什么？</h3><p>string中发现的</p>
-<p><img src="https://raw.githubusercontent.com/damaoooo/imageBed/master/assets/image-20191206230330151.png" alt="image-20191206230330151.png"></p>
-<p><code>HTTP/1.0</code>，以及<code>503</code>,<code>200</code>都是HTTP中的网络特征码</p>
-<p>然后就是其他软件进行分析PEID分析走起，发现是有<code>junkcode</code>加壳的</p>
-<p><img src="https://raw.githubusercontent.com/damaoooo/imageBed/master/assets/image-20191206230517385.png" alt="image-20191206230517385.png"></p>
-<p>使用万能脱壳机来脱壳</p>
-<p><img src="https://raw.githubusercontent.com/damaoooo/imageBed/master/assets/image-20191208171245768.png" alt="image-20191208171245768.png"></p>
-<p>失败，看到还能使用OD手动脱壳，就去试一试</p>
-<p><img src="https://raw.githubusercontent.com/damaoooo/imageBed/master/assets/image-20191208172532449.png" alt="image-20191208172532449.png"></p>
-<p>函数的运行入口点很奇怪，F8几次之后就直接结束了，我们用F7跟进这个call</p>
-<p><img src="https://raw.githubusercontent.com/damaoooo/imageBed/master/assets/image-20191208172626746.png" alt="image-20191208172626746.png"></p>
-<p>很正常的一个函数入口，甚至还看到了push ascii “ws2_32”,然而在这个<code>ws2_32</code>这一处下F4，直接结束，手动脱壳失败。这个函数就这么分析到这里了</p>
-<h2 id="Lab03-02-dll"><a href="#Lab03-02-dll" class="headerlink" title="Lab03-02.dll"></a>Lab03-02.dll</h2><h3 id="1-你怎样才能让这个恶意代码自行安装？"><a href="#1-你怎样才能让这个恶意代码自行安装？" class="headerlink" title="1.你怎样才能让这个恶意代码自行安装？"></a>1.你怎样才能让这个恶意代码自行安装？</h3><p>使用系统自带的<code>rundll32.exe</code>，运行命令<code>rundll32.exe Lab03-02.dll,installA</code>，但是运行之前我们要知道为什么是InstallA，使用<code>PEView</code>查看文件的导出列表</p>
-<p><img src="https://raw.githubusercontent.com/damaoooo/imageBed/master/assets/image-20191208194318193.png" alt="image-20191208194318193.png"></p>
-<p>发现导出函数有<code>Install</code>,<code>ServiceMain</code>,<code>UninstallService</code>,<code>installA</code>,<code>UninstallA</code>，其中观察上面的install和一个服务有关，剩下的installA比较重要的分析对象。使用strings查看字符串</p>
-<p><img src="https://raw.githubusercontent.com/damaoooo/imageBed/master/assets/image-20191208194553684.png" alt="image-20191208194553684.png"></p>
-<p>发现里面有一堆关于注册表键值注册的操作，将其导入一个叫做<code>SOFTWARE\Microsoft\Windows NT\CurrentVersion\Svchost</code>里面</p>
-<p>然后使用IDA查看导入函数，用Dependency Walker有点慢</p>
-<p><img src="https://raw.githubusercontent.com/damaoooo/imageBed/master/assets/image-20191208195135808.png" alt="image-20191208195135808.png"></p>
-<p>发现了<code>GetCurrentDirectoryA</code>是获取当前目录</p>
-<p><code>CreateServiceA</code>，<code>DeleteServiceA</code>，创建和删除服务</p>
-<p><code>RegCloseKey</code>,<code>RegCreateKeyA</code>,<code>RegOpenKeyExA</code>,<code>RegQueryValueExA</code>,<code>RegSetValueExa</code>等等，是对注册表的值进行增删改查的操作</p>
-<p>然后在IDA里面查看字符串，发现了一些有趣的东西</p>
-<p><img src="https://raw.githubusercontent.com/damaoooo/imageBed/master/assets/image-20191208195653848.png" alt="image-20191208195653848.png"></p>
-<p>怀疑是<code>base64</code>加密的字符串，以及一个<code>base64</code>的字母表，说明这个程序里面还有base64,把这些base64字符串解出来是<code>connect</code>|<code>unsupport</code>|<code>sleep</code>|<code>cmd</code>|<code>quit</code>,说明这个程序还能够去调用cmd进行操作。当然，我们也发现了一个网站</p>
-<h3 id="2-在安装之后，你如何让这个恶意代码运行起来？"><a href="#2-在安装之后，你如何让这个恶意代码运行起来？" class="headerlink" title="2.在安装之后，你如何让这个恶意代码运行起来？"></a>2.在安装之后，你如何让这个恶意代码运行起来？</h3><p>运行命令<code>rundll32.exe Lab03-02.dll,installA</code>，但是在运行之前要对注册表加一个快照，因为这个程序会修改注册表，然后使用<code>net start IPRIP</code>就可以运行了</p>
-<p><img src="https://raw.githubusercontent.com/damaoooo/imageBed/master/assets/image-20191208201043909.png" alt="image-20191208201043909.png"></p>
-<p>其实运行<code>Install</code>和运行<code>InstallA</code>效果都一样</p>
-<p>然后运行完了之后查看注册表快照看看有什么变化</p>
-<p><img src="https://raw.githubusercontent.com/damaoooo/imageBed/master/assets/image-20191208201251439.png" alt="image-20191208201251439.png"></p>
-<h3 id="3、你怎么能找到这个恶意代码是在哪个进程下运行的？"><a href="#3、你怎么能找到这个恶意代码是在哪个进程下运行的？" class="headerlink" title="3、你怎么能找到这个恶意代码是在哪个进程下运行的？"></a>3、你怎么能找到这个恶意代码是在哪个进程下运行的？</h3><p>服务中多了个IPRIP的服务</p>
-<p><img src="https://raw.githubusercontent.com/damaoooo/imageBed/master/assets/image-20191208201558618.png" alt="image-20191208201558618.png"></p>
-<p><img src="https://raw.githubusercontent.com/damaoooo/imageBed/master/assets/image-20191208201638660.png" alt="image-20191208201638660.png"></p>
-<p>然后发现是附加在svchost.exe上面运行的，名字就是<code>Intranet Network Awareness (INA+)</code>，听起来还很正经</p>
-<p>然后我们使用<code>net start IPRIP</code>运行这个服务，并在Procmon里面找找这个服务还有文件名</p>
-<h3 id="4、你可以在procmon工具中设置什么样的过滤器，才能收集这个恶意代码的信息？"><a href="#4、你可以在procmon工具中设置什么样的过滤器，才能收集这个恶意代码的信息？" class="headerlink" title="4、你可以在procmon工具中设置什么样的过滤器，才能收集这个恶意代码的信息？"></a>4、你可以在procmon工具中设置什么样的过滤器，才能收集这个恶意代码的信息？</h3><p><img src="https://raw.githubusercontent.com/damaoooo/imageBed/master/assets/image-20191208202048425.png" alt="image-20191208202048425.png"></p>
-<p>成功找到附加在系统服务上的病毒程序</p>
-<h3 id="5、这个恶意代码在主机上的感染迹象特征是什么？"><a href="#5、这个恶意代码在主机上的感染迹象特征是什么？" class="headerlink" title="5、这个恶意代码在主机上的感染迹象特征是什么？"></a>5、这个恶意代码在主机上的感染迹象特征是什么？</h3><p>多了一个<code>IPRIP</code>的服务驻留在后台，然后通过wireshark抓包分析（ApateDNS无法在XP上面运行，安装了NET.framework一样的）</p>
-<p><img src="https://raw.githubusercontent.com/damaoooo/imageBed/master/assets/image-20191208202546910.png" alt="image-20191208202546910.png"></p>
-<h3 id="6、这个恶意代码是否存在一些有用的网络特征码？"><a href="#6、这个恶意代码是否存在一些有用的网络特征码？" class="headerlink" title="6、这个恶意代码是否存在一些有用的网络特征码？"></a>6、这个恶意代码是否存在一些有用的网络特征码？</h3><p>刚才看见的<code>connect</code>，以及<code>HTTP GET/1.1</code>等等</p>
-<h2 id="LAB03-03-exe"><a href="#LAB03-03-exe" class="headerlink" title="LAB03-03.exe"></a>LAB03-03.exe</h2><h3 id="1、当你使用Process-explorer工具进行监视时，你注意到了什么？"><a href="#1、当你使用Process-explorer工具进行监视时，你注意到了什么？" class="headerlink" title="1、当你使用Process explorer工具进行监视时，你注意到了什么？"></a>1、当你使用Process explorer工具进行监视时，你注意到了什么？</h3><p>首先我们先用IDA进行静态分析</p>
-<p><img src="https://raw.githubusercontent.com/damaoooo/imageBed/master/assets/image-20191208203902743.png" alt="image-20191208203902743.png"></p>
-<p>查看字符串，发现是一些简单的报错信息还有下面的乱码，然后查看导入函数表</p>
-<p><img src="https://raw.githubusercontent.com/damaoooo/imageBed/master/assets/image-20191208204104073.png" alt="image-20191208204104073.png"></p>
-<p>发现能够对内存，文件进行增删改查，然后使用ProcessExplorer进行监视</p>
-<p>发现运行的时候出现一个<code>Lab03-03.exe</code>，然后创建一个<code>svchost.exe</code>，然后这个<code>Lab03-03.exe</code>一瞬虚无，多来两次找到这个新的<code>svchost.exe</code></p>
-<p><img src="https://raw.githubusercontent.com/damaoooo/imageBed/master/assets/image-20191208204753308.png" alt="image-20191208204753308.png"></p>
-<p>这个伪装就非常的拙劣了，单独出来一个孤儿进程</p>
-<h3 id="2、你可以找出任何的内存修改行为吗？"><a href="#2、你可以找出任何的内存修改行为吗？" class="headerlink" title="2、你可以找出任何的内存修改行为吗？"></a>2、你可以找出任何的内存修改行为吗？</h3><p><img src="https://raw.githubusercontent.com/damaoooo/imageBed/master/assets/image-20191208204927957.png" alt="image-20191208204927957.png"></p>
-<p>源映像和内存中的影响还不一样，多了一些按键，估计是个键盘记录器</p>
-<h3 id="3、这个恶意代码在主机上的感染迹象特征是什么？"><a href="#3、这个恶意代码在主机上的感染迹象特征是什么？" class="headerlink" title="3、这个恶意代码在主机上的感染迹象特征是什么？"></a>3、这个恶意代码在主机上的感染迹象特征是什么？</h3><p>然后多了一个<code>practicalmalwareanalysys.log</code>，估计就是记录的日志文件了，打开看看</p>
-<p><img src="https://raw.githubusercontent.com/damaoooo/imageBed/master/assets/image-20191208205108968.png" alt="image-20191208205108968.png"></p>
-<p>还真是一个记录键盘的文件</p>
-<h3 id="4、这个恶意代码的目的是什么？"><a href="#4、这个恶意代码的目的是什么？" class="headerlink" title="4、这个恶意代码的目的是什么？"></a>4、这个恶意代码的目的是什么？</h3><p>记录键盘，生成日志文件，发送到一个目录中，但是没找到网络模块，不会上传出去，有点类似于灰鸽子木马</p>
-<h2 id="Lab03-04-exe"><a href="#Lab03-04-exe" class="headerlink" title="Lab03-04.exe"></a>Lab03-04.exe</h2><h3 id="1、当你运行这个文件时，会发生什么呢？"><a href="#1、当你运行这个文件时，会发生什么呢？" class="headerlink" title="1、当你运行这个文件时，会发生什么呢？"></a>1、当你运行这个文件时，会发生什么呢？</h3><p>首先我们还是先查壳然后IDA静态分析一下</p>
-<p><img src="https://raw.githubusercontent.com/damaoooo/imageBed/master/assets/image-20191208210413285.png" alt="image-20191208210413285.png"></p>
-<p>很幸运没加壳</p>
-<p>然后拖进IDA分析</p>
-<p><img src="https://raw.githubusercontent.com/damaoooo/imageBed/master/assets/image-20191208210608253.png" alt="image-20191208210608253.png"></p>
-<p>导入函数来看，有很明显的套接字的网络发送和接收操作。还能看到执行<code>Shell</code>命令的操作</p>
-<p>以及对文件，注册表进行增删改查。</p>
-<p>然后就是找字符串</p>
-<p><img src="https://raw.githubusercontent.com/damaoooo/imageBed/master/assets/image-20191208211538850.png" alt="image-20191208211538850.png"></p>
-<p><img src="https://raw.githubusercontent.com/damaoooo/imageBed/master/assets/image-20191208211634262.png" alt="image-20191208211634262.png"></p>
-<p>是一些很常见的报错信息，然后又一个网址<code>command.com</code>，还有星期，月份。另外还有唤起<code>cmd</code>，然后还有一个<code>\c del</code>的删除命令，我们转到调用这个<code>cmd.exe</code>的地方</p>
-<h3 id="2、是什么原因造成动态分析无法有效实施？"><a href="#2、是什么原因造成动态分析无法有效实施？" class="headerlink" title="2、是什么原因造成动态分析无法有效实施？"></a>2、是什么原因造成动态分析无法有效实施？</h3><p>因为这个程序会把自己给删掉</p>
-<h3 id="3、是否有其它方式来运行这个程序？"><a href="#3、是否有其它方式来运行这个程序？" class="headerlink" title="3、是否有其它方式来运行这个程序？"></a>3、是否有其它方式来运行这个程序？</h3><p>由于这个文件室友一个删除自己的操作，因此我们转到含有<code>cmd.exe</code>这个的调用函数处</p>
-<p><img src="https://raw.githubusercontent.com/damaoooo/imageBed/master/assets/image-20191208211811078.png" alt="image-20191208211811078.png"></p>
-<p>原来是执行一个<code>shell</code>命令<code>filename+\c del + &gt;&gt; NUL</code></p>
-<p>我们跳进这个函数的引用里面，发现就是<code>main()</code>引用的这个函数</p>
-<p><img src="https://raw.githubusercontent.com/damaoooo/imageBed/master/assets/image-20191208212319418.png" alt="image-20191208212319418.png"></p>
-<p>通过阅读程序逻辑，可以看到，是要运行时给好几个参数，然后还有一个参数校验程序，我们跳进这个最后一个参数的校验程序<code>sub_402510()</code>（为了逆向方便我会改名字）</p>
-<p>可以看到第一个校验程序是校验如果参数为3个时，最后一个要是<code>abcd</code></p>
-<p><img src="https://raw.githubusercontent.com/damaoooo/imageBed/master/assets/image-20191208213518610.png" alt="image-20191208213518610.png"></p>
-<p>然后是根据输入的第一个参数来执行操作，去逆向其他函数</p>
-<p><img src="https://raw.githubusercontent.com/damaoooo/imageBed/master/assets/image-20191208213949967.png" alt="image-20191208213949967.png"></p>
-<p>发现是打开然后查找<code>HKEY_LOCAL_MACHIME\SOFTWARE\Microsoft\XPS</code>的<code>Configuration</code>的值</p>
-<p><img src="https://raw.githubusercontent.com/damaoooo/imageBed/master/assets/image-20191208214833935.png" alt="image-20191208214833935.png"></p>
-<p>至此其中的一个运行方式就被我们摸出来了，在命令行里面执行这个程序，参数设置成一个<code>-cc</code>之类的，然后还要注册表中有这个值，就能够根据这个值来运行，大概运行的命令如下</p>
-<p><code>Lab03-04.exe -cc abcd</code></p>
-<p>我们做个实验看看</p>
-<p><img src="https://raw.githubusercontent.com/damaoooo/imageBed/master/assets/image-20191208215151854.png" alt="image-20191208215151854.png"></p>
-<p>疯狂运行，文件没少，既然能跑我们就可以通过OD结合IDA进行详细分析了，在此不表</p>
-
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-      
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2019/12/08/实验四/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
+        <div class="toc-container tooltip-left">
+            <i class="icon-font icon-category"></i>
+            <div class="tooltip tooltip-east">
+                <span class="tooltip-item">
+                </span>
+                <span class="tooltip-content">
+                    <div class="toc-article">
+                    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#恶意代码分析实战（三）"><span class="toc-number">1.</span> <span class="toc-text">恶意代码分析实战（三）</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1：DllMain的地址是什么？"><span class="toc-number">1.1.</span> <span class="toc-text">1：DllMain的地址是什么？</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2：使用Imports窗口并浏览到gethostbyname-导入函数定位到什么地址？"><span class="toc-number">1.2.</span> <span class="toc-text">2：使用Imports窗口并浏览到gethostbyname, 导入函数定位到什么地址？</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3：有多少函数调用了gethostbyname"><span class="toc-number">1.3.</span> <span class="toc-text">3：有多少函数调用了gethostbyname?</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-将精力集中在位于0x10001757处的对gethostbyname的调用，你能找出那个DNS请求将被触发吗？"><span class="toc-number">1.4.</span> <span class="toc-text">4: 将精力集中在位于0x10001757处的对gethostbyname的调用，你能找出那个DNS请求将被触发吗？</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#5：IDA-Pro识别了在0x10001656处的子过程中的多少个局部变量？"><span class="toc-number">1.5.</span> <span class="toc-text">5：IDA Pro识别了在0x10001656处的子过程中的多少个局部变量？</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#6：IDA-Pro识别了在0x10001656处的子过程中的多少个参数？"><span class="toc-number">1.6.</span> <span class="toc-text">6：IDA Pro识别了在0x10001656处的子过程中的多少个参数？</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#7：使用Strings窗口，来在反汇编中定位字符串-cmd-exe-c。-它位于哪？"><span class="toc-number">1.7.</span> <span class="toc-text">7：使用Strings窗口，来在反汇编中定位字符串\cmd.exe /c。 它位于哪？</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#8：在引用-cmd-exe-c的代码所在的区域发生了什么？"><span class="toc-number">1.8.</span> <span class="toc-text">8：在引用\cmd.exe /c的代码所在的区域发生了什么？</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#在同样的区域，在0x100101C8处，看起来好像dword-1008E5C4是一个全局变量，它帮助决定走哪条路径。那恶意代码是如何设置dword-1008E5C4的呢？（提示：使用dword-1008E5C4的交叉引用。）"><span class="toc-number">1.9.</span> <span class="toc-text">在同样的区域，在0x100101C8处，看起来好像dword_1008E5C4是一个全局变量，它帮助决定走哪条路径。那恶意代码是如何设置dword_1008E5C4的呢？（提示：使用dword_1008E5C4的交叉引用。）</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#10：在位于0x1000FF58处的子过程中的几百行指令中，一系列使用memecmp来比较字符串的比较。如果对robotwork的字符串比较是成功的（当memcmp返回0），会发生什么？"><span class="toc-number">1.10.</span> <span class="toc-text">10：在位于0x1000FF58处的子过程中的几百行指令中，一系列使用memecmp来比较字符串的比较。如果对robotwork的字符串比较是成功的（当memcmp返回0），会发生什么？</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#11、问题：PSLIST导出函数做了什么？"><span class="toc-number">1.11.</span> <span class="toc-text">11、问题：PSLIST导出函数做了什么？</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#12、问题：使用图模式来绘制出对sub-10004E79的交叉引用图。当进入这个函数时，哪个API函数可能被调用？仅仅基于这些API函数，你会如何命名这个函数？"><span class="toc-number">1.12.</span> <span class="toc-text">12、问题：使用图模式来绘制出对sub_10004E79的交叉引用图。当进入这个函数时，哪个API函数可能被调用？仅仅基于这些API函数，你会如何命名这个函数？</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#13、问题：DllMain直接调用了多少个Windwos-API-多少深度为2时被调用？"><span class="toc-number">1.13.</span> <span class="toc-text">13、问题：DllMain直接调用了多少个Windwos API? 多少深度为2时被调用？</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#14、问题：在0x10001358处，有一个Sleep（一个使用一个包含要睡眠的毫秒级的参数的API函数）的调用。顺着代码向后看，如果这段代码执行，这个程序会睡眠多久？"><span class="toc-number">1.14.</span> <span class="toc-text">14、问题：在0x10001358处，有一个Sleep（一个使用一个包含要睡眠的毫秒级的参数的API函数）的调用。顺着代码向后看，如果这段代码执行，这个程序会睡眠多久？</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#15、问题：在0x10001701处是一个对socket的调用，它的3个参数是什么？"><span class="toc-number">1.15.</span> <span class="toc-text">15、问题：在0x10001701处是一个对socket的调用，它的3个参数是什么？</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#16、问题：使用MSDN页面的socket和IDA-Pro中的命名符号常量，你能使参数更加有意义吗？在你应用了修改后，参数是什么？"><span class="toc-number">1.16.</span> <span class="toc-text">16、问题：使用MSDN页面的socket和IDA Pro中的命名符号常量，你能使参数更加有意义吗？在你应用了修改后，参数是什么？</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#17、问题：搜索in指令（opcode-0xED）的使用。-这个指令和一个魔术字符串VMXh用来进行VMware检测。这在这个恶意代码中被使用了吗？使用对执行in指令函数的交叉引用，能发现进一步检测VMware的证据吗？"><span class="toc-number">1.17.</span> <span class="toc-text">17、问题：搜索in指令（opcode 0xED）的使用。 这个指令和一个魔术字符串VMXh用来进行VMware检测。这在这个恶意代码中被使用了吗？使用对执行in指令函数的交叉引用，能发现进一步检测VMware的证据吗？</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#18、问题：将光标跳转到0x1001D988处，你发现了什么？"><span class="toc-number">1.18.</span> <span class="toc-text">18、问题：将光标跳转到0x1001D988处，你发现了什么？</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#额外"><span class="toc-number">1.19.</span> <span class="toc-text">额外</span></a></li></ol></li></ol>
+                    </div>
+                </span>
             </div>
         </div>
         
-        
     </div>
 </aside>
 
 
 
-
-  
-    <article id="post-自动化markdown插入图床" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2019/12/01/自动化markdown插入图床/">自动化markdown插入图床</a>
-    </h1>
-  
-
-        
-        <a href="/2019/12/01/自动化markdown插入图床/" class="archive-article-date">
-  	<time datetime="2019-12-01T08:26:54.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-12-01</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h1 id="自动化markdown插入图床"><a href="#自动化markdown插入图床" class="headerlink" title="自动化markdown插入图床"></a>自动化markdown插入图床</h1><p>之前用的是<code>sm.ms</code>的一个公共图床，的确很不错，还有开放API端口，很不错。于是我写了个自动化脚本，来实现上传到图床然后去对文本的连接进行替换的操作，但是由于这个图床够狠，1分钟必须低于多少次，然后一个小时又不能超过20张，非常烦人，看来免费的才是最贵的。于是下定决心不用这个API，自己去用自己的GitHub来搭建一个图床，VPS的话以后再考虑。</p>
-<p>自己写了个脚本完成自动化操作，以后就非常方便了，只需要<code>粘贴图片-&gt;图片放入git文件夹-&gt;运行自动化脚本</code>,就可以完成替换了，比较方便，使用方法如下</p>
-<p>首先在GitHub上面弄个目录来专门放你的图片</p>
-<p><img src="https://raw.githubusercontent.com/damaoooo/imageBed/master/assets/image-20191201161807225.png" alt="image-20191201161807225.png"></p>
-<p>然后在本地<code>git clone</code>下来</p>
-<p><img src="https://raw.githubusercontent.com/damaoooo/imageBed/master/assets/image-20191201161815623.png" alt="image-20191201161815623.png"></p>
-<p>然后把你的图片放进去，你也可以在<code>typora</code>中设置图片的自动保存路径，这样一来这一步也省去了，直接跑脚本</p>
-<p>然后打开脚本，进行个人设置</p>
-<p><img src="https://raw.githubusercontent.com/damaoooo/imageBed/master/assets/image-20191201161912963.png" alt="image-20191201161912963.png"></p>
-<p>需要个人设置的地方我都会在下面代码中注释出来</p>
-<p>然后图床替换就完成了，是不是很快呢，自动化代码如下</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> re</span><br><span class="line"><span class="keyword">import</span> os</span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">parseText</span><span class="params">(textpath)</span>:</span></span><br><span class="line">    f = open(textpath,<span class="string">'r+'</span>,encoding = <span class="string">'utf-8'</span>)</span><br><span class="line">    text = str(f.read())</span><br><span class="line">    f.close()</span><br><span class="line">    <span class="keyword">return</span> text</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">getPicPath</span><span class="params">(text)</span>:</span></span><br><span class="line">    <span class="comment">#根据你的图片自己设置，不同版本不一样</span></span><br><span class="line">    srcPic = re.findall(<span class="string">r'\!\[image-\d*\]\(.*\)'</span>,text)</span><br><span class="line">    dst = []</span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> srcPic:</span><br><span class="line">        str1 = re.findall(<span class="string">'\/.*\)'</span>,i)[<span class="number">0</span>]</span><br><span class="line">        str1 = str1[<span class="number">1</span>:<span class="number">-1</span>]</span><br><span class="line">        dst.append(str1)</span><br><span class="line">    <span class="keyword">return</span> srcPic,dst</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">replaceText</span><span class="params">(text,src,dst)</span>:</span></span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> range(len(src)):</span><br><span class="line">        dst[i] = <span class="string">'!['</span>+dst[i]+<span class="string">']('</span>+<span class="string">'https://raw.githubusercontent.com/xxxxx/xxxxx/'</span>+dst[i]+<span class="string">')'</span></span><br><span class="line">        <span class="comment">#中间的网址替换为https://raw.githubusercontent.com/你的用户名/你的仓库/你的分支/你的目录/</span></span><br><span class="line">        text = text.replace(src[i],dst[i])</span><br><span class="line">    <span class="keyword">return</span> text</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">rewrite</span><span class="params">(textpath,text)</span>:</span></span><br><span class="line">    f = open(textpath,<span class="string">'w+'</span>,encoding=<span class="string">'utf-8'</span>)</span><br><span class="line">    f.write(text)</span><br><span class="line">    f.close()</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">main</span><span class="params">()</span>:</span></span><br><span class="line">    <span class="comment">#自己写markdown的目录</span></span><br><span class="line">    rootpath = <span class="string">'C:/Users/周半仙/Desktop/ComputerSecurity/'</span></span><br><span class="line">    <span class="comment">#自己写markdown的文件名，注意斜线</span></span><br><span class="line">    textpath = rootpath+<span class="string">'实验三_副本.md'</span></span><br><span class="line">    text = parseText(textpath)</span><br><span class="line">    src,picdst = getPicPath(text)</span><br><span class="line">    text = replaceText(text,src,picdst)</span><br><span class="line">    payload = <span class="string">'git add . &amp;&amp; git commit -m "auto upload" &amp;&amp;  git push'</span></span><br><span class="line">    <span class="comment">#自己写你的图片的本地位置</span></span><br><span class="line">    os.chdir(<span class="string">'D:\\imageBed\\imageBed'</span>)</span><br><span class="line">    os.system(payload)</span><br><span class="line">main()</span><br></pre></td></tr></table></figure>
-
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-      
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2019/12/01/自动化markdown插入图床/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
-    <article id="post-实验三" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2019/12/01/实验三/">恶意代码分析实战笔记(一)</a>
-    </h1>
-  
-
-        
-        <a href="/2019/12/01/实验三/" class="archive-article-date">
-  	<time datetime="2019-12-01T07:08:53.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-12-01</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h1 id="恶意代码分析实战解题笔记（一）"><a href="#恶意代码分析实战解题笔记（一）" class="headerlink" title="恶意代码分析实战解题笔记（一）"></a>恶意代码分析实战解题笔记（一）</h1><h2 id="LAB01-01-dll和LAB01-01-exe-文件分析"><a href="#LAB01-01-dll和LAB01-01-exe-文件分析" class="headerlink" title="LAB01-01.dll和LAB01-01.exe 文件分析"></a>LAB01-01.dll和LAB01-01.exe 文件分析</h2><p>首先拖到<code>www.virustotal.com</code>里面进行在线分析，得到如下结果</p>
-<p><img src="https://raw.githubusercontent.com/damaoooo/imageBed/master/assets/image-20191201015128319.png" alt="image-20191201015128319.png"></p>
-<p>大多数杀毒引擎分析出这是一个特洛伊木马病毒</p>
-<p>分析LAB01-01.exe得到的结果如下</p>
-<p><img src="https://raw.githubusercontent.com/damaoooo/imageBed/master/assets/image-20191201015401592.png" alt="image-20191201015401592.png"></p>
-<p>和上面的结果类似</p>
-<p>然后再虚拟机上进行分析</p>
-<p><img src="https://raw.githubusercontent.com/damaoooo/imageBed/master/assets/image-20191201015743894.png" alt="image-20191201015743894.png"></p>
-<p>LAB01-01.dll文件没有加壳，就是个普通的VS6编译出的<code>dll</code>，里面的代码区段也很明显，多了个重定位区段。</p>
-<p><img src="https://raw.githubusercontent.com/damaoooo/imageBed/master/assets/image-20191201015854401.png" alt="image-20191201015854401.png"></p>
-<p>LAB01-01.exe这个文件也没有加壳，就是普通VC6编译出的EXE，代码区段也很明显</p>
-<p>通过strings查看LAB01-01.exe里的关键字符串</p>
-<p><img src="https://raw.githubusercontent.com/damaoooo/imageBed/master/assets/image-20191201020213238.png" alt="image-20191201020213238.png"></p>
-<p>除了基本的<code>KERNEL32.DLL</code>和<code>MSVCRT.DLL</code>之外，还看到了调用<code>CreateFileA</code>，<code>CopyFileA</code>等可疑的API，通过字符分析，猜测是把程序的<code>lab01-01.dll</code>复制到<code>C:\Windows\system32\kernel132.dll</code>，改个名字，然后查找，调用该程序。</p>
-<p>这个分析完了之后再看看dll里的字符</p>
-<p><img src="https://raw.githubusercontent.com/damaoooo/imageBed/master/assets/image-20191201020523141.png" alt="image-20191201020523141.png"></p>
-<p>看到了<code>WS2_32.dll</code>是用于网络套接字编程的一个DLL，然后还有一个私有IP地址，估计是用于通信的IP地址，看到了<code>CreateMutexA</code>，<code>OpenMutexA</code>等API，是用于互斥锁的一个原子操作，后面还有创建句柄等等，怀疑是驻留后台的进程</p>
-<p>使用Dependency Walker查看DLL里面调用的函数</p>
-<p><img src="https://raw.githubusercontent.com/damaoooo/imageBed/master/assets/image-20191201021058507.png" alt="image-20191201021058507.png"></p>
-<p>调用了<code>互斥锁</code>，<code>打开和关闭句柄</code>，<code>创建进程</code>，<code>休眠函数</code>，怀疑是驻留后台</p>
-<p>然后我们拖进大杀器，IDA里面进行分析</p>
-<p><img src="https://raw.githubusercontent.com/damaoooo/imageBed/master/assets/image-20191201021627627.png" alt="image-20191201021627627.png"></p>
-<p>一通乱逆之后，证实之前的思路</p>
-<p>一开始如果运行的参数不是<code>WARNING_THIS_WILL_DESTROY_YOUR_MACHINE</code>,就不会运行这个程序</p>
-<p>将<code>LAB01-01.dll</code>伪装成<code>kerne132.dll</code>并复制到原本的<code>kernel32.dll</code>中，然后调用这个dll，进行木马程序</p>
-<h2 id="LAB01-02-exe-文件分析"><a href="#LAB01-02-exe-文件分析" class="headerlink" title="LAB01-02.exe 文件分析"></a>LAB01-02.exe 文件分析</h2><h3 id="1-放进www-virustotal-com里面观察"><a href="#1-放进www-virustotal-com里面观察" class="headerlink" title="1.放进www.virustotal.com里面观察"></a>1.放进<code>www.virustotal.com</code>里面观察</h3><p><img src="https://raw.githubusercontent.com/damaoooo/imageBed/master/assets/image-20191201023013670.png" alt="image-20191201023013670.png"></p>
-<p>提示是另一种木马病毒</p>
-<h3 id="2-首先看查壳"><a href="#2-首先看查壳" class="headerlink" title="2.首先看查壳"></a>2.首先看查壳</h3><p><img src="https://raw.githubusercontent.com/damaoooo/imageBed/master/assets/image-20191201022726924.png" alt="image-20191201022726924.png"></p>
-<p><img src="https://raw.githubusercontent.com/damaoooo/imageBed/master/assets/image-20191201023140215.png" alt="image-20191201023140215.png"></p>
-<p>说明是加了UPX的壳，这是个很简单的壳，高手用ESP定律就能够手动脱壳，但是我等渣渣就只能够借助工具来脱壳。没有<code>.text</code>等常见的代码段，说明无法正常进行反汇编分析</p>
-<p>运行<code>upx -o newFilename -d originalFilename</code>进行脱壳</p>
-<p><img src="https://raw.githubusercontent.com/damaoooo/imageBed/master/assets/image-20191201023324229.png" alt="image-20191201023324229.png"></p>
-<p>然后再拖进<code>PEiD</code>里面查看</p>
-<p><img src="https://raw.githubusercontent.com/damaoooo/imageBed/master/assets/image-20191201023428540.png" alt="image-20191201023428540.png"></p>
-<h3 id="7-立竿见影，然后我们查看字符串"><a href="#7-立竿见影，然后我们查看字符串" class="headerlink" title="7.立竿见影，然后我们查看字符串"></a>7.立竿见影，然后我们查看字符串</h3><p><img src="https://raw.githubusercontent.com/damaoooo/imageBed/master/assets/image-20191201023535092.png" alt="image-20191201023535092.png"></p>
-<h3 id="3-查看导入函数"><a href="#3-查看导入函数" class="headerlink" title="3. 查看导入函数"></a>3. 查看导入函数</h3><p>我们可以看见一些函数，如<code>WININET.DLL</code>网络编程，获取模块名称，创建进程，创建互斥锁，打开IE浏览器，IE浏览器打开URL，下面还有这个URL的具体内容。</p>
-<h3 id="4-感染迹象"><a href="#4-感染迹象" class="headerlink" title="4.感染迹象"></a>4.感染迹象</h3><p>猜想，感染迹象就是大概是病毒会控制用户的电脑打开如图所示的网站。</p>
-<h3 id="6-使用Study-PE进行分析"><a href="#6-使用Study-PE进行分析" class="headerlink" title="6.使用Study_PE进行分析"></a>6.使用Study_PE进行分析</h3><p><img src="https://raw.githubusercontent.com/damaoooo/imageBed/master/assets/image-20191201024237851.png" alt="image-20191201024237851.png"></p>
-<p>导入函数有常见的<code>CreatMutexA</code>,<code>SystemTimeToFileTime</code>,<code>ExitProcess</code>,<code>CreateThread</code>等等</p>
-<p><code>wininet.dll</code>是Windows的应用程序网络模块，负责网络通信，比如图中的打开URL</p>
-<p><code>advapi32.dll</code>是负责高级API接口的部分，负责注册表，函数与对象，事件日志等等</p>
-<h3 id="7-Malservice字符串的作用"><a href="#7-Malservice字符串的作用" class="headerlink" title="7.Malservice字符串的作用"></a>7.Malservice字符串的作用</h3><p>猜测病毒是把自己变成一个服务挂在系统后台，在某个时间一到就运行自己。</p>
-<p>在IDA里打开分析</p>
-<p><img src="https://raw.githubusercontent.com/damaoooo/imageBed/master/assets/image-20191201025127570.png" alt="image-20191201025127570.png"></p>
-<p>果然是把自己变成一个服务然后运行</p>
-<p><img src="https://raw.githubusercontent.com/damaoooo/imageBed/master/assets/image-20191201025459146.png" alt="image-20191201025459146.png"></p>
-<p>再通过分析调用，更加证实了猜想，并且明白了这个互斥锁的名字是<code>HGL345</code>，然后创建服务之后会弹出20次这个网站。</p>
-<h2 id="lab01-03-exe分析"><a href="#lab01-03-exe分析" class="headerlink" title="lab01-03.exe分析"></a>lab01-03.exe分析</h2><h2 id="1-上传分析"><a href="#1-上传分析" class="headerlink" title="1. 上传分析"></a>1. 上传分析</h2><p><img src="https://raw.githubusercontent.com/damaoooo/imageBed/master/assets/image-20191201030147123.png" alt="image-20191201030147123.png"></p>
-<p>报了一堆毒，第一个居然就是可疑就打法了，然后后面两个都说是木马病毒</p>
-<h3 id="2-查壳脱壳"><a href="#2-查壳脱壳" class="headerlink" title="2.查壳脱壳"></a>2.查壳脱壳</h3><p><img src="https://raw.githubusercontent.com/damaoooo/imageBed/master/assets/image-20191201030338150.png" alt="image-20191201030338150.png"></p>
-<p>发现没有段名称，然后是一个FSG1.0，立即询问万能的Google</p>
-<p><img src="https://raw.githubusercontent.com/damaoooo/imageBed/master/assets/image-20191201030619188.png" alt="image-20191201030619188.png"></p>
-<p>网上都是手动脱壳，于是只好实用我收集到的脱壳机进行脱壳</p>
-<p><img src="https://raw.githubusercontent.com/damaoooo/imageBed/master/assets/image-20191201031223878.png" alt="image-20191201031223878.png"></p>
-<p>脱壳成功。</p>
-<p>使用Dependency walker查看导入表，发现两个很奇怪的dll文件</p>
-<p><img src="https://raw.githubusercontent.com/damaoooo/imageBed/master/assets/image-20191201031547803.png" alt="image-20191201031547803.png"></p>
-<p>查询这两个DLL是干嘛的，发现是用来连接和嵌入对象的，这个就是高级的面向对象编程的一些函数了，查看调用表也没发现什么奇怪的东西，于是查看其他的DLL</p>
-<p><img src="https://raw.githubusercontent.com/damaoooo/imageBed/master/assets/image-20191201032031719.png" alt="image-20191201032031719.png"></p>
-<p>然而并没有发现什么奇特的函数，无非就是对文件的增删改查，还有蜂鸣报警。通过查看Strings 也并没有发现什么特别之处，除了有一个可疑的网址</p>
-<p><img src="https://raw.githubusercontent.com/damaoooo/imageBed/master/assets/image-20191201032228890.png" alt="image-20191201032228890.png"></p>
-<p>于是我们使用IDA进行分析</p>
-<p><img src="https://raw.githubusercontent.com/damaoooo/imageBed/master/assets/image-20191201032336500.png" alt="image-20191201032336500.png"></p>
-<p>大概就是创建一个对象，然后有个<code>SysAllocString()</code>这个函数不知道是干嘛的，翻微软官方文档发现就是个<code>Ole32.dll</code>下的复制操作。</p>
-<h3 id="4-感染迹象-1"><a href="#4-感染迹象-1" class="headerlink" title="4.感染迹象"></a>4.感染迹象</h3><p>大致猜测就是一个在内存中分配这个网站，然后创建一个关于网站的对象的操作。估计是访问这个网站。</p>
-<p>在虚拟机中运行，果真如此</p>
-<h2 id="lab01-04-exe-分析"><a href="#lab01-04-exe-分析" class="headerlink" title="lab01-04.exe 分析"></a>lab01-04.exe 分析</h2><h3 id="1-上传分析-1"><a href="#1-上传分析-1" class="headerlink" title="1. 上传分析"></a>1. 上传分析</h3><p><img src="https://raw.githubusercontent.com/damaoooo/imageBed/master/assets/image-20191201032950875.png" alt="image-20191201032950875.png"></p>
-<p>爆了一堆毒，估计是一个木马，还有提示说是一个木马下载器，专门下载其他木马的</p>
-<h3 id="2-查壳脱壳-1"><a href="#2-查壳脱壳-1" class="headerlink" title="2. 查壳脱壳"></a>2. 查壳脱壳</h3><p><img src="https://raw.githubusercontent.com/damaoooo/imageBed/master/assets/image-20191201033048021.png" alt="image-20191201033048021.png"></p>
-<p>非常幸运，没有壳</p>
-<h3 id="3-查看这个文件什么时候被编译的"><a href="#3-查看这个文件什么时候被编译的" class="headerlink" title="3.查看这个文件什么时候被编译的"></a>3.查看这个文件什么时候被编译的</h3><p><img src="https://raw.githubusercontent.com/damaoooo/imageBed/master/assets/image-20191201033305211.png" alt="image-20191201033305211.png"></p>
-<p>网站上面已经说的很清楚了 2019-08-30 22.26.59被创建的</p>
-<h3 id="4-查看导入函数暗示程序的功能"><a href="#4-查看导入函数暗示程序的功能" class="headerlink" title="4.查看导入函数暗示程序的功能"></a>4.查看导入函数暗示程序的功能</h3><p><img src="https://raw.githubusercontent.com/damaoooo/imageBed/master/assets/image-20191201113735463.png" alt="image-20191201113735463.png"></p>
-<p>对文件增删改查，然后还有创建远程线程，估计是用于远控，还有获取程序地址，获取<code>temp</code>目录等等，没有看出什么奇怪的迹象，但是这个文件获取的权限比较大</p>
-<p>通过strings查看文件</p>
-<p><img src="https://raw.githubusercontent.com/damaoooo/imageBed/master/assets/image-20191201114110519.png" alt="image-20191201114110519.png"></p>
-<p>发现特殊网址和打开URL的一个DLL</p>
-<h3 id="5-被感染的迹象"><a href="#5-被感染的迹象" class="headerlink" title="5.被感染的迹象"></a>5.被感染的迹象</h3><p>看见了一个网址和URL进程，里面包含了一个EXE，猜测是这个程序会下载这个URL里面的这个程序到电脑的temp目录下面</p>
-<h3 id="6-抽取该资源"><a href="#6-抽取该资源" class="headerlink" title="6. 抽取该资源"></a>6. 抽取该资源</h3><p>使用PEview查看到在<code>.rsrc</code>的一段话里面有一个奇怪的段</p>
-<p><img src="https://raw.githubusercontent.com/damaoooo/imageBed/master/assets/image-20191201114642739.png" alt="image-20191201114642739.png"></p>
-<p>和前面有一个一样的说明语句，说明是可执行的部分</p>
-<p>然后在Resource Hacker拖出来分析</p>
-<p><img src="https://raw.githubusercontent.com/damaoooo/imageBed/master/assets/image-20191201115135826.png" alt="image-20191201115135826.png"></p>
-<p>刚好就是这个段</p>
-<p>然后在PEID里面分析</p>
-<p><img src="https://raw.githubusercontent.com/damaoooo/imageBed/master/assets/image-20191201115334824.png" alt="image-20191201115334824.png"></p>
-<p>很幸运，也没有加壳</p>
-<p>然后我们用strings找关键字符串</p>
-<p><img src="https://raw.githubusercontent.com/damaoooo/imageBed/master/assets/image-20191201115449765.png" alt="image-20191201115449765.png"></p>
-<p>还是那个网址，说明关键操作就隐藏在这个文件当中，使用IDA分析</p>
-<p><img src="https://raw.githubusercontent.com/damaoooo/imageBed/master/assets/image-20191201115701299.png" alt="image-20191201115701299.png"></p>
-<p>大致可以看出，是把这个文件下载到系统<code>tmp</code>目录中，然后伪装成为一个<code>\System32\wupdmgrd.exe</code>，并在命令行中执行这个文件。</p>
-
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-      
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2019/12/01/实验三/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
-    <article id="post-实验一 存储" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2019/11/07/实验一 存储/">计算机存储实验</a>
-    </h1>
-  
-
-        
-        <a href="/2019/11/07/实验一 存储/" class="archive-article-date">
-  	<time datetime="2019-11-06T16:28:54.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-11-07</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h1 id="分区表与文件结构"><a href="#分区表与文件结构" class="headerlink" title="分区表与文件结构"></a>分区表与文件结构</h1><p>[TOC]</p>
-<h2 id="任务一-MBS引导扇区"><a href="#任务一-MBS引导扇区" class="headerlink" title="任务一  MBS引导扇区"></a>任务一  MBS引导扇区</h2><h3 id="读取命令"><a href="#读取命令" class="headerlink" title="读取命令"></a>读取命令</h3><p>在MS-DOS中输入<code>debug</code>进入debug 模式，通过调用<code>INT 13</code>功能来获取MBS信息</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">-A 100</span><br><span class="line">mov ax,0201</span><br><span class="line">mov bx,0600</span><br><span class="line">mov cx,0001</span><br><span class="line">mov dx,0080</span><br><span class="line">int 13</span><br><span class="line">int 3</span><br><span class="line">-G;通过查看运行的汇编指令来判断是否执行</span><br><span class="line">-D 600 800;通过查看数据的方式来查看刚才保存进入缓冲区的数据</span><br></pre></td></tr></table></figure>
-<p>由于MS-DOS屏幕无法滚动因此采用查看两次两张图片拼接的方式来显示数据</p>
-<p><img src="https://i.loli.net/2019/11/07/KRx7LDndS9Yolkt.png" alt="KRx7LDndS9Yolkt.png"></p>
-<p><img src="https://i.loli.net/2019/11/07/6MK9QvJOkwcNWf1.png" alt="6MK9QvJOkwcNWf1.png"></p>
-<h3 id="分析含义"><a href="#分析含义" class="headerlink" title="分析含义"></a>分析含义</h3><p>MBR的组成</p>
-<table>
-<thead>
-<tr>
-<th>引导程序机器码</th>
-<th>分区表×4</th>
-<th>定位符/有效位</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>446B</td>
-<td>64B</td>
-<td>2B 0X55AA</td>
-</tr>
-</tbody>
-</table>
-<p>前446B的机器码在不同的MBR硬盘上都一样的，在XP的MBP硬盘（现在的硬盘基本都是GPT格式的了）通过WINHEX来导出前446B数据，通过IDA打开就可以得到以下汇编代码</p>
-<p><img src="https://i.loli.net/2019/11/04/I2ry5oaXMZNqEKn.png" alt="I2ry5oaXMZNqEKn.png"></p>
-<p>由于安装的DOS只有一个分区，因此我们就只需要分析一个分区表</p>
-<p><code>80 01 01 00 0B 7F BF 07 3F 00 00 00 C1 FB 3F 00</code></p>
-<p><code>80</code>：代表是有引导程序的活动分区</p>
-<p><code>01 01 00</code>：代表起始位置是<code>01</code>磁道<code>01</code>扇区<code>00</code>柱面</p>
-<p><code>0B</code>：代表分区类型是<code>FAT32</code></p>
-<p><code>7F BF 07</code>：代表结束位置是<code>7F</code>磁道<code>BF</code>扇区<code>07</code>柱面</p>
-<p><code>3F 00 00 00</code>：代表相对第一个扇区的扇区数，采用小端序就是<code>0x3F</code></p>
-<p><code>C1 FB 3F 00</code>：代表磁盘占用总扇区数，采用小端序就是<code>0x3FFBC1</code>换算成GB就是<br>$$<br>0x3FFBC1\times512\div1024\div 1024\div 1024 = 2GB<br>$$<br>最后采用<code>55 AA</code>作为结尾</p>
-<h2 id="任务二-DBS和BPB"><a href="#任务二-DBS和BPB" class="headerlink" title="任务二 DBS和BPB"></a>任务二 DBS和BPB</h2><p>同样采用<code>INT 13</code>功能读取C盘第一个扇区的数据</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">debug</span><br><span class="line">-a 100</span><br><span class="line">mox ax,0201</span><br><span class="line">mov bx,1000</span><br><span class="line">mov cx,0001</span><br><span class="line">mov dx,0180</span><br><span class="line">int 13</span><br><span class="line">int 3</span><br><span class="line">-g</span><br><span class="line">-d 1000 1200</span><br></pre></td></tr></table></figure>
-<p>输出如下</p>
-<p><img src="https://i.loli.net/2019/11/07/loiNJfOHbsaCUzq.png" alt="loiNJfOHbsaCUzq.png"></p>
-<p><img src="https://i.loli.net/2019/11/07/ha61IKMkXFwG84W.png" alt="ha61IKMkXFwG84W.png"></p>
-<p>DBR分区的组成为</p>
-<table>
-<thead>
-<tr>
-<th>跳转指令</th>
-<th>厂商OEM代号</th>
-<th>BPB</th>
-<th>扩展BPB</th>
-<th>引导程序机器码</th>
-<th>结束标志</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>3B</td>
-<td>8B</td>
-<td>53B</td>
-<td>26B</td>
-<td>420B</td>
-<td>2B 0X55AA</td>
-</tr>
-</tbody>
-</table>
-<p><code>E8 58 90</code>：跳转指令，翻译成汇编就是<code>JMP SHORT 0000005A;NOP</code>，相对开始的005A就是引导程序的启动地址</p>
-<p><code>4D 53 57 49 4E 34 2E 31</code>：生产厂商OEM</p>
-<p><code>00 02</code>：每个扇区512字节</p>
-<p><code>08</code>：每个簇8个扇区</p>
-<p><code>20 00</code>：保留<code>00 20</code>也就是32个扇区</p>
-<p><code>02</code>：FAT数</p>
-<p><code>00 00</code>：根目录项数为0</p>
-<p><code>00 00</code>：小扇区数为0</p>
-<p><code>F8</code>：介质为硬盘</p>
-<p><code>00 00</code>：每FAT扇区数位0</p>
-<p><code>00 3F</code>：每个磁道63个扇区</p>
-<p><code>00 80</code>：128个磁头</p>
-<p><code>3F 00 00 00</code>：隐藏扇区63个</p>
-<p><code>C1 FB 3F 00</code>：一共有4193217个扇区，也就是<code>4193217*512/1024/1024/1024=2GB</code></p>
-<p><code>F7 0F 00 00</code>：每个FAT有4087个扇区</p>
-<p><code>00 00</code>：扩展标志</p>
-<p><code>00 00</code>：文件系统版本</p>
-<p><code>02 00 00 00</code>：根目录簇号2</p>
-<p><code>01 00</code>：文件系统信息扇区号01</p>
-<p><code>06 00</code> ：备份引导扇区</p>
-<p><code>00 00 00 00 00 00 00 00 00 00 00 00</code>：12个保留字节</p>
-<p>扩展BPB</p>
-<p><code>80</code>：物理驱动器号，指硬盘</p>
-<p><code>00</code> ：保留</p>
-<p><code>29</code>：扩展引导标签，<code>0x28</code>或<code>0x29</code></p>
-<p><code>E7 17 31 0B</code>：分区序列号s</p>
-<p><code>4D 53 44 4F 53 37 31 30 20 20 20</code>：卷标，11字节，这里是<code>MSDOS710</code></p>
-<p><code>46 41 54 33 32 20 20 20</code>：系统ID，这里是<code>FAT32</code></p>
-<h2 id="任务三-读取FAT表"><a href="#任务三-读取FAT表" class="headerlink" title="任务三 读取FAT表"></a>任务三 读取FAT表</h2><p>先生成一个文本文件，然后直接在debug中使用L命令来读取DBR数据</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">echo</span> <span class="string">"this is a test text"</span> -&gt; this_is_a_long_long_long_long_name.txt</span><br><span class="line">debug</span><br><span class="line">-L 1000 2,1,1</span><br><span class="line">-D 1000 1200</span><br></pre></td></tr></table></figure>
-<p>获取到截图如下</p>
-<p><img src="https://i.loli.net/2019/11/07/pHSFe1yGP2dvYx9.png" alt="pHSFe1yGP2dvYx9.png"></p>
-<p><img src="https://i.loli.net/2019/11/07/z5svreIDopgNS7h.png" alt="z5svreIDopgNS7h.png"></p>
-<p><img src="https://i.loli.net/2019/11/07/V9i2vhupb3IOlkL.png" alt="V9i2vhupb3IOlkL.png"></p>
-<p><code>52 52 61 41</code> ：扩展引导标签</p>
-<p>剩下的没有使用</p>
-<p><code>25 f7 07 00</code>：剩下522021个扇区未用。</p>
-<p>然后我们来计算FAT表的位置，在MBR中我们知道了C盘的扇区号是<code>00 3F</code>，因此我们输入<code>-L 2,0,1</code>的含义就是读入<code>00 3f</code> 一个扇区进入缓冲区，在DBR记录中我们看到保留扇区数是<code>00 20</code>，由于FAT表就是跟在DBR后面的，所以</p>
-<p><code>FAT1起始扇区 = DBR扇区号+保留扇区数 = 3f+20 = 5f</code>,</p>
-<p>在DEBUG中输入<code>-l 1000 2,20,1</code></p>
-<p>就可以打开FAT1表项，截图如下</p>
-<p><img src="https://i.loli.net/2019/11/07/wJ2tmH7iY9MgRQ1.png" alt="wJ2tmH7iY9MgRQ1.png"></p>
-<p>由于是FAT32，因此一个FAT项占用4个字节</p>
-<p>FAT的簇号起始于2号，0号的值总是为<code>F8 FF FF 0F</code>,1号的值用于记录系统异常错误，通常1号的值为<code>FF FF FF FF</code>或<code>FF FF FF 0F</code></p>
-<p>从第2项开始看，每一个4字节的项都指向一个文件的下一个簇，末尾就用<code>FF FF FF 0F</code>来表示结束,有2个小文件。</p>
-<h2 id="任务四-查找文件"><a href="#任务四-查找文件" class="headerlink" title="任务四 查找文件"></a>任务四 查找文件</h2><p>然后就是FDT位置的计算，由之前DBR的数据可知，这里的每个FAT表项占用扇区数是<code>0x0FF7</code>，两个FAT表，两个分区表就是</p>
-<p><code>0x20+0xff7*2 = 0x200e</code></p>
-<p>由于之前也有文件，我们加一个扇区</p>
-<p>DEBUG中输入<code>-l 1000 2,200f,1</code>读取数据，然后<code>-d 1000 1100</code>查看数据</p>
-<p><img src="https://i.loli.net/2019/11/07/SWXmF6af32DQd4M.png" alt="SWXmF6af32DQd4M.png"></p>
-<p>可以看到我们刚才建立的<code>this_is_a_long_long_long_long_name.txt</code>的文件表示为<code>THIS_I~1TXT</code></p>
-<p> <img src="https://s2.ax1x.com/2019/11/07/MAxhOs.png" alt="wKioL1LLZaryRrZbAAEU013v_ho125.jpg"> </p>
-<p> <img src="https://s2.ax1x.com/2019/11/07/MESKbR.jpg" alt="tup"> </p>
-<p><img src="https://s2.ax1x.com/2019/11/07/MES8PK.jpg" alt="wKiom1LLaM7AfCeHAABJ0UIbWsc692.jpg"></p>
-<p><img src="https://s2.ax1x.com/2019/11/07/MES8PK.jpg" alt="wKiom1LLaM7AfCeHAABJ0UIbWsc692.jpg"> </p>
-<p> <img src="https://s2.ax1x.com/2019/11/07/MES156.jpg" alt="wKioL1LLbN3DTdvXAABXaWgL6jM246.jpg"> </p>
-<p> <img src="https://s2.ax1x.com/2019/11/07/MESQV1.jpg" alt="wKioL1LLbKOxoS_oAABFm_xFUtY021.jpg"> </p>
-<p>根据以上几个图可以分析该文件的信息</p>
-<p>由于FAT32的长文件名是采用的倒叙，所以我们可能还要向前看几个扇区</p>
-<p><code>54 48 49 53 5F 49 7E 31</code>：短文件名<code>THIS_I~1</code></p>
-<p><code>54 58 54</code>：后缀名<code>TXT</code></p>
-<p><code>20</code>：属性，<code>bin(0x20)=100000</code>，即是归档</p>
-<p><code>00</code>：系统保留</p>
-<p><code>00</code>：创建时间的10毫秒位</p>
-<p><code>FB 90</code>：创建时间</p>
-<p><code>10010 000111 11011</code></p>
-<p>也就是<code>18</code>时<code>07</code>分<code>54</code>秒</p>
-<p><code>66 4F</code>：创建日期</p>
-<p><code>0100111 1011 00110</code></p>
-<p>也就是<code>2019</code>年<code>11</code>月<code>6</code>日</p>
-<p><code>66 4F</code>：最近访问日期，创建好之后就没有访问过，所以是创建日期</p>
-<p><code>00 00</code>：起始簇号的高位</p>
-<p><code>FB 90</code>：文件修改时间，创建好之后就没有修改过，所以是创建日期</p>
-<p><code>66 4F</code>：文件修改日期，创建好之后就没有修改过，所以是创建时间</p>
-<p><code>B2 08</code>：文件起始簇号的低位</p>
-<p><code>19 00 00 00</code>：文件的大小</p>
-<p>然后看向上方表示的文件名，就选取其中一个来进行分析</p>
-<p><img src="https://i.loli.net/2019/11/07/vLQfNbughpUwDdx.png" alt="vLQfNbughpUwDdx.png"></p>
-<p><code>01</code>：序列号</p>
-<p><code>74 00 68 00 69 00 73 00 5F 00</code>：this_</p>
-<p><code>0F</code>：长目录属性标志固定为此值</p>
-<p><code>00</code>：保留</p>
-<p><code>FB</code>：短文件名校验和</p>
-<p><code>69 00 73 00 5F 00 61 00 5F 00 6C 00</code>：is_a_l</p>
-<p><code>00 00</code>：始终为0</p>
-<p><code>6F 00 6E 00</code>：on</p>
-<p>根据公式<code>S = （C-2）x P + B</code>得出，我们要找的地方就是在<code>(08B2-2)*8+200e=658e</code></p>
-<p>运行如下<code>-l 1000 2,658e,1</code>,<code>d 1000 1100</code></p>
-<p>就可以看到文件内容</p>
-<p><img src="https://i.loli.net/2019/11/07/razu1xOiIjwQXGC.png" alt="razu1xOiIjwQXGC.png"></p>
-<h2 id="任务五-删除文件"><a href="#任务五-删除文件" class="headerlink" title="任务五 删除文件"></a>任务五 删除文件</h2><p>在DOS中输入<code>del THIS_I~1.txt</code>删除文件</p>
-<p><img src="https://i.loli.net/2019/11/07/MxYmNC4lIaXshV6.png" alt="MxYmNC4lIaXshV6.png"></p>
-<p>然后查看FDT</p>
-<p><img src="https://i.loli.net/2019/11/07/MyPX6fIohxpvjeO.png" alt="MyPX6fIohxpvjeO.png"></p>
-<p>可以看到第一个序列号位变成了<code>E5</code>，但是首簇号仍然指向原来的地方</p>
-<p>查看FAT</p>
-<p><img src="https://i.loli.net/2019/11/07/QTIFRxylsKDqwi8.png" alt="QTIFRxylsKDqwi8.png"></p>
-<p>可以看到FAT没有变化，进入数据区查看数据</p>
-<p><img src="https://i.loli.net/2019/11/07/uCe6lt9BgDhwjvI.png" alt="uCe6lt9BgDhwjvI.png"></p>
-<p>可以发现数据还在原地</p>
-<h2 id="任务六-文件恢复"><a href="#任务六-文件恢复" class="headerlink" title="任务六  文件恢复"></a>任务六  文件恢复</h2><p>我们在XP下面新建一个文本文件</p>
-<p><img src="https://i.loli.net/2019/11/07/gOHmC95Lo1EvsYJ.png" alt="gOHmC95Lo1EvsYJ.png"></p>
-<p>通过上面的方法在WINHEX中来定位出文件的数据区位置</p>
-<p><img src="https://i.loli.net/2019/11/07/Yz3Scr6k5JBdyeC.png" alt="Yz3Scr6k5JBdyeC.png"></p>
-<p>然后将其删除</p>
-<p><img src="https://i.loli.net/2019/11/07/7YDw1k5PMU2XApe.png" alt="7YDw1k5PMU2XApe.png"></p>
-<p>随后进入文件的数据区位置，然后在WINHEX里新建一个文件，讲数据粘贴进去，得到原来的文件</p>
-<p><img src="https://i.loli.net/2019/11/07/LY5pN38cegzyvma.png" alt="LY5pN38cegzyvma.png"></p>
-
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-      
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2019/11/07/实验一 存储/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
-    <article id="post-WSL下GO环境搭建遇到的坑" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2019/10/24/WSL下GO环境搭建遇到的坑/">WSL下GO环境搭建遇到的坑</a>
-    </h1>
-  
-
-        
-        <a href="/2019/10/24/WSL下GO环境搭建遇到的坑/" class="archive-article-date">
-  	<time datetime="2019-10-24T14:34:44.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-10-24</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h1 id="WSL下GO环境搭建遇到的坑"><a href="#WSL下GO环境搭建遇到的坑" class="headerlink" title="WSL下GO环境搭建遇到的坑"></a>WSL下GO环境搭建遇到的坑</h1><p>Windows下面写Go要安装的东西实在是太多了，而且由于Windows下面缺乏像<code>apt</code>这样的包管理器，所以在Linux下面写go似乎要爽得多，于是我搞了一个wsl下的Ubuntu 18.04 tls+vscode，中途遇上了好几个坑，记录下来</p>
-<p><strong>以下内容仅适用于win10 1903及以上版本</strong></p>
-<h2 id="安装WSL环境"><a href="#安装WSL环境" class="headerlink" title="安装WSL环境"></a>安装WSL环境</h2><p>网上教程一抓一大把。</p>
-<p>在<code>windows程序和功能</code>中勾上<code>windows subsystem for linux</code>然后确定，装好了之后重启，进系统自带的<code>microsoft store</code>，找个ubuntu装上。值得一提的是，这个<strong>没有图形界面</strong></p>
-<p>然后强烈建议换源，由于神秘因素，用默认的源保管你连gcc都装不上</p>
-<p>这是我用的清华的源，还挺不错，教程也很详细</p>
-<p><code>https://mirror.tuna.tsinghua.edu.cn/help/ubuntu/</code></p>
-<h2 id="WSL下GO环境变量的配置"><a href="#WSL下GO环境变量的配置" class="headerlink" title="WSL下GO环境变量的配置"></a>WSL下GO环境变量的配置</h2><p>首先是Ubuntu下面安装golang，运行<code>sudo apt-get install golang</code>即可</p>
-<p>安装好了之后就是环境变量的配置了，网上CSDN的教程东说西说，坑了我很多，最后自己实践出真知，其实只需要安装之后运行<code>go env</code></p>
-<p>如图</p>
-<p><img src="https://i.loli.net/2019/10/24/ZF2Va9XOvir8ko3.png" alt="ZF2Va9XOvir8ko3.png"></p>
-<p>找到你的<code>GOROOT</code>，复制下来，然后输入<code>sudo vim ~/.bashrc</code>,在最后一行添加如下</p>
-<p><code>export GOROOT=&quot;usr/lib/go-1.10&quot;</code>(就是你上面写的<code>GOROOT</code>的目录)</p>
-<p>然后<code>source ~/.bashrc</code>一下，就完成了环境变量的配置</p>
-<p>然后运行<code>go version</code>，如果出现系统信息，就说明装好了</p>
-<h2 id="WINDOWS下vscode与WSL交互"><a href="#WINDOWS下vscode与WSL交互" class="headerlink" title="WINDOWS下vscode与WSL交互"></a>WINDOWS下vscode与WSL交互</h2><p>在VSCODE中安装<code>Remote-WSL</code>的应用，一键安装，好了之后你的界面就会出现左边的远程图标和左下角的远程图标</p>
-<p><img src="https://i.loli.net/2019/10/24/pY1rTWo8EZisk5x.png" alt="pY1rTWo8EZisk5x.png"></p>
-<p>然后按照提示进入wsl中去运行<code>code .</code>，结果报错<code>Command &#39;code&#39; not found</code></p>
-<p>然后我去了stackoverflow上面找到了解决方案</p>
-<p>WSL下运行<code>export PATH=&quot;$PATH:/Applications/Visual Studio Code.app/Contents/Resources/app/bin&quot;</code></p>
-<p>你也可以将这个环境变量加入到<code>~/.bashrc</code>中(还不会用Vim？上一篇文章讲过一点点基础用法)</p>
-<p>然后运行<code>code .</code>就可以安装vscode 的 Linux服务端了。</p>
-<p>随后的事情就是按照<code>remote-WSL</code>下面的提示来写代码就是了。</p>
-<p>用<code>windows</code>下的vscode写代码在<code>Ubuntu</code>下跑Go语言 ，还能直接debug，真是太爽了。</p>
-
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-      
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2019/10/24/WSL下GO环境搭建遇到的坑/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
-    <article id="post-同firewall斗争记" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2019/10/11/同firewall斗争记/">同firewall斗争记</a>
-    </h1>
-  
-
-        
-        <a href="/2019/10/11/同firewall斗争记/" class="archive-article-date">
-  	<time datetime="2019-10-11T14:08:20.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-10-11</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h1 id="同防火墙的斗争记"><a href="#同防火墙的斗争记" class="headerlink" title="同防火墙的斗争记"></a>同防火墙的斗争记</h1><p>由于很多资料百度不好查到，而且wiki，还有很多dalao 的blog上面的学习资料要Google才搜得到，因此科学上网就成为了刚需。</p>
-<p>心血来潮决定自己去搞一个VPS自己建立翻墙服务，免得天天去为了翻墙去到处找免费VPN，焦头烂额速度还慢，因此就看教程去学习搭建免费VPS进行翻墙，由于我的图床替换脚本被怀疑DDOS了，一天只能上传10张图，就很难顶，有些地方就不截图文字的方式</p>
-<h2 id="一、Shadow-Socks-BBR-plus"><a href="#一、Shadow-Socks-BBR-plus" class="headerlink" title="一、Shadow Socks + BBR plus"></a>一、Shadow Socks + BBR plus</h2><p>教程<code>[https://medium.com/@jackme256/%E7%A7%91%E5%AD%A6%E4%B8%8A%E7%BD%91-vultr-vps-%E6%90%AD%E5%BB%BA-shadowsocks-ss-%E6%95%99%E7%A8%8B-%E6%96%B0%E6%89%8B%E5%90%91-968613081aae](https://medium.com/@jackme256/科学上网-vultr-vps-搭建-shadowsocks-ss-教程-新手向-968613081aae)</code></p>
-<p>最开始的网站教的就是去申请一个VPS<code>VPS可以理解为别人开了一堆服务器给你用，你就花钱租一个服务器的使用权</code>，那个教程网站推荐的是<code>vultr</code>，个人觉得还不错，便宜的<code>2.5d/mo</code>已经没了，就只有<code>5d/mo</code></p>
-<p><img src="https://i.loli.net/2019/10/12/eknvMSjBmhf84I2.png" alt="eknvMSjBmhf84I2.png"></p>
-<p>这个IPV6 ONLY, 顾名思义就只能访问支持IPV6的网站，非常坑爹，用来自己做做试验倒还不错，如果是自己做实验为什么不用阿里云的学生VPS呢？[手动滑稽]</p>
-<p>一路点击下一步，这个就不用我多说了，后面有几个选项</p>
-<p><img src="https://i.loli.net/2019/10/12/9YZAJGc8W2Uj47E.png" alt="9YZAJGc8W2Uj47E.png"></p>
-<p>开着没啥用，不过1和3反正开了也不要钱</p>
-<p><strong>为了演示这个我还专门重新开了一台服务器</strong>，不过一想到如果能让更多的人科学上网,看到外面的世界,这些就都不算什么了</p>
-<p>使用 ssh 连接服务器</p>
-<p>然后就是在服务器里面部署<code>bbr plus</code></p>
-<p>一键脚本</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">wget --no-check-certificate -O tcp.sh https://github.com/cx9208/Linux-NetSpeed/raw/master/tcp.sh &amp;&amp; chmod +x tcp.sh &amp;&amp; ./tcp.sh</span><br></pre></td></tr></table></figure>
-<p>国人很贴心的加上了中文支持，爽啊</p>
-<p><img src="https://i.loli.net/2019/10/12/DNM6ThaB2r8jU7o.png" alt="DNM6ThaB2r8jU7o.png"></p>
-<p>选择2，一顿安装之后，会提示重启之后才能继续，那就<code>reboot</code>重启呗</p>
-<p>重启后运行</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">./tcp.sh</span><br></pre></td></tr></table></figure>
-<p>选择开启对应的bbr加速就可以了</p>
-<p><em>bbr 可以理解为是一种 tcp 延迟协议优化，什么？tcp是什么？建议学习计网。bbr plus 就是bbr的升级版，后面还有bbr 魔改版。</em></p>
-<p>后面也有锐速可以选择，不过在线路以及UDP面前这些加速都算不了什么</p>
-<p>然后就是shadowsocks(简称ss)的安装，过程比较智能</p>
-<p>一键脚本</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">wget — no-check-certificate -O shadowsocks.sh https://raw.githubusercontent.com/teddysun/shadowsocks_install/master/shadowsocks.sh</span><br></pre></td></tr></table></figure>
-<p>安装过程是便利的，黑白框框文字不停跳动的界面是帅气的，很适合拿去公共场所全屏装X然后吸引目光，嗯，你就是带嗨阔！</p>
-<p>然后最后你就会得到如下的东西，他还给你标红了,明显后面要用到</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">Your Server IP        :  12.34.56.78</span><br><span class="line">Your Server Port      :  xxxx</span><br><span class="line">Your Password         :  xxxxxx</span><br><span class="line">Your Encryption Method:  xxxxxxxxxxxxx</span><br></pre></td></tr></table></figure>
-<p>然后就是常见的控制命令了</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">启动 /etc/init.d/shadowsocks start</span><br><span class="line">重启 /etc/init.d/shadowsocks restart</span><br><span class="line">关闭 /etc/init.d/shadowsocks stop</span><br></pre></td></tr></table></figure>
-<p>然后去下载ss的客户端，地址放下边了</p>
-<p><code>https://shadowsocks.org/en/download/clients.html</code></p>
-<p>弄好了之后就填写你的刚才记下来的4个数据，对应填上去（管理员身份运行shadowsocks.exe,请），然后在小飞机图标那儿右键-全局模式/PAC模式（PAC模式需要你先更新一下PAC的list，PAC模式意思就是会直连国内的站点，对国外的站点才会用代理）</p>
-<p>然后你可能会发现还是没网，如果你是用的centOS系的话那么就铁定没网，因为centOS系会关闭所有端口，惊不惊喜？</p>
-<p>使用一下命令来打开你的端口</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">firewall-cmd --zone=public --add-port=xxxx(你的端口号)/tcp --permanent</span><br><span class="line">firewall-cmd --zone=public --add-port=xxxx(你的端口号)/udp --permanent</span><br><span class="line">firewall-cmd --reload</span><br></pre></td></tr></table></figure>
-<p>想查看自己开了那些端口</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">firewall-cmd --list-port</span><br></pre></td></tr></table></figure>
-<h2 id="shadowsock-bbr-plus-kcptun"><a href="#shadowsock-bbr-plus-kcptun" class="headerlink" title="shadowsock + bbr plus + kcptun"></a>shadowsock + bbr plus + kcptun</h2><p>直接tcp连接的话你的速度会受制于你的线路，后面室友给我介绍了这样一个kcptun，但是由于一些很悲伤的原因我把这玩意给删了，就没有图了</p>
-<p>一键安装脚本</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">wget --no-check-certificate https://github.com/kuoruan/shell-scripts/raw/master/kcptun/kcptun.sh &amp;&amp; chmod +x ./kcptun.sh &amp;&amp; ./kcptun.sh</span><br></pre></td></tr></table></figure>
-<p>同样安装过程很良心，而且还是国人做的，很贴心的上了中文，即便是不会设置里面也会有默认设置，一路跟着默认设置走就是了</p>
-<p>然后需要你在本地额外加一个接收端</p>
-<p>教程：<code>https://ssr.tools/588</code>（需要科学上网）</p>
-<p>这个加速的原理就是把原始的tcp发包变成udp发包，因此基于tcp优化的bbr可能在这里拿不上用场，原来的tcp发一个，udp就发个三四倍，是一种牺牲流量来换取速度的过程，单一的请求和tcp的效果差别不大，但是像看<code>youtube</code>/下载东西，这样的请求有奇效，我从原来的2000kbps跑到了后面的14000kbps，爽的一批。</p>
-<p>不过你爽了，GFW也爽了，你的发包翻倍了，他接受到的特征包也翻倍了，而且对于你们中国电信之流的运营商来说，一个用户原先开一个网站要100k，现在还要500k，万恶的资本家就不乐意了，就会给你QOS（我至今还没有遇到这么温柔的对待），或者是直接封了你的端口，多来几次直接连你这个IP一块儿封了，骨灰都给你扬了，ping都ping不通。</p>
-<p>特殊时期之前我倒没什么，特殊时期我一般是上午开，下午就没了，下午又开，晚上就没了。</p>
-<h2 id="v2ray"><a href="#v2ray" class="headerlink" title="v2ray"></a>v2ray</h2><p>shadowsocks的流量已经被识别了，然后就迫不得已用了v2ray，配置麻烦就麻烦呗（真香），那咋办嘛</p>
-<p>不过碰巧我找到了一键安装脚本</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">wget https://install.direct/go.sh</span><br><span class="line">chmod +x ./go.sh</span><br><span class="line">./go.sh</span><br></pre></td></tr></table></figure>
-<p>安装之后会着重显示你的<code>uuid</code>,<code>alter_id</code>,<code>IP</code>，<code>端口号</code>，如下</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">  inflating: /tmp/v2ray/config.json  </span><br><span class="line">   creating: /tmp/v2ray/doc/</span><br><span class="line">  inflating: /tmp/v2ray/doc/readme.md  </span><br><span class="line">  inflating: /tmp/v2ray/geoip.dat    </span><br><span class="line">  inflating: /tmp/v2ray/geosite.dat  </span><br><span class="line">   creating: /tmp/v2ray/systemd/</span><br><span class="line">  inflating: /tmp/v2ray/systemd/v2ray.service  </span><br><span class="line">   creating: /tmp/v2ray/systemv/</span><br><span class="line">  inflating: /tmp/v2ray/systemv/v2ray  </span><br><span class="line">  inflating: /tmp/v2ray/v2ctl        </span><br><span class="line"> extracting: /tmp/v2ray/v2ctl.sig    </span><br><span class="line">  inflating: /tmp/v2ray/v2ray        </span><br><span class="line"> extracting: /tmp/v2ray/v2ray.sig    </span><br><span class="line">  inflating: /tmp/v2ray/vpoint_socks_vmess.json  </span><br><span class="line">  inflating: /tmp/v2ray/vpoint_vmess_freedom.json  </span><br><span class="line">PORT:xxxxx</span><br><span class="line">UUID:cd0e558d-18a5-4077-b5ec-3b3c14a760c7</span><br><span class="line">Created symlink from /etc/systemd/system/multi-user.target.wants/v2ray.service to /etc/systemd/system/v2ray.service.</span><br><span class="line">V2Ray v4.20.0 is installed.</span><br></pre></td></tr></table></figure>
-<p>教程在这里</p>
-<p><code>https://www.4spaces.org/digitalocean-build-v2ray-0-1/</code></p>
-<p>然后需要你自己手动去下载客户端，教程里都有地址</p>
-<p>v2ray是基于配置文件来进行设置的，打开配置文件</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vi /etc/v2ray/config.json</span><br></pre></td></tr></table></figure>
-<p>dalao们一上来就能直接使用vim，地表最强编辑器，然而我这种俗人就只能偷偷地用最简单的记事本，高级一点就写vscode,还得躲着躲着写，被发现了还在用小学生编辑器就不好了，嘤嘤嘤</p>
-<p>好了不扯那些，很多人进来肯定和我一样都是一脸懵逼的，没有高亮，没有括号匹配</p>
-<p>按<code>a</code>进入编辑模式，编辑完之后按<code>Esc</code>退出编辑模式，然后按<code>:wq</code>保存退出（冒号也要打）</p>
-<p>我一般喜欢进入退出编辑模式，然后按<code>vG</code>小写的v大写的G，全选。复制到vscode里面编辑，改好了之后再放进服务端里面</p>
-<p><em>什么？还有格式？建议学习JSON呢，而且网上也有很多在线JSON格式检查器呢</em></p>
-<p>效果图如下</p>
-<p><img src="https://i.loli.net/2019/10/12/1VjIWMCsX6kt4iO.png" alt="1VjIWMCsX6kt4iO.png"></p>
-<p>速度emmm也就那样吧，时而10000kbps，时而2000kbps，不过重在稳定，我把这种用来当备用机子</p>
-<p>坑</p>
-<p>他这个如果不指定listen的话会监听到你的IPV6的 端口，然而我们的连接是IPV4的连接，所以就有你开了v2ray，连上了但是没网的情况，下面是修改服务端的配置文件</p>
-<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  <span class="attr">"inbounds"</span>: [</span><br><span class="line">    &#123;</span><br><span class="line">      <span class="attr">"port"</span>: <span class="number">16823</span>,</span><br><span class="line">      <span class="attr">"protocol"</span>: <span class="string">"vmess"</span>,</span><br><span class="line">      "listen":"12.34.56.78",//在这里添加一个你的服务器IP</span><br><span class="line">      "settings": &#123;//这后面的不管</span><br><span class="line">        "clients": [</span><br><span class="line">          &#123;</span><br><span class="line">            <span class="attr">"id"</span>: <span class="string">"b831381d-6324-4d53-ad4f-8cda48b30811"</span>,</span><br><span class="line">            <span class="attr">"alterId"</span>: <span class="number">64</span></span><br><span class="line">          &#125;</span><br><span class="line">        ]</span><br><span class="line">      &#125;,</span><br><span class="line">      "streamSettings": &#123;</span><br><span class="line">        "network": "tcp" </span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  ],</span><br><span class="line">  "outbounds": [</span><br><span class="line">    &#123;</span><br><span class="line">      <span class="attr">"protocol"</span>: <span class="string">"freedom"</span>,</span><br><span class="line">      <span class="attr">"settings"</span>: &#123;&#125;</span><br><span class="line">    &#125;</span><br><span class="line">  ]</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h2 id="v2ray-mkcp"><a href="#v2ray-mkcp" class="headerlink" title="v2ray + mkcp"></a>v2ray + mkcp</h2><p>使用过udp加速之后再回去使用tcp普通的连接，就觉得有点慢。</p>
-<p>就好像周围都是罗玉凤，你不会觉得罗玉凤有什么丑的，甚至觉得还凑合，但是有一天你看了一眼范冰冰，你就再也接受不了罗玉凤了。</p>
-<p>好在v2ray里面有自带的udp发包模块只需要你在服务端和客户端配置文件里面改一下就可以了</p>
-<p>直接上官网的样例</p>
-<p>服务端</p>
-<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  <span class="attr">"inbounds"</span>: [</span><br><span class="line">    &#123;</span><br><span class="line">      <span class="attr">"port"</span>: <span class="number">16823</span>,</span><br><span class="line">      <span class="attr">"protocol"</span>: <span class="string">"vmess"</span>,</span><br><span class="line">      <span class="attr">"settings"</span>: &#123;</span><br><span class="line">        <span class="attr">"clients"</span>: [</span><br><span class="line">          &#123;</span><br><span class="line">            <span class="attr">"id"</span>: <span class="string">"b831381d-6324-4d53-ad4f-8cda48b30811"</span>,</span><br><span class="line">            <span class="attr">"alterId"</span>: <span class="number">64</span></span><br><span class="line">          &#125;</span><br><span class="line">        ]</span><br><span class="line">      &#125;,</span><br><span class="line">      <span class="attr">"streamSettings"</span>: &#123;</span><br><span class="line">        "network": "mkcp", //此处的 mkcp 也可写成 kcp，两种写法是起同样的效果</span><br><span class="line">        "kcpSettings": &#123;//这个kcpSettings这一节可以不要</span><br><span class="line">          "uplinkCapacity": 5,</span><br><span class="line">          "downlinkCapacity": 100,</span><br><span class="line">          "congestion": true,</span><br><span class="line">          "header": &#123;</span><br><span class="line">            "type": "none"</span><br><span class="line">          &#125;</span><br><span class="line">        &#125;</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  ],</span><br><span class="line">  "outbounds": [</span><br><span class="line">    &#123;</span><br><span class="line">      <span class="attr">"protocol"</span>: <span class="string">"freedom"</span>,</span><br><span class="line">      <span class="attr">"settings"</span>: &#123;&#125;</span><br><span class="line">    &#125;</span><br><span class="line">  ]</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>客户端</p>
-<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  <span class="attr">"inbounds"</span>: [</span><br><span class="line">    &#123;</span><br><span class="line">      <span class="attr">"port"</span>: <span class="number">1080</span>,</span><br><span class="line">      <span class="attr">"protocol"</span>: <span class="string">"socks"</span>,</span><br><span class="line">      <span class="attr">"sniffing"</span>: &#123;</span><br><span class="line">        <span class="attr">"enabled"</span>: <span class="literal">true</span>,</span><br><span class="line">        <span class="attr">"destOverride"</span>: [<span class="string">"http"</span>, <span class="string">"tls"</span>]</span><br><span class="line">    &#125;,</span><br><span class="line">      <span class="attr">"settings"</span>: &#123;</span><br><span class="line">        <span class="attr">"auth"</span>: <span class="string">"noauth"</span></span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  ],</span><br><span class="line">  <span class="attr">"outbounds"</span>: [</span><br><span class="line">    &#123;</span><br><span class="line">      <span class="attr">"protocol"</span>: <span class="string">"vmess"</span>,</span><br><span class="line">      <span class="attr">"settings"</span>: &#123;</span><br><span class="line">        <span class="attr">"vnext"</span>: [</span><br><span class="line">          &#123;</span><br><span class="line">            <span class="attr">"address"</span>: <span class="string">"serveraddr.com"</span>,</span><br><span class="line">            <span class="attr">"port"</span>: <span class="number">16823</span>,</span><br><span class="line">            <span class="attr">"users"</span>: [</span><br><span class="line">              &#123;</span><br><span class="line">                <span class="attr">"id"</span>: <span class="string">"b831381d-6324-4d53-ad4f-8cda48b30811"</span>,</span><br><span class="line">                <span class="attr">"alterId"</span>: <span class="number">64</span></span><br><span class="line">              &#125;</span><br><span class="line">            ]</span><br><span class="line">          &#125;</span><br><span class="line">        ]</span><br><span class="line">      &#125;,</span><br><span class="line">      <span class="attr">"streamSettings"</span>: &#123;</span><br><span class="line">        <span class="attr">"network"</span>: <span class="string">"mkcp"</span>,</span><br><span class="line">        "kcpSettings": &#123;//这个kcpSettings这一节可以不要，设置了反而可能出错</span><br><span class="line">          "uplinkCapacity": 5,</span><br><span class="line">          "downlinkCapacity": 100,</span><br><span class="line">          "congestion": true,</span><br><span class="line">          "header": &#123;</span><br><span class="line">            "type": "none"</span><br><span class="line">          &#125;</span><br><span class="line">        &#125;</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  ]</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p><strong>请不要直接复制粘贴上去</strong>，这个说的是英文，查单词的意思，请，然后对于实际情况自己修改</p>
-<p>然后你就会发现你爽了，速度上来了</p>
-<p>然后再特殊时期，上午开，下午就封了</p>
-<h2 id="v2ray-mkcp-udp2raw"><a href="#v2ray-mkcp-udp2raw" class="headerlink" title="v2ray + mkcp + udp2raw"></a>v2ray + mkcp + udp2raw</h2><p>上面说了udp容易被封禁的原因嘛，就是因为大量的UDP发包，又惹到了GFW又惹到了运营商，所以有个工具就是帮我们把UDP伪装成TCP协议，使用至今没被GG，两全其美，awsl</p>
-<p>项目地址（有中文，毕竟国内这方面的需求比较大）：<code>https://github.com/wangyu-/udp2raw-tunnel/blob/master/doc/README.zh-cn.md</code></p>
-<p>不过碰巧我又找到了一键安装脚本</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">bash &lt;(curl -s -L https://233blog.com/udp2raw.sh)</span><br></pre></td></tr></table></figure>
-<p>原理就是先让你的数据通过你的udp2raw客户端，然后再让udp2raw客户端与服务端之间进行通信，然后达到伪装的效果。</p>
-<p>使用方法文档上面已经写得比我好，那么不再多说，希望大家去看文档的时候不要关掉我这个窗口就好了</p>
-<p>缺点就是你需要再本地开一个框框来作为本地udp2raw客户端，而且你的ssh一旦关掉，那么你的服务端也没了，而且手机更没法用</p>
-<p>首先是服务端的问题，至于<code>nohup</code>我试过，没用的</p>
-<p>使用<code>screen</code>，很多linux系统自带都有这个，在一个直接<code>screen</code>回车进入一个screen，然后运行</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo ./udp2raw_amd64 -s -l 0.0.0.0:4096  -r 127.0.0.1:7777   -k <span class="string">"passwd"</span> --raw-mode faketcp   --cipher-mode xor  -a</span><br></pre></td></tr></table></figure>
-<p>随后<code>ctrl+a</code>,<code>d</code>就可以回来了，</p>
-<p>这个时候屏幕上就会显示你的screen信息</p>
- <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[detached from 1883.pts-0.vultr]</span><br><span class="line">[root@vultr ~]</span><br></pre></td></tr></table></figure>
-<p>如果要回到你的原来的screen，就可以使用<code>screen -p xxxx(上面给你的数字)</code>，回来</p>
-<p>然后是客户端的解决，可以挂一个虚拟机的方式，随用随开，也可以写一个VB脚本，不过这样做手机可能有点难受</p>
-<p>不过我推荐弄一台国内的VPS，或者是国内有一台固定IP的机器，然后在这台国内的机器上面开启udp2raw的客户端</p>
-<p>然后在你的v2ray上面目标地址选择你的客户端所在的地址，端口选择udp2raw指定的端口，其余的不变即可，这样手机电脑就都可以使用了。</p>
-<p>最终看YouTube的4K速度如下</p>
-<p><img src="https://i.loli.net/2019/10/12/hqu8rWc1JEpyOlK.png" alt="hqu8rWc1JEpyOlK.png"></p>
-<h2 id="究极方案-：v2ray-ws-tls-cdn"><a href="#究极方案-：v2ray-ws-tls-cdn" class="headerlink" title="究极方案 ：v2ray + ws + tls + cdn"></a>究极方案 ：v2ray + ws + tls + cdn</h2><p>我还没试过这种方案，不过原理大概就是把你的VPS伪装成一个https的网站服务，然后还套上一个域名解析，导致GFW根本分不出来你到底是访问网站还是在科学上网，不过这是套了4层，要是还被挂掉，那么我没有办法了</p>
-
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-      
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2019/10/11/同firewall斗争记/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
-    <article id="post-自己编写代码与UDP模拟软件交互详解" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2019/09/11/自己编写代码与UDP模拟软件交互详解/">自己编写代码与UDP模拟软件交互详解</a>
-    </h1>
-  
-
-        
-        <a href="/2019/09/11/自己编写代码与UDP模拟软件交互详解/" class="archive-article-date">
-  	<time datetime="2019-09-10T16:28:54.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-09-11</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h1 id="自己编写代码与UDP模拟软件交互详解"><a href="#自己编写代码与UDP模拟软件交互详解" class="headerlink" title="自己编写代码与UDP模拟软件交互详解"></a>自己编写代码与UDP模拟软件交互详解</h1><h2 id="环境说明"><a href="#环境说明" class="headerlink" title="环境说明"></a>环境说明</h2><p>windows 10 x64（这个应该问题不大）</p>
-<p>python实现</p>
-<p>以阶段一的两台设备为例</p>
-<p>打开两个模拟软件，软件1选择<code>设备1接口0</code>，软件2选择<code>设备2接口0</code>，然后分别点击<code>重载参数</code>来获取参数，效果如图</p>
-<p><img src="https://i.loli.net/2019/09/13/DoIFm9P6JYu34Uf.png" alt="DoIFm9P6JYu34Uf.png"></p>
-<p>随后<strong>两边都</strong>点击<code>接通连路</code>，并<code>测试连通性</code>，试着传输几个数据，发现效果不错</p>
-<p><img src="https://i.loli.net/2019/09/13/oSmERIK8CkX2qvd.png" alt="oSmERIK8CkX2qvd.png"></p>
-<h2 id="端口解释"><a href="#端口解释" class="headerlink" title="端口解释"></a>端口解释</h2><p><img src="https://i.loli.net/2019/09/13/kJjOmx2SZfbdgvw.png" alt="kJjOmx2SZfbdgvw.png"></p>
-<h3 id="关系说明"><a href="#关系说明" class="headerlink" title="关系说明"></a>关系说明</h3><p>举个简单的类比大家就知道了</p>
-<p>上层端口控制物理层，就如同<code>老板</code>与<code>跑腿的</code>的关系，跑腿的并不处理信息而是只负责传输软件上写的<code>对方端口</code>就是告诉跑腿的<strong>要传到哪儿</strong>。</p>
-<p>举个例子，软件1的上层端口要发送<code>11111111</code>给软件2，然后上层端口就把这个信息交给软件1物理层<code>本地端口11100</code>，然后对方端口设置的是<code>12100</code>，物理层就只需要把这个交给<code>12100</code>也就是软件2的物理层就完事儿了。</p>
-<p>软件2的物理层接收到了这个消息之后立马报告给老板，也就是物理层2的<code>上层端口12400</code></p>
-<p>至此，信息的发送就完成了。</p>
-<p>什么？软件1怎么知道软件2有没有收到包？模拟软件的名字都写了，这是<code>UDP</code>发包，不管那么多的。</p>
-<h2 id="python-实现"><a href="#python-实现" class="headerlink" title="python 实现"></a>python 实现</h2><p>也就是说我们有2个上层端口，两个相连通的物理端口，OK，也就是说我们需要两个程序来分别绑定两个上层端口</p>
-<p><strong>软件1</strong></p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> socket</span><br><span class="line">sk = socket.socket(socket.AF_INET,socket.SOCK_DGRAM)<span class="comment">#指定UDP传输模式</span></span><br><span class="line">ipPort1 = (<span class="string">'127.0.0.1'</span>,<span class="number">11400</span>)<span class="comment">#绑定软件1的上层端口</span></span><br><span class="line">sk.bind(ipPort1)</span><br><span class="line">localIpPort1 = (<span class="string">'127.0.0.1'</span>,<span class="number">11100</span>)</span><br><span class="line">content = <span class="string">b'1111111111111111'</span></span><br><span class="line">print(<span class="string">'start to send...'</span>)</span><br><span class="line">sk.sendto(content,localIpPort1)<span class="comment">#给本地端口11100发送content的字符串</span></span><br></pre></td></tr></table></figure>
-<p><strong>软件2</strong></p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> socket</span><br><span class="line">sk = socket.socket(socket.AF_INET,socket.SOCK_DGRAM)<span class="comment">#指定UDP传输模式</span></span><br><span class="line">ipPort2 = (<span class="string">'127.0.0.1'</span>,<span class="number">12400</span>)</span><br><span class="line">localIpPort2 = (<span class="string">'127.0.0.1'</span>,<span class="number">12100</span>)</span><br><span class="line">sk.bind(ipPort2)</span><br><span class="line">print(<span class="string">'start to recv...'</span>)</span><br><span class="line">hexdata = eval(<span class="string">'0x'</span>+bytes.hex(sk.recv(<span class="number">1024</span>)))<span class="comment">#接收到的字符串转化为二进制并打印</span></span><br><span class="line">print(bin(hexdata)[<span class="number">2</span>:])</span><br></pre></td></tr></table></figure>
-<p>分别保存为<code>1.py</code>和<code>2.py</code>然后在<code>powershell</code>中运行<em>（这是我写套接字比较喜欢的运行方式，你也可以在<code>cmd</code>和其他环境下运行，问题不大）</em> ,运行截图如下</p>
-<p><img src="https://i.loli.net/2019/09/13/k6wOoxjmD3TJsve.png" alt="k6wOoxjmD3TJsve.png"></p>
-<p>分别截图</p>
-<p><img src="https://i.loli.net/2019/09/13/pueVnBQi9KhJqgD.png" alt="pueVnBQi9KhJqgD.png"></p>
-<p><img src="https://i.loli.net/2019/09/13/cFZexh8m1A4vHJo.png" alt="cFZexh8m1A4vHJo.png"></p>
-<p>看样子似乎比较成功获取了软件1发送给软件2的消息，而且我们看下面的状态信息</p>
-<p><img src="https://i.loli.net/2019/09/13/uIG9Jgn1tVPfObw.png" alt="uIG9Jgn1tVPfObw.png"></p>
-<p>至此我们成功通过软件的方式实现了操控UDP发包的过程</p>
-<p>我们再从软件2给软件1发消息试试，这个时候我们临时写的<code>python</code>就要改一下了，而且，比特之间的传输已经证明是可行的了，我们搞♂点<code>新兄弟</code></p>
-<p><strong>软件1</strong></p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> socket</span><br><span class="line">sk = socket.socket(socket.AF_INET,socket.SOCK_DGRAM)</span><br><span class="line">ipPort1 = (<span class="string">'127.0.0.1'</span>,<span class="number">11400</span>)</span><br><span class="line">sk.bind(ipPort1)</span><br><span class="line">localIpPort1 = (<span class="string">'127.0.0.1'</span>,<span class="number">11100</span>)</span><br><span class="line">print(<span class="string">'start to recv...'</span>)</span><br><span class="line">recvdata = sk.recv(<span class="number">1024</span>).decode(<span class="string">'utf-8'</span>)</span><br><span class="line">print(recvdata)</span><br></pre></td></tr></table></figure>
-<p><strong>软件2</strong></p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> socket</span><br><span class="line">sk = socket.socket(socket.AF_INET,socket.SOCK_DGRAM)</span><br><span class="line">ipPort2 = (<span class="string">'127.0.0.1'</span>,<span class="number">12400</span>)</span><br><span class="line">localIpPort2 = (<span class="string">'127.0.0.1'</span>,<span class="number">12100</span>)</span><br><span class="line">sk.bind(ipPort2)</span><br><span class="line">content = <span class="string">'Deep dark fantasy'</span></span><br><span class="line">print(<span class="string">'start to send...'</span>)</span><br><span class="line">sk.sendto(content.encode(<span class="string">'utf-8'</span>),localIpPort2)</span><br></pre></td></tr></table></figure>
-<p>然后在<code>powershell</code>中先运行<code>1.py</code>，然后在另一个<code>powershell</code>中运行<code>2.py</code>，截图如下</p>
-<p><img src="https://i.loli.net/2019/09/13/zl8vbgMpoIU9fSu.png" alt="zl8vbgMpoIU9fSu.png"></p>
-<p>模拟端口截图如下</p>
-<p><img src="https://i.loli.net/2019/09/13/aorvOmGubTknPeS.png" alt="aorvOmGubTknPeS.png"></p>
-<p>接收端出现的乱码正是因为还没有进行<strong>帧定位</strong>的结果，这个就是后话了。</p>
-<p>后面还想到了一些很有趣的玩法，比如把软件1的<code>对方地址</code>直接填写到软件2的上层地址上面，具体实现过程就不表了。</p>
-<p><img src="https://i.loli.net/2019/09/13/in3aoC5GsKytSfd.png" alt="in3aoC5GsKytSfd.png"></p>
-<p>果然，也能收到，这就相当于是软件1的跑腿的直接给软件2的老板送信，自然软件2的老板能收到信息了。</p>
-<p>完结撒花(●ˇ∀ˇ●)</p>
-
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-      
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2019/09/11/自己编写代码与UDP模拟软件交互详解/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
-    <article id="post-Github 学习总结" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2019/08/21/Github 学习总结/">Github 学习总结</a>
-    </h1>
-  
-
-        
-        <a href="/2019/08/21/Github 学习总结/" class="archive-article-date">
-  	<time datetime="2019-08-21T14:34:44.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-08-21</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h2 id="Github-学习总结"><a href="#Github-学习总结" class="headerlink" title="Github 学习总结"></a>Github 学习总结</h2><h3 id="概念理解"><a href="#概念理解" class="headerlink" title="概念理解"></a>概念理解</h3><h4 id="Repository"><a href="#Repository" class="headerlink" title="Repository"></a>Repository</h4><p>顾名思义仓库，一个项目就是一个仓库，在GitHub上面也能通过全局搜索搜到一堆有趣的仓库</p>
-<h4 id="init"><a href="#init" class="headerlink" title="init"></a>init</h4><p>在创建GitHub仓库的时候有个 <code>Initial</code>的选项，就是生成一个空仓库，然后将你的<code>Description</code> 生成为一个<code>readme.md</code>的文件</p>
-<h4 id="工作区"><a href="#工作区" class="headerlink" title="工作区"></a>工作区</h4><p>我们修改代码这些的文件，也可以理解成现有的文件，都是我们正常工作时修改用到的，属于工作区</p>
-<h4 id="暂存区（缓存区）"><a href="#暂存区（缓存区）" class="headerlink" title="暂存区（缓存区）"></a>暂存区（缓存区）</h4><p>在我们修改完文件之后，使用<code>git add</code>命令提交到的区域就是缓存区，缓存区里面就是可以添加可以减少的一堆文件，不再修改之后使用<code>git commit</code>将文件都整合一下，提交到版本库里面</p>
-<h4 id="版本库"><a href="#版本库" class="headerlink" title="版本库"></a>版本库</h4><p>我们的每一次整合好了的修改就是一次<code>commit</code> ，commit弄完之后，我们就用<code>git push</code>将我们在本地上的改动部署到远程仓库中</p>
-<h4 id="分支-branch"><a href="#分支-branch" class="headerlink" title="分支(branch)"></a>分支(branch)</h4><p>一个项目，不同的开发者可对应不同的版本，比如dev版，发行版，内测版等等，这些不同的版本就是一个个的分支（针对开发人员来说）</p>
-<h4 id="标签（tag）"><a href="#标签（tag）" class="headerlink" title="标签（tag）"></a>标签（tag）</h4><p>和传统的标签意义不同，相当于发行给大众的版本号，生成一个标签命令执行后，会根据当前版本，把所有的代码打包成<code>zip/tar.gz</code>的格式统一发布出去</p>
-<h3 id="命令使用"><a href="#命令使用" class="headerlink" title="命令使用"></a>命令使用</h3><p><code>git clone (-o 自定义主机名) + [仓库http地址]</code> +（本地仓库名）进入仓库的HTTP网址，在本地将这个仓库里面的文件全部下载到本地磁盘里面，本地会生成一个同名文件夹，里面会有一个名为<code>.git</code>的隐藏文件夹，这个文件夹就是区分<code>GitHub</code>仓库和普通文件夹的地方 <strong>默认主机名是<code>origin</code></strong></p>
-<p><code>git init</code> 将当前目录初始化成为一个本地<code>git</code>仓库，不过没有指定到<code>github</code>服务器上，所以需要自己去搭建服务器</p>
-<p><code>echo &#39;text&#39;</code> 表示在屏幕上显示一串字符</p>
-<p><code>echo &#39;text&#39; &gt; [文件名]</code> 新建一个文件，内容是<code>text</code> ，名字是刚刚输入的名字</p>
-<p><code>echo &#39;text&#39; &gt;&gt; [文件名]</code> 在该文件后面提行，添加该<code>text</code> ，如果没有文件就新建一个文件</p>
-<p><code>git status</code> 查看当前<code>git</code> 状态，后面会被简写定义成<code>git st</code></p>
-<p><code>git add [文件名]</code> 将改变过的文件添加到待提交的<strong>暂存区</strong>，也可以使用<code>git add .</code>来将所有改动过的文件一并提交到<strong>暂存区</strong></p>
-<p><code>git reset --[文件名]</code>撤销刚才提交到<strong>暂存区</strong>的文件，或者是使用 <code>git rm --cached [文件名]</code>从缓存区中删去该文件（翻译问题，暂存区-&gt;缓存区）</p>
-<p><code>git diff --cached</code> 查看<strong>暂存区</strong>中的所有的文件修改情况</p>
-<p><code>git commit (-m [&#39;your commit in here&#39;])</code> 用于将<strong>暂存区</strong>的修改，整合成为一次<code>commit</code> ，一个新的整体改动</p>
-<p><code>git log (--reverse逆序排列)</code> 显示Git的<strong>版本区</strong>提交的历史记录</p>
-<p><code>git branch -avv</code>查看全部分支信息，到后面会用<code>git br</code> 来代替</p>
-<p><code>git reset --soft HEAD^</code> 撤销最近的一次提交，将修改从<strong>版本区</strong>还原到<strong>暂存区</strong>，撤销两次就是<code>git reset --soft HEAD^^</code>,多次就是<code>git reset --soft HEAD~n</code></p>
-<p><code>git reflog</code> 用于记录本地仓库的每一次版本变化</p>
-<p><code>git reset --hard [版本号]</code> 或者是 <code>git reset --hard HEAD@{n}</code>来回到第n次提交版本之前</p>
-<p><code>git push (-f 强制提交)</code> 用于将此次版本整合成为一个<code>commit</code> 提交</p>
-<p><code>git config --global alias.[别名] [原命令]</code> 用于设置命令别名，如<code>git config --global alias.st status</code> 和 <code>git config --global alias.br &#39;branch -avv&#39;</code> 设置好了之后就可以使用<code>git config -l</code>来查看自己定义的命令别名</p>
-<p><code>git fetch</code> 将远程仓库中的分支<strong>信息</strong>拉取到本地，之后可以使用<code>git rebase origin/master</code> 来根据信息来拉去分支文件，也可以使用<code>git pull</code> 直接拉取远程仓库中的文件</p>
-<p><code>git branch [分支名]</code> 创建新的分支,创建好了之后使用<code>git checkout [分支名]</code>来切换到新分支，默认主要分支是<code>master</code>，这个<code>git checkout</code>命令常用，别名设置为<code>git ch</code>；也可以使用<code>git checkout -b [分支名]</code>直接创建分支一步到位</p>
-<p><code>git push [主机名] [本地分支名]:[远程分支名]</code>推送本地分支到远程仓库中，如果本地和远程分支名相同就可以省略<code>:[远程分支名]</code>，如<code>git push origin dev1</code>  如果远程分支不存在就自动创建。</p>
-<p><code>git branch -u [主机名] [本地分支名]</code> 将本地分支与远程分支关联起来 如<code>git branch -u origin/dev1</code>而使用<code>git push -u [主机名] [分支名]</code> 就可以在上传的时候自动跟踪</p>
-<p><code>git push [主机名] --delete [远程分支名]</code> 删除远程分支，还有一个相同功能的命令，不过与前文极为相似，为避免混淆不计。<code>git branch -D [分支名]</code>删除本地分支，<code>git branch -m [原分支名] [新分支名]</code> 分支改名</p>
-<p><code>git tag [标签名] -m [备注信息] [版本号]</code> 创建标签，其中版本号可以省略，备注信息建议添加。<code>git show [标签名]</code>查看标签详细信息。<code>git tag -d [标签名]</code>删除本地标签。<code>git push [主机名] [标签名]</code>推送标签，或者是使用<code>git push [主机名] --tags</code>推送所有标签。<code>git push origin :refs/tags/[标签名]</code>删除远程仓库中的标签</p>
-
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-      
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2019/08/21/Github 学习总结/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
-    <article id="post-判断是否是完全平方数" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2019/08/21/判断是否是完全平方数/">判断是否是完全平方数</a>
-    </h1>
-  
-
-        
-        <a href="/2019/08/21/判断是否是完全平方数/" class="archive-article-date">
-  	<time datetime="2019-08-20T16:28:54.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-08-21</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>给定一个正整数 num，编写一个函数，如果 num 是一个完全平方数，则返回 True，否则返回 False。</p>
-<p>说明：不要使用任何内置的库函数，如  sqrt。</p>
-<p>示例 1：</p>
-<p>输入：16<br>输出：True<br>示例 2：</p>
-<p>输入：14<br>输出：False</p>
-<p>最开始想到的是使用<code>sqrt()</code>直接判断，什么？不能使用sqrt()?</p>
-<p>不能使用任何内置的库函数，所以使用math.log的方案也挂掉了，老老实实去凑吧</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">func</span><span class="params">(num)</span>:</span></span><br><span class="line">    <span class="keyword">if</span>(num&lt;<span class="number">0</span>):</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">False</span></span><br><span class="line">    <span class="keyword">if</span>(num&lt;=<span class="number">2</span>):</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">True</span></span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">1</span>,num//<span class="number">2</span>):</span><br><span class="line">        <span class="keyword">if</span>(i*i==num):</span><br><span class="line">            <span class="keyword">return</span> <span class="literal">True</span></span><br><span class="line">        <span class="keyword">if</span>(i*i&gt;num):</span><br><span class="line">            <span class="keyword">return</span> <span class="literal">False</span></span><br></pre></td></tr></table></figure>
-<p>虽然我觉得他肯定要卡你时间复杂度    </p>
-<p>果然后面他给我报错，<code>MemoryError</code>不过是发生在<code>Line 7</code>也就是<code>for i in range(1,num//2):</code>这一行就让我感觉有点意外</p>
-<p>后来看到了公式，有点东西</p>
-<p><code>4 = 1+3</code></p>
-<p><code>9 = 1+3+5</code></p>
-<p><code>16 = 1+3+5+7</code></p>
-<p>以此类推</p>
-<p><code>n^2 = 1+3+5+……+(2n-1)</code></p>
-<p>所以我们就挨着挨着减下来就好了</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">func</span><span class="params">(num)</span>:</span></span><br><span class="line">    <span class="keyword">if</span>(num&lt;<span class="number">0</span>):</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">False</span></span><br><span class="line">    i = <span class="number">1</span></span><br><span class="line">    <span class="keyword">while</span>(num&gt;<span class="number">0</span>):</span><br><span class="line">        num-=i</span><br><span class="line">        i+=<span class="number">2</span></span><br><span class="line">    <span class="keyword">return</span> num==<span class="number">0</span></span><br></pre></td></tr></table></figure>
-<p>只需要执行n次就可以了</p>
-
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-      
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2019/08/21/判断是否是完全平方数/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
   
   
-    <nav id="page-nav">
-      <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="extend next" rel="next" href="/page/2/">Next &raquo;</a>
-    </nav>
+  
+  <div id="cloud-tie-wrapper" class="cloud-tie-wrapper"></div>
+<script>
+  var cloudTieConfig = {
+    url: "http://yoursite.com/2019/12/14/实验五/", 
+    sourceId: "实验五",
+    productKey: "true",
+    target: "cloud-tie-wrapper"
+  };
+</script>
+<script src="//img1.cache.netease.com/f2e/tie/yun/sdk/loader.js"></script>
+  
+
+  
+
+  
+
   
 
 
@@ -1493,8 +485,8 @@
     <script>
 	var yiliaConfig = {
 		mathjax: true,
-		isHome: true,
-		isPost: false,
+		isHome: false,
+		isPost: true,
 		isArchive: false,
 		isTag: false,
 		isCategory: false,

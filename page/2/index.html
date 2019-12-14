@@ -164,19 +164,19 @@
           <div id="js-content" class="content-ll">
             
   
-    <article id="post-判断是否是完全平方数" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+    <article id="post-各个位上的数字相加" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
       <header class="article-header">
         
   
     <h1 itemprop="name">
-      <a class="article-title" href="/2019/08/21/判断是否是完全平方数/">判断是否是完全平方数</a>
+      <a class="article-title" href="/2019/08/21/各个位上的数字相加/">各个位上的数字相加</a>
     </h1>
   
 
         
-        <a href="/2019/08/21/判断是否是完全平方数/" class="archive-article-date">
+        <a href="/2019/08/21/各个位上的数字相加/" class="archive-article-date">
   	<time datetime="2019-08-20T16:28:54.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-08-21</time>
 </a>
         
@@ -184,25 +184,17 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <p>给定一个正整数 num，编写一个函数，如果 num 是一个完全平方数，则返回 True，否则返回 False。</p>
-<p>说明：不要使用任何内置的库函数，如  sqrt。</p>
-<p>示例 1：</p>
-<p>输入：16<br>输出：True<br>示例 2：</p>
-<p>输入：14<br>输出：False</p>
-<p>最开始想到的是使用<code>sqrt()</code>直接判断，什么？不能使用sqrt()?</p>
-<p>不能使用任何内置的库函数，所以使用math.log的方案也挂掉了，老老实实去凑吧</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">func</span><span class="params">(num)</span>:</span></span><br><span class="line">    <span class="keyword">if</span>(num&lt;<span class="number">0</span>):</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">False</span></span><br><span class="line">    <span class="keyword">if</span>(num&lt;=<span class="number">2</span>):</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">True</span></span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">1</span>,num//<span class="number">2</span>):</span><br><span class="line">        <span class="keyword">if</span>(i*i==num):</span><br><span class="line">            <span class="keyword">return</span> <span class="literal">True</span></span><br><span class="line">        <span class="keyword">if</span>(i*i&gt;num):</span><br><span class="line">            <span class="keyword">return</span> <span class="literal">False</span></span><br></pre></td></tr></table></figure>
-<p>虽然我觉得他肯定要卡你时间复杂度    </p>
-<p>果然后面他给我报错，<code>MemoryError</code>不过是发生在<code>Line 7</code>也就是<code>for i in range(1,num//2):</code>这一行就让我感觉有点意外</p>
-<p>后来看到了公式，有点东西</p>
-<p><code>4 = 1+3</code></p>
-<p><code>9 = 1+3+5</code></p>
-<p><code>16 = 1+3+5+7</code></p>
-<p>以此类推</p>
-<p><code>n^2 = 1+3+5+……+(2n-1)</code></p>
-<p>所以我们就挨着挨着减下来就好了</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">func</span><span class="params">(num)</span>:</span></span><br><span class="line">    <span class="keyword">if</span>(num&lt;<span class="number">0</span>):</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">False</span></span><br><span class="line">    i = <span class="number">1</span></span><br><span class="line">    <span class="keyword">while</span>(num&gt;<span class="number">0</span>):</span><br><span class="line">        num-=i</span><br><span class="line">        i+=<span class="number">2</span></span><br><span class="line">    <span class="keyword">return</span> num==<span class="number">0</span></span><br></pre></td></tr></table></figure>
-<p>只需要执行n次就可以了</p>
+        <p>给定一个非负整数 <code>num</code>，反复将各个位上的数字相加，直到结果为一位数。</p>
+<p>示例:</p>
+<p>输入: 38<br>输出: 2<br>解释: 各位相加的过程为：3 + 8 = 11, 1 + 1 = 2。 由于 2 是一位数，所以返回 2。</p>
+<p>这个直接用循环来做非常快，题目进阶要求说不使用循环和递归，且要求时间复杂度<code>O(1)</code>之内解决</p>
+<p>直接上很秀的解法</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">func</span><span class="params">(num)</span>:</span></span><br><span class="line">	<span class="keyword">return</span> (num%<span class="number">9</span>) <span class="keyword">or</span> (<span class="number">9</span>*bool(num))</span><br></pre></td></tr></table></figure>
+<p>假设原来的数是<code>abcd</code>即，<code>1000*a+100*b+10*c+d</code>之后我们需要的数字是<code>a+b+c+d</code></p>
+<p>所以<code>a+b+c+d</code>=<code>(1000*a+100*b+10*c+d)-(999*a+99*b+9*c)=&#39;abcd&#39;-9*(111*a+11*b+c)</code> 就相当于<code>a+b+c+d=num%9</code></p>
+<p>如果<code>num</code>是9的倍数怎么办呢？<code>num</code>是0怎么办呢？</p>
+<p>9的倍数的各位数的和就是9，而此时<code>num%9==0</code>，所以直接使用<code>9*bool(num)</code></p>
+<p>最后一个<code>or</code> 把句子缩写到一行，<code>leecode</code>大神写的代码真是太优雅了</p>
 
       
 
@@ -215,7 +207,87 @@
 
       
         <p class="article-more-link">
-          <a class="article-more-a" href="/2019/08/21/判断是否是完全平方数/">展开全文 >></a>
+          <a class="article-more-a" href="/2019/08/21/各个位上的数字相加/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
+    <article id="post-重新分组密钥" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2019/08/21/重新分组密钥/">重新分组密钥</a>
+    </h1>
+  
+
+        
+        <a href="/2019/08/21/重新分组密钥/" class="archive-article-date">
+  	<time datetime="2019-08-20T16:28:54.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-08-21</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>给定一个密钥字符串S，只包含字母，数字以及 ‘-‘（破折号）。N 个 ‘-‘ 将字符串分成了 N+1 组。给定一个数字 K，重新格式化字符串，除了第一个分组以外，每个分组要包含 K 个字符，第一个分组至少要包含 1 个字符。两个分组之间用 ‘-‘（破折号）隔开，并且将所有的小写字母转换为大写字母。</p>
+<p>给定非空字符串 S 和数字 K，按照上面描述的规则进行格式化。</p>
+<p>示例 1：</p>
+<p>输入：S = “5F3Z-2e-9-w”, K = 4</p>
+<p>输出：”5F3Z-2E9W”</p>
+<p>解释：字符串 S 被分成了两个部分，每部分 4 个字符；<br>     注意，两个额外的破折号需要删掉。<br>示例 2：</p>
+<p>输入：S = “2-5g-3-J”, K = 2</p>
+<p>输出：”2-5G-3J”</p>
+<p>解释：字符串 S 被分成了 3 个部分，按照前面的规则描述，第一部分的字符可以少于给定的数量，其余部分皆为 2 个字符。</p>
+<p>只能说这个题目没有解释清楚，一开始我以为是第一组保持不变，然后后面的转大写然后去按照K个字母来进行分组，思路就是先读取这个字符串第一个’-‘的位置，然后把后面的’-‘全部去除掉，然后根据K来进行插入’-‘即可</p>
+<p>python代码如下：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">func</span><span class="params">(S,K)</span>:</span></span><br><span class="line">    S = list(S.upper())</span><br><span class="line">    first = <span class="number">0</span></span><br><span class="line">    lens = len(S)</span><br><span class="line">    offset = <span class="number">0</span></span><br><span class="line">    popList = []</span><br><span class="line">    popoffset = <span class="number">0</span></span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> range(lens):</span><br><span class="line">        <span class="keyword">if</span>(S[i]==<span class="string">'-'</span> <span class="keyword">and</span> first!=<span class="number">1</span>):</span><br><span class="line">            first = <span class="number">1</span></span><br><span class="line">            offset = i</span><br><span class="line">        <span class="keyword">elif</span>(S[i]==<span class="string">'-'</span>):</span><br><span class="line">            popList.append(i)</span><br><span class="line">            lens-=<span class="number">1</span></span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> popList:</span><br><span class="line">        S.pop(i-popoffset)</span><br><span class="line">        popoffset+=<span class="number">1</span></span><br><span class="line">    res = lens-(offset+<span class="number">1</span>)</span><br><span class="line">    res_char_num = K</span><br><span class="line">    insertList = []</span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> range(offset+<span class="number">1</span>,lens):</span><br><span class="line">        <span class="keyword">if</span>((i-offset<span class="number">-1</span>)%res_char_num==<span class="number">0</span> <span class="keyword">and</span> (i-offset<span class="number">-1</span>)!= <span class="number">0</span>):</span><br><span class="line">            insertList.append(i)</span><br><span class="line">    insertOffset = <span class="number">0</span></span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> insertList:</span><br><span class="line">        S.insert(i+insertOffset,<span class="string">'-'</span>)</span><br><span class="line">        insertOffset+=<span class="number">1</span></span><br><span class="line">    <span class="keyword">return</span> <span class="string">''</span>.join(S)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">S = <span class="string">'5F3Z-2e-9-w'</span></span><br><span class="line">K = <span class="number">4</span></span><br><span class="line">print(func(S,K))</span><br></pre></td></tr></table></figure>
+<p>没想到报错了,我寻思我这个很符合题意啊</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">执行结果：解答错误 显示详情</span><br><span class="line">输入:</span><br><span class="line">&quot;2-4A0r7-4k&quot;</span><br><span class="line">4</span><br><span class="line">输出</span><br><span class="line">&quot;2-4A0R-74K&quot;</span><br><span class="line">预期结果</span><br><span class="line">&quot;24A0-R74K&quot;</span><br></pre></td></tr></table></figure>
+<p>看了题解才知道，这个题目的意思就是，前面第一组的长度<code>S&lt;=K</code> 后面每一组的长度<code>S==k</code>，这个锅要怪出题人没有解释清楚</p>
+<p>然后修改代码，去掉’-‘，从后往前找到插入’-‘的位置插入即可</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">func</span><span class="params">(S,K)</span>:</span></span><br><span class="line">    S = list(S.upper().replace(<span class="string">'-'</span>,<span class="string">''</span>))</span><br><span class="line">    insertList = []</span><br><span class="line">    insertOffset = <span class="number">0</span></span><br><span class="line">    n = <span class="number">1</span></span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> range(len(S)<span class="number">-1</span>,<span class="number">0</span>,<span class="number">-1</span>):</span><br><span class="line">        <span class="keyword">if</span>(n%K==<span class="number">0</span>):</span><br><span class="line">            insertList.append(i)</span><br><span class="line">        n+=<span class="number">1</span></span><br><span class="line">    insertList.sort()</span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> insertList:</span><br><span class="line">        S.insert(i+insertOffset,<span class="string">'-'</span>)</span><br><span class="line">        insertOffset+=<span class="number">1</span></span><br><span class="line">    <span class="keyword">return</span> <span class="string">''</span>.join(S)</span><br><span class="line">S = <span class="string">'5F3Z-2e-9-w'</span></span><br><span class="line">K = <span class="number">4</span></span><br><span class="line">print(func(S,K))</span><br></pre></td></tr></table></figure>
+<p>通过</p>
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+      
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2019/08/21/重新分组密钥/">展开全文 >></a>
         </p>
       
 
