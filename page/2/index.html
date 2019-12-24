@@ -45,7 +45,7 @@
     <canvas id="anm-canvas" class="anm-canvas"></canvas>
     <div class="left-col" q-class="show:isShow">
       
-<div class="overlay" style="background: #4d4d4d"></div>
+<div class="overlay" style="background: #d0d3dd"></div>
 <div class="intrude-less">
 	<header id="header" class="inner">
 		<a href="/" class="profilepic">
@@ -104,7 +104,7 @@
     <div class="mid-col" q-class="show:isShow,hide:isShow|isFalse">
       
 <nav id="mobile-nav">
-  	<div class="overlay js-overlay" style="background: #4d4d4d"></div>
+  	<div class="overlay js-overlay" style="background: #d0d3dd"></div>
 	<div class="btnctn js-mobile-btnctn">
   		<div class="slider-trigger list" q-on="click: openSlider(e)"><i class="icon icon-sort"></i></div>
 	</div>
@@ -244,79 +244,6 @@
 
 
   
-    <article id="post-各个位上的数字相加" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2019/08/21/各个位上的数字相加/">各个位上的数字相加</a>
-    </h1>
-  
-
-        
-        <a href="/2019/08/21/各个位上的数字相加/" class="archive-article-date">
-  	<time datetime="2019-08-20T16:28:54.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-08-21</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>给定一个非负整数 <code>num</code>，反复将各个位上的数字相加，直到结果为一位数。</p>
-<p>示例:</p>
-<p>输入: 38<br>输出: 2<br>解释: 各位相加的过程为：3 + 8 = 11, 1 + 1 = 2。 由于 2 是一位数，所以返回 2。</p>
-<p>这个直接用循环来做非常快，题目进阶要求说不使用循环和递归，且要求时间复杂度<code>O(1)</code>之内解决</p>
-<p>直接上很秀的解法</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">func</span><span class="params">(num)</span>:</span></span><br><span class="line">	<span class="keyword">return</span> (num%<span class="number">9</span>) <span class="keyword">or</span> (<span class="number">9</span>*bool(num))</span><br></pre></td></tr></table></figure>
-<p>假设原来的数是<code>abcd</code>即，<code>1000*a+100*b+10*c+d</code>之后我们需要的数字是<code>a+b+c+d</code></p>
-<p>所以<code>a+b+c+d</code>=<code>(1000*a+100*b+10*c+d)-(999*a+99*b+9*c)=&#39;abcd&#39;-9*(111*a+11*b+c)</code> 就相当于<code>a+b+c+d=num%9</code></p>
-<p>如果<code>num</code>是9的倍数怎么办呢？<code>num</code>是0怎么办呢？</p>
-<p>9的倍数的各位数的和就是9，而此时<code>num%9==0</code>，所以直接使用<code>9*bool(num)</code></p>
-<p>最后一个<code>or</code> 把句子缩写到一行，<code>leecode</code>大神写的代码真是太优雅了</p>
-
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-      
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2019/08/21/各个位上的数字相加/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
     <article id="post-不使用运算符 + 和 - ，计算两整数 a 、b 之和" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
@@ -375,6 +302,160 @@
       
         <p class="article-more-link">
           <a class="article-more-a" href="/2019/08/21/不使用运算符 + 和 - ，计算两整数 a 、b 之和/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
+    <article id="post-判断是否是完全平方数" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2019/08/21/判断是否是完全平方数/">判断是否是完全平方数</a>
+    </h1>
+  
+
+        
+        <a href="/2019/08/21/判断是否是完全平方数/" class="archive-article-date">
+  	<time datetime="2019-08-20T16:28:54.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-08-21</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>给定一个正整数 num，编写一个函数，如果 num 是一个完全平方数，则返回 True，否则返回 False。</p>
+<p>说明：不要使用任何内置的库函数，如  sqrt。</p>
+<p>示例 1：</p>
+<p>输入：16<br>输出：True<br>示例 2：</p>
+<p>输入：14<br>输出：False</p>
+<p>最开始想到的是使用<code>sqrt()</code>直接判断，什么？不能使用sqrt()?</p>
+<p>不能使用任何内置的库函数，所以使用math.log的方案也挂掉了，老老实实去凑吧</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">func</span><span class="params">(num)</span>:</span></span><br><span class="line">    <span class="keyword">if</span>(num&lt;<span class="number">0</span>):</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">False</span></span><br><span class="line">    <span class="keyword">if</span>(num&lt;=<span class="number">2</span>):</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">True</span></span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">1</span>,num//<span class="number">2</span>):</span><br><span class="line">        <span class="keyword">if</span>(i*i==num):</span><br><span class="line">            <span class="keyword">return</span> <span class="literal">True</span></span><br><span class="line">        <span class="keyword">if</span>(i*i&gt;num):</span><br><span class="line">            <span class="keyword">return</span> <span class="literal">False</span></span><br></pre></td></tr></table></figure>
+<p>虽然我觉得他肯定要卡你时间复杂度    </p>
+<p>果然后面他给我报错，<code>MemoryError</code>不过是发生在<code>Line 7</code>也就是<code>for i in range(1,num//2):</code>这一行就让我感觉有点意外</p>
+<p>后来看到了公式，有点东西</p>
+<p><code>4 = 1+3</code></p>
+<p><code>9 = 1+3+5</code></p>
+<p><code>16 = 1+3+5+7</code></p>
+<p>以此类推</p>
+<p><code>n^2 = 1+3+5+……+(2n-1)</code></p>
+<p>所以我们就挨着挨着减下来就好了</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">func</span><span class="params">(num)</span>:</span></span><br><span class="line">    <span class="keyword">if</span>(num&lt;<span class="number">0</span>):</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">False</span></span><br><span class="line">    i = <span class="number">1</span></span><br><span class="line">    <span class="keyword">while</span>(num&gt;<span class="number">0</span>):</span><br><span class="line">        num-=i</span><br><span class="line">        i+=<span class="number">2</span></span><br><span class="line">    <span class="keyword">return</span> num==<span class="number">0</span></span><br></pre></td></tr></table></figure>
+<p>只需要执行n次就可以了</p>
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+      
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2019/08/21/判断是否是完全平方数/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
+    <article id="post-各个位上的数字相加" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2019/08/21/各个位上的数字相加/">各个位上的数字相加</a>
+    </h1>
+  
+
+        
+        <a href="/2019/08/21/各个位上的数字相加/" class="archive-article-date">
+  	<time datetime="2019-08-20T16:28:54.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-08-21</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>给定一个非负整数 <code>num</code>，反复将各个位上的数字相加，直到结果为一位数。</p>
+<p>示例:</p>
+<p>输入: 38<br>输出: 2<br>解释: 各位相加的过程为：3 + 8 = 11, 1 + 1 = 2。 由于 2 是一位数，所以返回 2。</p>
+<p>这个直接用循环来做非常快，题目进阶要求说不使用循环和递归，且要求时间复杂度<code>O(1)</code>之内解决</p>
+<p>直接上很秀的解法</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">func</span><span class="params">(num)</span>:</span></span><br><span class="line">	<span class="keyword">return</span> (num%<span class="number">9</span>) <span class="keyword">or</span> (<span class="number">9</span>*bool(num))</span><br></pre></td></tr></table></figure>
+<p>假设原来的数是<code>abcd</code>即，<code>1000*a+100*b+10*c+d</code>之后我们需要的数字是<code>a+b+c+d</code></p>
+<p>所以<code>a+b+c+d</code>=<code>(1000*a+100*b+10*c+d)-(999*a+99*b+9*c)=&#39;abcd&#39;-9*(111*a+11*b+c)</code> 就相当于<code>a+b+c+d=num%9</code></p>
+<p>如果<code>num</code>是9的倍数怎么办呢？<code>num</code>是0怎么办呢？</p>
+<p>9的倍数的各位数的和就是9，而此时<code>num%9==0</code>，所以直接使用<code>9*bool(num)</code></p>
+<p>最后一个<code>or</code> 把句子缩写到一行，<code>leecode</code>大神写的代码真是太优雅了</p>
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+      
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2019/08/21/各个位上的数字相加/">展开全文 >></a>
         </p>
       
 

@@ -45,7 +45,7 @@
     <canvas id="anm-canvas" class="anm-canvas"></canvas>
     <div class="left-col" q-class="show:isShow">
       
-<div class="overlay" style="background: #4d4d4d"></div>
+<div class="overlay" style="background: #d0d3dd"></div>
 <div class="intrude-less">
 	<header id="header" class="inner">
 		<a href="/" class="profilepic">
@@ -104,7 +104,7 @@
     <div class="mid-col" q-class="show:isShow,hide:isShow|isFalse">
       
 <nav id="mobile-nav">
-  	<div class="overlay js-overlay" style="background: #4d4d4d"></div>
+  	<div class="overlay js-overlay" style="background: #d0d3dd"></div>
 	<div class="btnctn js-mobile-btnctn">
   		<div class="slider-trigger list" q-on="click: openSlider(e)"><i class="icon icon-sort"></i></div>
 	</div>
@@ -300,6 +300,254 @@
       
         <p class="article-more-link">
           <a class="article-more-a" href="/2019/12/14/实验五/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
+    <article id="post-实验六" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2019/12/12/实验六/">恶意代码分析实战笔记(四)</a>
+    </h1>
+  
+
+        
+        <a href="/2019/12/12/实验六/" class="archive-article-date">
+  	<time datetime="2019-12-12T14:32:53.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-12-12</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="恶意代码分析实战笔记-四"><a href="#恶意代码分析实战笔记-四" class="headerlink" title="恶意代码分析实战笔记(四)"></a>恶意代码分析实战笔记(四)</h1><h2 id="LAB07-01-exe"><a href="#LAB07-01-exe" class="headerlink" title="LAB07-01.exe"></a>LAB07-01.exe</h2><h3 id="静态分析"><a href="#静态分析" class="headerlink" title="静态分析"></a>静态分析</h3><p>通过IDA分析整个程序的逻辑与疑点，先打开导入函数表，大致浏览程序的功能</p>
+<p><img src="https://raw.githubusercontent.com/damaoooo/imageBed/master/assets/image-20191223220040221.png" alt="image-20191223220040221.png"></p>
+<p>发现了一个<code>CreateServiceA</code>，<code>StartServiceCtrlDispatcherA</code>，<code>OpenSCManagerA</code> 等等有关于系统服务的函数，说明该程序具有操作系统的操作，<code>InternetOpenUrlA</code>，<code>InternetOpenA</code>函数用于打开一个网址，<code>CreateMutexA</code>，<code>OpenMutexA</code>用于创建和打开互斥锁。</p>
+<p>我们使用IDA分析程序的<code>main</code>函数</p>
+<p><img src="https://raw.githubusercontent.com/damaoooo/imageBed/master/assets/image-20191223220603411.png" alt="image-20191223220603411.png"></p>
+<p>这个<code>main()</code>函数是用来创建一个服务列表，名字是<code>MalService</code>，主程序是<code>sub_401040()</code>，通过<code>StartServiceCtrlDispatcherA</code>来执行这样的一个函数，我们跟进服务主程序去看看</p>
+<p><img src="https://raw.githubusercontent.com/damaoooo/imageBed/master/assets/image-20191223221008103.png" alt="image-20191223221008103.png"></p>
+<p>理清函数功能，首先是打开互斥锁<code>HGL345</code>，如果打开成功就创建这样的互斥锁，如果不成功就退出程序，是保证程序只有一个程序运行</p>
+<p>然后打开服务管理器，获取当前进程，找到当前进程的名字和文件目录<code>Filename</code>，创建基于这个随机获取到的文件目录来创建自己的服务，参数解释如下</p>
+<table>
+<thead>
+<tr>
+<th>参数</th>
+<th>值</th>
+<th>含义</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>hSCManager</code></td>
+<td><code>SCManagerHandle</code></td>
+<td>服务控制管理器的句柄</td>
+</tr>
+<tr>
+<td><code>IpServiceName</code></td>
+<td><code>DisplayName</code>= <code>Malservice</code></td>
+<td>安装该服务的名称</td>
+</tr>
+<tr>
+<td><code>IpDisplayName</code></td>
+<td><code>DisplayName</code> = <code>Malservice</code></td>
+<td>用户界面显示出的名称</td>
+</tr>
+<tr>
+<td><code>dwDesiredAccess</code></td>
+<td><code>2u</code></td>
+<td>进程的访问令牌</td>
+</tr>
+<tr>
+<td><code>dwServiceType</code></td>
+<td><code>0x10u</code></td>
+<td>服务类型，这里是独立进程的服务程序</td>
+</tr>
+<tr>
+<td><code>dwStartType</code></td>
+<td><code>2u</code></td>
+<td>服务启动选项，这里是开机自启</td>
+</tr>
+<tr>
+<td><code>dwErrorContorl</code></td>
+<td><code>0</code></td>
+<td>服务启动失败的措施，这里是忽略错误继续执行</td>
+</tr>
+<tr>
+<td><code>IpBinaryPathName</code></td>
+<td><code>&amp;Filename</code></td>
+<td>服务程序的二进制文件路径</td>
+</tr>
+</tbody>
+</table>
+<p>看到这里就大概明白了，这个程序注册一个自己的服务开机运行，潜伏在程序运行时的当前目录的二进制文件中。</p>
+<p>继续向下分析，发现是设定一个时间<code>2100/0/0 00:00:00</code>，然后获取系统时间，如果到了这个时间，那么就船舰20个线程，每个线程都是从<code>StartAddress</code>开始执行，我们进入这个<code>StartAddress</code>函数</p>
+<p><img src="https://raw.githubusercontent.com/damaoooo/imageBed/master/assets/image-20191223223257410.png" alt="image-20191223223257410.png"></p>
+<p>发现是打开<code>Internet</code>版本是<code>Internet Explorer 8.0</code>，然后打开网址<code>http://www.malwareanalysisbook.com</code>，字符串参考列表如下</p>
+<p><img src="https://raw.githubusercontent.com/damaoooo/imageBed/master/assets/image-20191223223350956.png" alt="image-20191223223350956.png"></p>
+<p>运行完了之后还没完，这个程序会一直<code>Sleep</code>的方式驻留在服务中</p>
+<h3 id="1、-问题：当计算机重启后，这个程序如何确保它继续运行？-（即持久化驻留）"><a href="#1、-问题：当计算机重启后，这个程序如何确保它继续运行？-（即持久化驻留）" class="headerlink" title="1、 问题：当计算机重启后，这个程序如何确保它继续运行？ （即持久化驻留）"></a>1、 问题：当计算机重启后，这个程序如何确保它继续运行？ （即持久化驻留）</h3><p>​    程序将自己写进了开机自启动中</p>
+<h3 id="2、-问题：为什么这个程序会使用一个互斥量？"><a href="#2、-问题：为什么这个程序会使用一个互斥量？" class="headerlink" title="2、 问题：为什么这个程序会使用一个互斥量？"></a>2、 问题：为什么这个程序会使用一个互斥量？</h3><p>​    保证同一时间只有一个自己的程序运行</p>
+<h3 id="3、-问题：可以用来检测这个程序的基于主机特征是什么？"><a href="#3、-问题：可以用来检测这个程序的基于主机特征是什么？" class="headerlink" title="3、 问题：可以用来检测这个程序的基于主机特征是什么？"></a>3、 问题：可以用来检测这个程序的基于主机特征是什么？</h3><p>​    互斥锁<code>HGL345</code></p>
+<p>​    服务<code>MalService</code></p>
+<h3 id="4、-问题：检测这个恶意代码的基于网络特征是什么？"><a href="#4、-问题：检测这个恶意代码的基于网络特征是什么？" class="headerlink" title="4、 问题：检测这个恶意代码的基于网络特征是什么？"></a>4、 问题：检测这个恶意代码的基于网络特征是什么？</h3><p>​    打开<code>Internet Explorer 8.0</code>和网址<code>http://www.malwareanalysisbook.com</code></p>
+<h3 id="5、-这个程序的目的是什么？"><a href="#5、-这个程序的目的是什么？" class="headerlink" title="5、 这个程序的目的是什么？"></a>5、 这个程序的目的是什么？</h3><p>​    到了一个指定的时间之后，打开20个线程同时访问该网站，估计是将病毒植入抓到的肉鸡中，然后指定一个时间进行<code>DDOS</code>攻击</p>
+<h3 id="6、这个程序什么时候完成执行？"><a href="#6、这个程序什么时候完成执行？" class="headerlink" title="6、这个程序什么时候完成执行？"></a>6、这个程序什么时候完成执行？</h3><p>​    在<code>2100/01/01 00:00:00</code>开始执行，执行完了之后还会一直潜伏在电脑里面</p>
+<h2 id="LAB07-02-exe"><a href="#LAB07-02-exe" class="headerlink" title="LAB07-02.exe"></a>LAB07-02.exe</h2><h3 id="使用IDA进行静态分析"><a href="#使用IDA进行静态分析" class="headerlink" title="使用IDA进行静态分析"></a>使用IDA进行静态分析</h3><p>我们首先看看函数导入表</p>
+<p><img src="https://raw.githubusercontent.com/damaoooo/imageBed/master/assets/image-20191224130550304.png" alt="image-20191224130550304.png"></p>
+<p>发现它的函数导入并不多，<code>OleInitialize</code>用于创建<code>ole</code>初始化对象，<code>CoCreateInstance</code>用于创建一个<code>Com</code>实例，<code>OleUninitialize</code>用于删除一个<code>ole</code>对象，上面的<code>SysAllocString</code>和<code>SysFreeString</code>用于字符串的操作。</p>
+<p>我们再看看字符串列表</p>
+<p><img src="https://raw.githubusercontent.com/damaoooo/imageBed/master/assets/image-20191224130757083.png" alt="image-20191224130757083.png"></p>
+<p><img src="https://raw.githubusercontent.com/damaoooo/imageBed/master/assets/image-20191224130907842.png" alt="image-20191224130907842.png"></p>
+<p>看到了一个网址，可能有用来打开这个网址的操作</p>
+<p>进入main函数看一看</p>
+<p><img src="https://raw.githubusercontent.com/damaoooo/imageBed/master/assets/image-20191224131042462.png" alt="image-20191224131042462.png"></p>
+<p>发现非常简短，不过这个面向对象的操作有点看不懂，大概分析就是首先创建实例，如果创建成功了，那么就运行<code>ppv+44</code>处函数指针指向的函数，其中v3是分配了一个字符串，跟进去看一看</p>
+<p><img src="https://raw.githubusercontent.com/damaoooo/imageBed/master/assets/image-20191224131202003.png" alt="image-20191224131202003.png"></p>
+<p>发现就是网址，我们把这个网址改一下名字，然后查询old函数的操作，发现这个<code>CoCreateInstance</code>函数的参数如下</p>
+<table>
+<thead>
+<tr>
+<th>参数</th>
+<th>值</th>
+<th>功能</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>rclsid</code></td>
+<td><code>0002DF01-0000-0000-C000-000000000046</code></td>
+<td>用于标识一个对象</td>
+</tr>
+<tr>
+<td><code>pUnkOuter</code></td>
+<td><code>0</code></td>
+<td>表示是否非聚合式对象</td>
+</tr>
+<tr>
+<td><code>dwClsContext</code></td>
+<td><code>4</code></td>
+<td>组件类别</td>
+</tr>
+<tr>
+<td><code>riid</code></td>
+<td><code>D30C1661-CDAF-11D0-8A3E-00C04FC9E26E</code></td>
+<td>接口标识符，用于对象通信</td>
+</tr>
+<tr>
+<td><code>ppv</code></td>
+<td><code>&amp;ppv</code></td>
+<td>接收接口指针</td>
+</tr>
+</tbody>
+</table>
+<p>这两个ID看上去像是<code>uuid</code>的格式，我们找一下这两个id的功能是什么</p>
+<p><img src="https://raw.githubusercontent.com/damaoooo/imageBed/master/assets/image-20191224134213628.png" alt="image-20191224134213628.png"></p>
+<p><img src="https://raw.githubusercontent.com/damaoooo/imageBed/master/assets/image-20191224134245470.png" alt="image-20191224134245470.png"></p>
+<p>看样子这个程序是打开浏览器来访问这样的一个网站的操作</p>
+<p>使用标准结构体之后如下</p>
+<p><img src="https://raw.githubusercontent.com/damaoooo/imageBed/master/assets/image-20191224134700424.png" alt="image-20191224134700424.png"></p>
+<p>就是打开浏览器导航的一个操作，然后释放变量，关闭对象，结束<code>main</code></p>
+<h3 id="1、-问题：这个程序如何完成持久化驻留"><a href="#1、-问题：这个程序如何完成持久化驻留" class="headerlink" title="1、 问题：这个程序如何完成持久化驻留"></a>1、 问题：这个程序如何完成持久化驻留</h3><p>似乎没有进行持久化驻留，打开了之后就关闭了</p>
+<h3 id="2、-问题：这个程序的目的是什么？"><a href="#2、-问题：这个程序的目的是什么？" class="headerlink" title="2、 问题：这个程序的目的是什么？"></a>2、 问题：这个程序的目的是什么？</h3><p>打开一个网站</p>
+<h3 id="3-这个程序什么时候完成执行"><a href="#3-这个程序什么时候完成执行" class="headerlink" title="3.这个程序什么时候完成执行"></a>3.这个程序什么时候完成执行</h3><p>网站打开了就结束了</p>
+<h2 id="LAB7-3"><a href="#LAB7-3" class="headerlink" title="LAB7-3"></a>LAB7-3</h2><h3 id="静态分析LAB07-03-exe"><a href="#静态分析LAB07-03-exe" class="headerlink" title="静态分析LAB07-03.exe"></a>静态分析LAB07-03.exe</h3><p>查看导入函数表</p>
+<p><img src="https://raw.githubusercontent.com/damaoooo/imageBed/master/assets/image-20191224141845795.png" alt="image-20191224141845795.png"></p>
+<p>发现有<code>CreateFileA</code>，<code>CreateFileMappingA</code>，<code>FindNextFileA</code>，<code>FindFirstFileA</code>，<code>CopyFileA</code>这些函数是用来查找和创建，复制文件</p>
+<p>查看字符串列表</p>
+<p><img src="https://raw.githubusercontent.com/damaoooo/imageBed/master/assets/image-20191224162158101.png" alt="image-20191224162158101.png"></p>
+<p>发现是有两个目录<code>C:\\windows\\system32\\kernel32.dll</code>，和<code>C:\\windows\\system32\\kerne132.dll</code></p>
+<p>长得非常相似，估计是把自己的<code>kerne132.dll</code>替换掉系统的<code>kernel32.dll</code>，这个<code>kerne132.dll</code>，就来自于<code>Lab07-03.dll</code></p>
+<p>我们进入<code>main</code>函数分析一下</p>
+<p><img src="https://raw.githubusercontent.com/damaoooo/imageBed/master/assets/image-20191224163753430.png" alt="image-20191224163753430.png"></p>
+<p>这个main有点长，我们慢慢逆</p>
+<p>首先是检查程序的运行参数，如果是有字符串<code>WARNING_THIS_WILL_DESTROY_YOUR_MACHINE</code>，就继续，反之就关闭程序，剩下的操作比较魔幻，我们打开与之配套的<code>DLL</code>看看</p>
+<p>进入导入函数列表</p>
+<p><img src="https://raw.githubusercontent.com/damaoooo/imageBed/master/assets/image-20191224171253226.png" alt="image-20191224171253226.png"></p>
+<p>发现有大量的套接字通信操作<code>send</code>，<code>connect</code>，<code>socket</code>，<code>WSAStartup</code>，<code>recv</code>等等，说明这个程序能够进行网络通信，接着我们看看字符串</p>
+<p><img src="https://raw.githubusercontent.com/damaoooo/imageBed/master/assets/image-20191224171359651.png" alt="image-20191224171359651.png"></p>
+<p>发现了一个IP地址，还找到了<code>exec</code>，<code>sleep</code>，<code>hello</code>等关键字符串，我们看看主程序以及这些字符串的调用情况</p>
+<p><img src="https://raw.githubusercontent.com/damaoooo/imageBed/master/assets/image-20191224172400232.png" alt="image-20191224172400232.png"></p>
+<p>然后经过逆向分析可发现，这个<code>DLL</code>的<code>DLLMain</code>函数是连接一个远程的套接字<code>127.26.152.13:80</code>，然后尝试发送一个<code>hello</code>，然后接收消息，如果接收到的是<code>sleep</code>，那么就调用<code>sleep(0x60000)</code>，如果接受到的是<code>exec</code>，那么就打开一个命令行，如果接收到的是<code>q</code>，那么就退出程序</p>
+<p><code>DLL</code>分析完了，现在继续分析<code>exe</code></p>
+<p><img src="https://raw.githubusercontent.com/damaoooo/imageBed/master/assets/image-20191224210044783.png" alt="image-20191224210044783.png"></p>
+<p>跳过一堆不明真相的函数之后我们来到下面的<code>closeHandle</code></p>
+<p><img src="https://raw.githubusercontent.com/damaoooo/imageBed/master/assets/image-20191224211248722.png" alt="image-20191224211248722.png"></p>
+<p>发现是将这个<code>dll</code>复制到这个<code>C:\windows\system32\kerne132.dll</code>中去，然后我们跟进下main一个调用了<code>C:\*</code>的函数中</p>
+<p><img src="https://raw.githubusercontent.com/damaoooo/imageBed/master/assets/image-20191224211542279.png" alt="image-20191224211542279.png"></p>
+<p>发现是在C盘遍历文件，如果遍历出来的文件结尾是<code>.exe</code>的话，就执行一个<code>sub_4010A0()</code>函数，我们跟进去看看</p>
+<p><img src="https://raw.githubusercontent.com/damaoooo/imageBed/master/assets/image-20191224212332825.png" alt="image-20191224212332825.png"></p>
+<p>发现是读取这个文件，然后看看通过<code>IsBadReadPtr()</code>检查进程是否有权限访问指定的内存块。如果成功了就执行一系列操作,从这个程序中提取一个字符串出来，看看是否为<code>kernel32.dll</code>，如果是的话就将内存中的伪造的<code>kerne132.dll</code>覆盖进去。</p>
+<p>目的是检测所有含有调用了这个<code>dll</code>的并把所有调用的改为<code>kernel132.dll</code>来干扰正常程序运行并打开后门程序</p>
+<p>静态分析完毕，开始动态分析</p>
+<h3 id="动态分析Lab7-3-exe"><a href="#动态分析Lab7-3-exe" class="headerlink" title="动态分析Lab7-3.exe"></a>动态分析Lab7-3.exe</h3><p>通过上面的静态分析我们已经知道了这个程序会把根目录下的文件感染，让其无法正常调用<code>kernel32.dll</code>，我们编译一个<code>hello world</code>，然后运行这个程序，通过比对我们来看一看这个程序做了什么</p>
+<p><img src="https://raw.githubusercontent.com/damaoooo/imageBed/master/assets/image-20191224213644141.png" alt="image-20191224213644141.png"></p>
+<p>这是在Windows10下面使用<code>gcc -m32 helloworld.cpp -o hello.exe</code>生成的32位简单程序，其中调用到了<code>KERNEL32.dll</code>，我们使用病毒感染这个文件</p>
+<p>为了能够跟上去动态调试，我们使用IDA的调试功能<code>Local Win32 debugger</code></p>
+<p><img src="https://raw.githubusercontent.com/damaoooo/imageBed/master/assets/image-20191224214706559.png" alt="image-20191224214706559.png"></p>
+<p><img src="https://raw.githubusercontent.com/damaoooo/imageBed/master/assets/image-20191224214650312.png" alt="image-20191224214650312.png"></p>
+<p>成功设置后我们进入了单步调试阶段</p>
+<p><img src="https://raw.githubusercontent.com/damaoooo/imageBed/master/assets/image-20191224215335016.png" alt="image-20191224215335016.png"></p>
+<p>可以看到下面挨个读取出来的文件，我们下一个断点一次读一个文件来看看，发现第一个找到的是</p>
+<p><img src="https://raw.githubusercontent.com/damaoooo/imageBed/master/assets/image-20191224215606090.png" alt="image-20191224215606090.png"></p>
+<p>不是我们想要跟上的，我们继续运行，但是发现太久了，我们就直接跑完好了，到后面我们<code>patch</code>一下这个让他遍历C盘</p>
+<p>运行完了之后我们看看后面的这个文件如何</p>
+<p><img src="https://raw.githubusercontent.com/damaoooo/imageBed/master/assets/image-20191224220400836.png" alt="image-20191224220400836.png"></p>
+<p>发现这个程序的<code>kernel32</code>变成了<code>kerne132</code>，证实了我们的猜想</p>
+<p><img src="https://raw.githubusercontent.com/damaoooo/imageBed/master/assets/image-20191224220323285.png" alt="image-20191224220323285.png"></p>
+<p>用<code>procmon</code>查看进程信息发现的确如此</p>
+<p>我们进入原来的被修改的地方看看</p>
+<p><img src="https://raw.githubusercontent.com/damaoooo/imageBed/master/assets/image-20191224220743147.png" alt="image-20191224220743147.png"></p>
+<p>发现新的<code>kerne132.dll</code>除了包含了原来本身的<code>kernel32.dll</code>之外还带有网络程序用于远程控制通信，既保证了原来的程序能够正常运行，又把自己也连带运行了起来，是一个非常高明的病毒感染方法。</p>
+<h3 id="1、-问题：这个程序如何完成持久化驻留，来确保在计算机重启后它能继续运行？"><a href="#1、-问题：这个程序如何完成持久化驻留，来确保在计算机重启后它能继续运行？" class="headerlink" title="1、 问题：这个程序如何完成持久化驻留，来确保在计算机重启后它能继续运行？"></a>1、 问题：这个程序如何完成持久化驻留，来确保在计算机重启后它能继续运行？</h3><p>​    把C盘的文件感染，让其每次运行的时候都会调用这个被感染之后的<code>kerne132.dll</code>，同时也把自身藏在<code>C:\windows\system32</code>下面</p>
+<h3 id="2、-问题：这个恶意代码的两个明显的基于主机特征是什么？"><a href="#2、-问题：这个恶意代码的两个明显的基于主机特征是什么？" class="headerlink" title="2、 问题：这个恶意代码的两个明显的基于主机特征是什么？"></a>2、 问题：这个恶意代码的两个明显的基于主机特征是什么？</h3><p>​    在<code>C:\windows\system32</code>下多了一个<code>kerne132.dll</code>，在C盘下的程序的导入函数表中的<code>kernel32.dll</code>被替换为<code>kerne132.dll</code></p>
+<p>还创建了一个互斥<code>SADFHUHF</code></p>
+<p><img src="https://raw.githubusercontent.com/damaoooo/imageBed/master/assets/image-20191224221550703.png" alt="image-20191224221550703.png"></p>
+<h3 id="3、-问题：这个程序的目的是什么？"><a href="#3、-问题：这个程序的目的是什么？" class="headerlink" title="3、 问题：这个程序的目的是什么？"></a>3、 问题：这个程序的目的是什么？</h3><p>​    一个后门程序，可以用来远控</p>
+<h3 id="4、-问题：一旦这个恶意代码被安装，你如何移除它？"><a href="#4、-问题：一旦这个恶意代码被安装，你如何移除它？" class="headerlink" title="4、 问题：一旦这个恶意代码被安装，你如何移除它？"></a>4、 问题：一旦这个恶意代码被安装，你如何移除它？</h3><p>​    把之前的<code>kernel132.dll</code>清除并把C盘的<code>exe</code>的导入函数还原成<code>kernel132.dll</code></p>
+<p>​    或者是直接把<code>kerne132.dll</code>替换成<code>kernel32.dll</code>的内容就是了，但是这种做法只在本机有效</p>
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+      
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2019/12/12/实验六/">展开全文 >></a>
         </p>
       
 
@@ -1357,87 +1605,6 @@
       
         <p class="article-more-link">
           <a class="article-more-a" href="/2019/08/21/Github 学习总结/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
-    <article id="post-判断是否是完全平方数" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2019/08/21/判断是否是完全平方数/">判断是否是完全平方数</a>
-    </h1>
-  
-
-        
-        <a href="/2019/08/21/判断是否是完全平方数/" class="archive-article-date">
-  	<time datetime="2019-08-20T16:28:54.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-08-21</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>给定一个正整数 num，编写一个函数，如果 num 是一个完全平方数，则返回 True，否则返回 False。</p>
-<p>说明：不要使用任何内置的库函数，如  sqrt。</p>
-<p>示例 1：</p>
-<p>输入：16<br>输出：True<br>示例 2：</p>
-<p>输入：14<br>输出：False</p>
-<p>最开始想到的是使用<code>sqrt()</code>直接判断，什么？不能使用sqrt()?</p>
-<p>不能使用任何内置的库函数，所以使用math.log的方案也挂掉了，老老实实去凑吧</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">func</span><span class="params">(num)</span>:</span></span><br><span class="line">    <span class="keyword">if</span>(num&lt;<span class="number">0</span>):</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">False</span></span><br><span class="line">    <span class="keyword">if</span>(num&lt;=<span class="number">2</span>):</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">True</span></span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">1</span>,num//<span class="number">2</span>):</span><br><span class="line">        <span class="keyword">if</span>(i*i==num):</span><br><span class="line">            <span class="keyword">return</span> <span class="literal">True</span></span><br><span class="line">        <span class="keyword">if</span>(i*i&gt;num):</span><br><span class="line">            <span class="keyword">return</span> <span class="literal">False</span></span><br></pre></td></tr></table></figure>
-<p>虽然我觉得他肯定要卡你时间复杂度    </p>
-<p>果然后面他给我报错，<code>MemoryError</code>不过是发生在<code>Line 7</code>也就是<code>for i in range(1,num//2):</code>这一行就让我感觉有点意外</p>
-<p>后来看到了公式，有点东西</p>
-<p><code>4 = 1+3</code></p>
-<p><code>9 = 1+3+5</code></p>
-<p><code>16 = 1+3+5+7</code></p>
-<p>以此类推</p>
-<p><code>n^2 = 1+3+5+……+(2n-1)</code></p>
-<p>所以我们就挨着挨着减下来就好了</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">func</span><span class="params">(num)</span>:</span></span><br><span class="line">    <span class="keyword">if</span>(num&lt;<span class="number">0</span>):</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">False</span></span><br><span class="line">    i = <span class="number">1</span></span><br><span class="line">    <span class="keyword">while</span>(num&gt;<span class="number">0</span>):</span><br><span class="line">        num-=i</span><br><span class="line">        i+=<span class="number">2</span></span><br><span class="line">    <span class="keyword">return</span> num==<span class="number">0</span></span><br></pre></td></tr></table></figure>
-<p>只需要执行n次就可以了</p>
-
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-      
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2019/08/21/判断是否是完全平方数/">展开全文 >></a>
         </p>
       
 

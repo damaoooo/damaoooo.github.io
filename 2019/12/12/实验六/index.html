@@ -7,55 +7,53 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <link rel="dns-prefetch" href="http://yoursite.com">
-  <title>恶意代码分析实战笔记（二） | Mr.周半仙的blog</title>
+  <title>恶意代码分析实战笔记(四) | Mr.周半仙的blog</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="恶意代码分析实战笔记（二）LAB03-01.exe1、找出这个恶意代码的导入函数与字符串列表？使用strings查看字符串，发现一下内容  发现了一个网址，然后导入的函数库使用了VideoDriver，ws2_32.dll，还有个vmx32to64.exe听名字是视频32位转64位，又发现了两个注册表项SOFTWARE\Microsoft\Windows\CurrentVersion\Run还有S">
+  <meta name="description" content="恶意代码分析实战笔记(四)LAB07-01.exe静态分析通过IDA分析整个程序的逻辑与疑点，先打开导入函数表，大致浏览程序的功能  发现了一个CreateServiceA，StartServiceCtrlDispatcherA，OpenSCManagerA 等等有关于系统服务的函数，说明该程序具有操作系统的操作，InternetOpenUrlA，InternetOpenA函数用于打开一个网址，C">
 <meta name="keywords" content=" ">
 <meta property="og:type" content="article">
-<meta property="og:title" content="恶意代码分析实战笔记（二）">
-<meta property="og:url" content="http://yoursite.com/2019/12/08/实验四/index.html">
+<meta property="og:title" content="恶意代码分析实战笔记(四)">
+<meta property="og:url" content="http://yoursite.com/2019/12/12/实验六/index.html">
 <meta property="og:site_name" content="Mr.周半仙的blog">
-<meta property="og:description" content="恶意代码分析实战笔记（二）LAB03-01.exe1、找出这个恶意代码的导入函数与字符串列表？使用strings查看字符串，发现一下内容  发现了一个网址，然后导入的函数库使用了VideoDriver，ws2_32.dll，还有个vmx32to64.exe听名字是视频32位转64位，又发现了两个注册表项SOFTWARE\Microsoft\Windows\CurrentVersion\Run还有S">
+<meta property="og:description" content="恶意代码分析实战笔记(四)LAB07-01.exe静态分析通过IDA分析整个程序的逻辑与疑点，先打开导入函数表，大致浏览程序的功能  发现了一个CreateServiceA，StartServiceCtrlDispatcherA，OpenSCManagerA 等等有关于系统服务的函数，说明该程序具有操作系统的操作，InternetOpenUrlA，InternetOpenA函数用于打开一个网址，C">
 <meta property="og:locale" content="default">
-<meta property="og:image" content="https://raw.githubusercontent.com/damaoooo/imageBed/master/assets/image-20191206215235177.png">
-<meta property="og:image" content="https://raw.githubusercontent.com/damaoooo/imageBed/master/assets/image-20191206223926717.png">
-<meta property="og:image" content="https://raw.githubusercontent.com/damaoooo/imageBed/master/assets/image-20191206225749132.png">
-<meta property="og:image" content="https://raw.githubusercontent.com/damaoooo/imageBed/master/assets/image-20191206225336241.png">
-<meta property="og:image" content="https://raw.githubusercontent.com/damaoooo/imageBed/master/assets/image-20191206230330151.png">
-<meta property="og:image" content="https://raw.githubusercontent.com/damaoooo/imageBed/master/assets/image-20191206230517385.png">
-<meta property="og:image" content="https://raw.githubusercontent.com/damaoooo/imageBed/master/assets/image-20191208171245768.png">
-<meta property="og:image" content="https://raw.githubusercontent.com/damaoooo/imageBed/master/assets/image-20191208172532449.png">
-<meta property="og:image" content="https://raw.githubusercontent.com/damaoooo/imageBed/master/assets/image-20191208172626746.png">
-<meta property="og:image" content="https://raw.githubusercontent.com/damaoooo/imageBed/master/assets/image-20191208194318193.png">
-<meta property="og:image" content="https://raw.githubusercontent.com/damaoooo/imageBed/master/assets/image-20191208194553684.png">
-<meta property="og:image" content="https://raw.githubusercontent.com/damaoooo/imageBed/master/assets/image-20191208195135808.png">
-<meta property="og:image" content="https://raw.githubusercontent.com/damaoooo/imageBed/master/assets/image-20191208195653848.png">
-<meta property="og:image" content="https://raw.githubusercontent.com/damaoooo/imageBed/master/assets/image-20191208201043909.png">
-<meta property="og:image" content="https://raw.githubusercontent.com/damaoooo/imageBed/master/assets/image-20191208201251439.png">
-<meta property="og:image" content="https://raw.githubusercontent.com/damaoooo/imageBed/master/assets/image-20191208201558618.png">
-<meta property="og:image" content="https://raw.githubusercontent.com/damaoooo/imageBed/master/assets/image-20191208201638660.png">
-<meta property="og:image" content="https://raw.githubusercontent.com/damaoooo/imageBed/master/assets/image-20191208202048425.png">
-<meta property="og:image" content="https://raw.githubusercontent.com/damaoooo/imageBed/master/assets/image-20191208202546910.png">
-<meta property="og:image" content="https://raw.githubusercontent.com/damaoooo/imageBed/master/assets/image-20191208203902743.png">
-<meta property="og:image" content="https://raw.githubusercontent.com/damaoooo/imageBed/master/assets/image-20191208204104073.png">
-<meta property="og:image" content="https://raw.githubusercontent.com/damaoooo/imageBed/master/assets/image-20191208204753308.png">
-<meta property="og:image" content="https://raw.githubusercontent.com/damaoooo/imageBed/master/assets/image-20191208204927957.png">
-<meta property="og:image" content="https://raw.githubusercontent.com/damaoooo/imageBed/master/assets/image-20191208205108968.png">
-<meta property="og:image" content="https://raw.githubusercontent.com/damaoooo/imageBed/master/assets/image-20191208210413285.png">
-<meta property="og:image" content="https://raw.githubusercontent.com/damaoooo/imageBed/master/assets/image-20191208210608253.png">
-<meta property="og:image" content="https://raw.githubusercontent.com/damaoooo/imageBed/master/assets/image-20191208211538850.png">
-<meta property="og:image" content="https://raw.githubusercontent.com/damaoooo/imageBed/master/assets/image-20191208211634262.png">
-<meta property="og:image" content="https://raw.githubusercontent.com/damaoooo/imageBed/master/assets/image-20191208211811078.png">
-<meta property="og:image" content="https://raw.githubusercontent.com/damaoooo/imageBed/master/assets/image-20191208212319418.png">
-<meta property="og:image" content="https://raw.githubusercontent.com/damaoooo/imageBed/master/assets/image-20191208213518610.png">
-<meta property="og:image" content="https://raw.githubusercontent.com/damaoooo/imageBed/master/assets/image-20191208213949967.png">
-<meta property="og:image" content="https://raw.githubusercontent.com/damaoooo/imageBed/master/assets/image-20191208214833935.png">
-<meta property="og:image" content="https://raw.githubusercontent.com/damaoooo/imageBed/master/assets/image-20191208215151854.png">
-<meta property="og:updated_time" content="2019-12-08T14:01:19.301Z">
+<meta property="og:image" content="https://raw.githubusercontent.com/damaoooo/imageBed/master/assets/image-20191223220040221.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/damaoooo/imageBed/master/assets/image-20191223220603411.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/damaoooo/imageBed/master/assets/image-20191223221008103.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/damaoooo/imageBed/master/assets/image-20191223223257410.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/damaoooo/imageBed/master/assets/image-20191223223350956.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/damaoooo/imageBed/master/assets/image-20191224130550304.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/damaoooo/imageBed/master/assets/image-20191224130757083.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/damaoooo/imageBed/master/assets/image-20191224130907842.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/damaoooo/imageBed/master/assets/image-20191224131042462.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/damaoooo/imageBed/master/assets/image-20191224131202003.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/damaoooo/imageBed/master/assets/image-20191224134213628.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/damaoooo/imageBed/master/assets/image-20191224134245470.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/damaoooo/imageBed/master/assets/image-20191224134700424.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/damaoooo/imageBed/master/assets/image-20191224141845795.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/damaoooo/imageBed/master/assets/image-20191224162158101.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/damaoooo/imageBed/master/assets/image-20191224163753430.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/damaoooo/imageBed/master/assets/image-20191224171253226.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/damaoooo/imageBed/master/assets/image-20191224171359651.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/damaoooo/imageBed/master/assets/image-20191224172400232.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/damaoooo/imageBed/master/assets/image-20191224210044783.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/damaoooo/imageBed/master/assets/image-20191224211248722.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/damaoooo/imageBed/master/assets/image-20191224211542279.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/damaoooo/imageBed/master/assets/image-20191224212332825.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/damaoooo/imageBed/master/assets/image-20191224213644141.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/damaoooo/imageBed/master/assets/image-20191224214706559.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/damaoooo/imageBed/master/assets/image-20191224214650312.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/damaoooo/imageBed/master/assets/image-20191224215335016.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/damaoooo/imageBed/master/assets/image-20191224215606090.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/damaoooo/imageBed/master/assets/image-20191224220400836.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/damaoooo/imageBed/master/assets/image-20191224220323285.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/damaoooo/imageBed/master/assets/image-20191224220743147.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/damaoooo/imageBed/master/assets/image-20191224221550703.png">
+<meta property="og:updated_time" content="2019-12-24T14:32:21.718Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="恶意代码分析实战笔记（二）">
-<meta name="twitter:description" content="恶意代码分析实战笔记（二）LAB03-01.exe1、找出这个恶意代码的导入函数与字符串列表？使用strings查看字符串，发现一下内容  发现了一个网址，然后导入的函数库使用了VideoDriver，ws2_32.dll，还有个vmx32to64.exe听名字是视频32位转64位，又发现了两个注册表项SOFTWARE\Microsoft\Windows\CurrentVersion\Run还有S">
-<meta name="twitter:image" content="https://raw.githubusercontent.com/damaoooo/imageBed/master/assets/image-20191206215235177.png">
+<meta name="twitter:title" content="恶意代码分析实战笔记(四)">
+<meta name="twitter:description" content="恶意代码分析实战笔记(四)LAB07-01.exe静态分析通过IDA分析整个程序的逻辑与疑点，先打开导入函数表，大致浏览程序的功能  发现了一个CreateServiceA，StartServiceCtrlDispatcherA，OpenSCManagerA 等等有关于系统服务的函数，说明该程序具有操作系统的操作，InternetOpenUrlA，InternetOpenA函数用于打开一个网址，C">
+<meta name="twitter:image" content="https://raw.githubusercontent.com/damaoooo/imageBed/master/assets/image-20191223220040221.png">
   
     <link rel="alternative" href="/atom.xml" title="Mr.周半仙的blog" type="application/atom+xml">
   
@@ -198,120 +196,212 @@
             <canvas data-colors="#eaeaea" data-sectionHeight="100" data-contentId="js-content" id="myCanvas1" class="anm-canvas"></canvas>
           </div>
           <div id="js-content" class="content-ll">
-            <article id="post-实验四" class="article article-type-post " itemscope itemprop="blogPost">
+            <article id="post-实验六" class="article article-type-post " itemscope itemprop="blogPost">
   <div class="article-inner">
     
       <header class="article-header">
         
   
     <h1 class="article-title" itemprop="name">
-      恶意代码分析实战笔记（二）
+      恶意代码分析实战笔记(四)
     </h1>
   
 
         
-        <a href="/2019/12/08/实验四/" class="archive-article-date">
-  	<time datetime="2019-12-08T14:08:53.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-12-08</time>
+        <a href="/2019/12/12/实验六/" class="archive-article-date">
+  	<time datetime="2019-12-12T14:32:53.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-12-12</time>
 </a>
         
       </header>
     
     <div class="article-entry" itemprop="articleBody">
       
-        <h1 id="恶意代码分析实战笔记（二）"><a href="#恶意代码分析实战笔记（二）" class="headerlink" title="恶意代码分析实战笔记（二）"></a>恶意代码分析实战笔记（二）</h1><h2 id="LAB03-01-exe"><a href="#LAB03-01-exe" class="headerlink" title="LAB03-01.exe"></a>LAB03-01.exe</h2><h3 id="1、找出这个恶意代码的导入函数与字符串列表？"><a href="#1、找出这个恶意代码的导入函数与字符串列表？" class="headerlink" title="1、找出这个恶意代码的导入函数与字符串列表？"></a>1、找出这个恶意代码的导入函数与字符串列表？</h3><p>使用strings查看字符串，发现一下内容</p>
-<p><img src="https://raw.githubusercontent.com/damaoooo/imageBed/master/assets/image-20191206215235177.png" alt="image-20191206215235177.png"></p>
-<p>发现了一个网址，然后导入的函数库使用了<code>VideoDriver</code>，<code>ws2_32.dll</code>，还有个<code>vmx32to64.exe</code>听名字是视频32位转64位，又发现了两个注册表项<code>SOFTWARE\Microsoft\Windows\CurrentVersion\Run</code>还有<code>SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\Shell Folders</code>，是开机启动项。然后在<code>Process Explorer</code>里面跑一下，查看DLL，发现<code>dnsapi.dll</code>是查询<code>DNS</code>的</p>
-<h3 id="2、这个恶意代码在主机上的感染迹象特征是什么？"><a href="#2、这个恶意代码在主机上的感染迹象特征是什么？" class="headerlink" title="2、这个恶意代码在主机上的感染迹象特征是什么？"></a>2、这个恶意代码在主机上的感染迹象特征是什么？</h3><p>修改注册表，在<code>HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Run\VideoDriver</code>写一个值<code>C:\WINDOWS\system32\vmx32to64.exe</code>，然后开机自启，在<code>C:\Windows\system32\vmx32to64.exe</code>写入该文件。</p>
-<p><img src="https://raw.githubusercontent.com/damaoooo/imageBed/master/assets/image-20191206223926717.png" alt="image-20191206223926717.png"></p>
-<p>通过检查HASH值，发现vmx32to64就是这个LAB03-01.exe</p>
-<p><img src="https://raw.githubusercontent.com/damaoooo/imageBed/master/assets/image-20191206225749132.png" alt="image-20191206225749132.png"></p>
-<p>发现在请求DNS，打开<code>apateDNS</code>检测发现Framework挂掉了，重新下载之后无果，查询资料发现这个软件没法在xp上面运行，好在我们还有wireshark</p>
-<p>在发送一个DNS请求<code>www.practicalsmalwareanalysis.com</code>的IP，wireshark抓包分析得比较清楚</p>
-<p><img src="https://raw.githubusercontent.com/damaoooo/imageBed/master/assets/image-20191206225336241.png" alt="image-20191206225336241.png"></p>
-<p>创建SSL，然后查询DNS，然后得到IP之后就开始和这个IP进行SSL的发包通信</p>
-<h3 id="3、这个恶意代码是否存在一些有用的网络特征码？如果存在，他们是什么？"><a href="#3、这个恶意代码是否存在一些有用的网络特征码？如果存在，他们是什么？" class="headerlink" title="3、这个恶意代码是否存在一些有用的网络特征码？如果存在，他们是什么？"></a>3、这个恶意代码是否存在一些有用的网络特征码？如果存在，他们是什么？</h3><p>string中发现的</p>
-<p><img src="https://raw.githubusercontent.com/damaoooo/imageBed/master/assets/image-20191206230330151.png" alt="image-20191206230330151.png"></p>
-<p><code>HTTP/1.0</code>，以及<code>503</code>,<code>200</code>都是HTTP中的网络特征码</p>
-<p>然后就是其他软件进行分析PEID分析走起，发现是有<code>junkcode</code>加壳的</p>
-<p><img src="https://raw.githubusercontent.com/damaoooo/imageBed/master/assets/image-20191206230517385.png" alt="image-20191206230517385.png"></p>
-<p>使用万能脱壳机来脱壳</p>
-<p><img src="https://raw.githubusercontent.com/damaoooo/imageBed/master/assets/image-20191208171245768.png" alt="image-20191208171245768.png"></p>
-<p>失败，看到还能使用OD手动脱壳，就去试一试</p>
-<p><img src="https://raw.githubusercontent.com/damaoooo/imageBed/master/assets/image-20191208172532449.png" alt="image-20191208172532449.png"></p>
-<p>函数的运行入口点很奇怪，F8几次之后就直接结束了，我们用F7跟进这个call</p>
-<p><img src="https://raw.githubusercontent.com/damaoooo/imageBed/master/assets/image-20191208172626746.png" alt="image-20191208172626746.png"></p>
-<p>很正常的一个函数入口，甚至还看到了push ascii “ws2_32”,然而在这个<code>ws2_32</code>这一处下F4，直接结束，手动脱壳失败。这个函数就这么分析到这里了</p>
-<h2 id="Lab03-02-dll"><a href="#Lab03-02-dll" class="headerlink" title="Lab03-02.dll"></a>Lab03-02.dll</h2><h3 id="1-你怎样才能让这个恶意代码自行安装？"><a href="#1-你怎样才能让这个恶意代码自行安装？" class="headerlink" title="1.你怎样才能让这个恶意代码自行安装？"></a>1.你怎样才能让这个恶意代码自行安装？</h3><p>使用系统自带的<code>rundll32.exe</code>，运行命令<code>rundll32.exe Lab03-02.dll,installA</code>，但是运行之前我们要知道为什么是InstallA，使用<code>PEView</code>查看文件的导出列表</p>
-<p><img src="https://raw.githubusercontent.com/damaoooo/imageBed/master/assets/image-20191208194318193.png" alt="image-20191208194318193.png"></p>
-<p>发现导出函数有<code>Install</code>,<code>ServiceMain</code>,<code>UninstallService</code>,<code>installA</code>,<code>UninstallA</code>，其中观察上面的install和一个服务有关，剩下的installA比较重要的分析对象。使用strings查看字符串</p>
-<p><img src="https://raw.githubusercontent.com/damaoooo/imageBed/master/assets/image-20191208194553684.png" alt="image-20191208194553684.png"></p>
-<p>发现里面有一堆关于注册表键值注册的操作，将其导入一个叫做<code>SOFTWARE\Microsoft\Windows NT\CurrentVersion\Svchost</code>里面</p>
-<p>然后使用IDA查看导入函数，用Dependency Walker有点慢</p>
-<p><img src="https://raw.githubusercontent.com/damaoooo/imageBed/master/assets/image-20191208195135808.png" alt="image-20191208195135808.png"></p>
-<p>发现了<code>GetCurrentDirectoryA</code>是获取当前目录</p>
-<p><code>CreateServiceA</code>，<code>DeleteServiceA</code>，创建和删除服务</p>
-<p><code>RegCloseKey</code>,<code>RegCreateKeyA</code>,<code>RegOpenKeyExA</code>,<code>RegQueryValueExA</code>,<code>RegSetValueExa</code>等等，是对注册表的值进行增删改查的操作</p>
-<p>然后在IDA里面查看字符串，发现了一些有趣的东西</p>
-<p><img src="https://raw.githubusercontent.com/damaoooo/imageBed/master/assets/image-20191208195653848.png" alt="image-20191208195653848.png"></p>
-<p>怀疑是<code>base64</code>加密的字符串，以及一个<code>base64</code>的字母表，说明这个程序里面还有base64,把这些base64字符串解出来是<code>connect</code>|<code>unsupport</code>|<code>sleep</code>|<code>cmd</code>|<code>quit</code>,说明这个程序还能够去调用cmd进行操作。当然，我们也发现了一个网站</p>
-<h3 id="2-在安装之后，你如何让这个恶意代码运行起来？"><a href="#2-在安装之后，你如何让这个恶意代码运行起来？" class="headerlink" title="2.在安装之后，你如何让这个恶意代码运行起来？"></a>2.在安装之后，你如何让这个恶意代码运行起来？</h3><p>运行命令<code>rundll32.exe Lab03-02.dll,installA</code>，但是在运行之前要对注册表加一个快照，因为这个程序会修改注册表，然后使用<code>net start IPRIP</code>就可以运行了</p>
-<p><img src="https://raw.githubusercontent.com/damaoooo/imageBed/master/assets/image-20191208201043909.png" alt="image-20191208201043909.png"></p>
-<p>其实运行<code>Install</code>和运行<code>InstallA</code>效果都一样</p>
-<p>然后运行完了之后查看注册表快照看看有什么变化</p>
-<p><img src="https://raw.githubusercontent.com/damaoooo/imageBed/master/assets/image-20191208201251439.png" alt="image-20191208201251439.png"></p>
-<h3 id="3、你怎么能找到这个恶意代码是在哪个进程下运行的？"><a href="#3、你怎么能找到这个恶意代码是在哪个进程下运行的？" class="headerlink" title="3、你怎么能找到这个恶意代码是在哪个进程下运行的？"></a>3、你怎么能找到这个恶意代码是在哪个进程下运行的？</h3><p>服务中多了个IPRIP的服务</p>
-<p><img src="https://raw.githubusercontent.com/damaoooo/imageBed/master/assets/image-20191208201558618.png" alt="image-20191208201558618.png"></p>
-<p><img src="https://raw.githubusercontent.com/damaoooo/imageBed/master/assets/image-20191208201638660.png" alt="image-20191208201638660.png"></p>
-<p>然后发现是附加在svchost.exe上面运行的，名字就是<code>Intranet Network Awareness (INA+)</code>，听起来还很正经</p>
-<p>然后我们使用<code>net start IPRIP</code>运行这个服务，并在Procmon里面找找这个服务还有文件名</p>
-<h3 id="4、你可以在procmon工具中设置什么样的过滤器，才能收集这个恶意代码的信息？"><a href="#4、你可以在procmon工具中设置什么样的过滤器，才能收集这个恶意代码的信息？" class="headerlink" title="4、你可以在procmon工具中设置什么样的过滤器，才能收集这个恶意代码的信息？"></a>4、你可以在procmon工具中设置什么样的过滤器，才能收集这个恶意代码的信息？</h3><p><img src="https://raw.githubusercontent.com/damaoooo/imageBed/master/assets/image-20191208202048425.png" alt="image-20191208202048425.png"></p>
-<p>成功找到附加在系统服务上的病毒程序</p>
-<h3 id="5、这个恶意代码在主机上的感染迹象特征是什么？"><a href="#5、这个恶意代码在主机上的感染迹象特征是什么？" class="headerlink" title="5、这个恶意代码在主机上的感染迹象特征是什么？"></a>5、这个恶意代码在主机上的感染迹象特征是什么？</h3><p>多了一个<code>IPRIP</code>的服务驻留在后台，然后通过wireshark抓包分析（ApateDNS无法在XP上面运行，安装了NET.framework一样的）</p>
-<p><img src="https://raw.githubusercontent.com/damaoooo/imageBed/master/assets/image-20191208202546910.png" alt="image-20191208202546910.png"></p>
-<h3 id="6、这个恶意代码是否存在一些有用的网络特征码？"><a href="#6、这个恶意代码是否存在一些有用的网络特征码？" class="headerlink" title="6、这个恶意代码是否存在一些有用的网络特征码？"></a>6、这个恶意代码是否存在一些有用的网络特征码？</h3><p>刚才看见的<code>connect</code>，以及<code>HTTP GET/1.1</code>等等</p>
-<h2 id="LAB03-03-exe"><a href="#LAB03-03-exe" class="headerlink" title="LAB03-03.exe"></a>LAB03-03.exe</h2><h3 id="1、当你使用Process-explorer工具进行监视时，你注意到了什么？"><a href="#1、当你使用Process-explorer工具进行监视时，你注意到了什么？" class="headerlink" title="1、当你使用Process explorer工具进行监视时，你注意到了什么？"></a>1、当你使用Process explorer工具进行监视时，你注意到了什么？</h3><p>首先我们先用IDA进行静态分析</p>
-<p><img src="https://raw.githubusercontent.com/damaoooo/imageBed/master/assets/image-20191208203902743.png" alt="image-20191208203902743.png"></p>
-<p>查看字符串，发现是一些简单的报错信息还有下面的乱码，然后查看导入函数表</p>
-<p><img src="https://raw.githubusercontent.com/damaoooo/imageBed/master/assets/image-20191208204104073.png" alt="image-20191208204104073.png"></p>
-<p>发现能够对内存，文件进行增删改查，然后使用ProcessExplorer进行监视</p>
-<p>发现运行的时候出现一个<code>Lab03-03.exe</code>，然后创建一个<code>svchost.exe</code>，然后这个<code>Lab03-03.exe</code>一瞬虚无，多来两次找到这个新的<code>svchost.exe</code></p>
-<p><img src="https://raw.githubusercontent.com/damaoooo/imageBed/master/assets/image-20191208204753308.png" alt="image-20191208204753308.png"></p>
-<p>这个伪装就非常的拙劣了，单独出来一个孤儿进程</p>
-<h3 id="2、你可以找出任何的内存修改行为吗？"><a href="#2、你可以找出任何的内存修改行为吗？" class="headerlink" title="2、你可以找出任何的内存修改行为吗？"></a>2、你可以找出任何的内存修改行为吗？</h3><p><img src="https://raw.githubusercontent.com/damaoooo/imageBed/master/assets/image-20191208204927957.png" alt="image-20191208204927957.png"></p>
-<p>源映像和内存中的影响还不一样，多了一些按键，估计是个键盘记录器</p>
-<h3 id="3、这个恶意代码在主机上的感染迹象特征是什么？"><a href="#3、这个恶意代码在主机上的感染迹象特征是什么？" class="headerlink" title="3、这个恶意代码在主机上的感染迹象特征是什么？"></a>3、这个恶意代码在主机上的感染迹象特征是什么？</h3><p>然后多了一个<code>practicalmalwareanalysys.log</code>，估计就是记录的日志文件了，打开看看</p>
-<p><img src="https://raw.githubusercontent.com/damaoooo/imageBed/master/assets/image-20191208205108968.png" alt="image-20191208205108968.png"></p>
-<p>还真是一个记录键盘的文件</p>
-<h3 id="4、这个恶意代码的目的是什么？"><a href="#4、这个恶意代码的目的是什么？" class="headerlink" title="4、这个恶意代码的目的是什么？"></a>4、这个恶意代码的目的是什么？</h3><p>记录键盘，生成日志文件，发送到一个目录中，但是没找到网络模块，不会上传出去，有点类似于灰鸽子木马</p>
-<h2 id="Lab03-04-exe"><a href="#Lab03-04-exe" class="headerlink" title="Lab03-04.exe"></a>Lab03-04.exe</h2><h3 id="1、当你运行这个文件时，会发生什么呢？"><a href="#1、当你运行这个文件时，会发生什么呢？" class="headerlink" title="1、当你运行这个文件时，会发生什么呢？"></a>1、当你运行这个文件时，会发生什么呢？</h3><p>首先我们还是先查壳然后IDA静态分析一下</p>
-<p><img src="https://raw.githubusercontent.com/damaoooo/imageBed/master/assets/image-20191208210413285.png" alt="image-20191208210413285.png"></p>
-<p>很幸运没加壳</p>
-<p>然后拖进IDA分析</p>
-<p><img src="https://raw.githubusercontent.com/damaoooo/imageBed/master/assets/image-20191208210608253.png" alt="image-20191208210608253.png"></p>
-<p>导入函数来看，有很明显的套接字的网络发送和接收操作。还能看到执行<code>Shell</code>命令的操作</p>
-<p>以及对文件，注册表进行增删改查。</p>
-<p>然后就是找字符串</p>
-<p><img src="https://raw.githubusercontent.com/damaoooo/imageBed/master/assets/image-20191208211538850.png" alt="image-20191208211538850.png"></p>
-<p><img src="https://raw.githubusercontent.com/damaoooo/imageBed/master/assets/image-20191208211634262.png" alt="image-20191208211634262.png"></p>
-<p>是一些很常见的报错信息，然后又一个网址<code>command.com</code>，还有星期，月份。另外还有唤起<code>cmd</code>，然后还有一个<code>\c del</code>的删除命令，我们转到调用这个<code>cmd.exe</code>的地方</p>
-<h3 id="2、是什么原因造成动态分析无法有效实施？"><a href="#2、是什么原因造成动态分析无法有效实施？" class="headerlink" title="2、是什么原因造成动态分析无法有效实施？"></a>2、是什么原因造成动态分析无法有效实施？</h3><p>因为这个程序会把自己给删掉</p>
-<h3 id="3、是否有其它方式来运行这个程序？"><a href="#3、是否有其它方式来运行这个程序？" class="headerlink" title="3、是否有其它方式来运行这个程序？"></a>3、是否有其它方式来运行这个程序？</h3><p>由于这个文件室友一个删除自己的操作，因此我们转到含有<code>cmd.exe</code>这个的调用函数处</p>
-<p><img src="https://raw.githubusercontent.com/damaoooo/imageBed/master/assets/image-20191208211811078.png" alt="image-20191208211811078.png"></p>
-<p>原来是执行一个<code>shell</code>命令<code>filename+\c del + &gt;&gt; NUL</code></p>
-<p>我们跳进这个函数的引用里面，发现就是<code>main()</code>引用的这个函数</p>
-<p><img src="https://raw.githubusercontent.com/damaoooo/imageBed/master/assets/image-20191208212319418.png" alt="image-20191208212319418.png"></p>
-<p>通过阅读程序逻辑，可以看到，是要运行时给好几个参数，然后还有一个参数校验程序，我们跳进这个最后一个参数的校验程序<code>sub_402510()</code>（为了逆向方便我会改名字）</p>
-<p>可以看到第一个校验程序是校验如果参数为3个时，最后一个要是<code>abcd</code></p>
-<p><img src="https://raw.githubusercontent.com/damaoooo/imageBed/master/assets/image-20191208213518610.png" alt="image-20191208213518610.png"></p>
-<p>然后是根据输入的第一个参数来执行操作，去逆向其他函数</p>
-<p><img src="https://raw.githubusercontent.com/damaoooo/imageBed/master/assets/image-20191208213949967.png" alt="image-20191208213949967.png"></p>
-<p>发现是打开然后查找<code>HKEY_LOCAL_MACHIME\SOFTWARE\Microsoft\XPS</code>的<code>Configuration</code>的值</p>
-<p><img src="https://raw.githubusercontent.com/damaoooo/imageBed/master/assets/image-20191208214833935.png" alt="image-20191208214833935.png"></p>
-<p>至此其中的一个运行方式就被我们摸出来了，在命令行里面执行这个程序，参数设置成一个<code>-cc</code>之类的，然后还要注册表中有这个值，就能够根据这个值来运行，大概运行的命令如下</p>
-<p><code>Lab03-04.exe -cc abcd</code></p>
-<p>我们做个实验看看</p>
-<p><img src="https://raw.githubusercontent.com/damaoooo/imageBed/master/assets/image-20191208215151854.png" alt="image-20191208215151854.png"></p>
-<p>疯狂运行，文件没少，既然能跑我们就可以通过OD结合IDA进行详细分析了，在此不表</p>
+        <h1 id="恶意代码分析实战笔记-四"><a href="#恶意代码分析实战笔记-四" class="headerlink" title="恶意代码分析实战笔记(四)"></a>恶意代码分析实战笔记(四)</h1><h2 id="LAB07-01-exe"><a href="#LAB07-01-exe" class="headerlink" title="LAB07-01.exe"></a>LAB07-01.exe</h2><h3 id="静态分析"><a href="#静态分析" class="headerlink" title="静态分析"></a>静态分析</h3><p>通过IDA分析整个程序的逻辑与疑点，先打开导入函数表，大致浏览程序的功能</p>
+<p><img src="https://raw.githubusercontent.com/damaoooo/imageBed/master/assets/image-20191223220040221.png" alt="image-20191223220040221.png"></p>
+<p>发现了一个<code>CreateServiceA</code>，<code>StartServiceCtrlDispatcherA</code>，<code>OpenSCManagerA</code> 等等有关于系统服务的函数，说明该程序具有操作系统的操作，<code>InternetOpenUrlA</code>，<code>InternetOpenA</code>函数用于打开一个网址，<code>CreateMutexA</code>，<code>OpenMutexA</code>用于创建和打开互斥锁。</p>
+<p>我们使用IDA分析程序的<code>main</code>函数</p>
+<p><img src="https://raw.githubusercontent.com/damaoooo/imageBed/master/assets/image-20191223220603411.png" alt="image-20191223220603411.png"></p>
+<p>这个<code>main()</code>函数是用来创建一个服务列表，名字是<code>MalService</code>，主程序是<code>sub_401040()</code>，通过<code>StartServiceCtrlDispatcherA</code>来执行这样的一个函数，我们跟进服务主程序去看看</p>
+<p><img src="https://raw.githubusercontent.com/damaoooo/imageBed/master/assets/image-20191223221008103.png" alt="image-20191223221008103.png"></p>
+<p>理清函数功能，首先是打开互斥锁<code>HGL345</code>，如果打开成功就创建这样的互斥锁，如果不成功就退出程序，是保证程序只有一个程序运行</p>
+<p>然后打开服务管理器，获取当前进程，找到当前进程的名字和文件目录<code>Filename</code>，创建基于这个随机获取到的文件目录来创建自己的服务，参数解释如下</p>
+<table>
+<thead>
+<tr>
+<th>参数</th>
+<th>值</th>
+<th>含义</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>hSCManager</code></td>
+<td><code>SCManagerHandle</code></td>
+<td>服务控制管理器的句柄</td>
+</tr>
+<tr>
+<td><code>IpServiceName</code></td>
+<td><code>DisplayName</code>= <code>Malservice</code></td>
+<td>安装该服务的名称</td>
+</tr>
+<tr>
+<td><code>IpDisplayName</code></td>
+<td><code>DisplayName</code> = <code>Malservice</code></td>
+<td>用户界面显示出的名称</td>
+</tr>
+<tr>
+<td><code>dwDesiredAccess</code></td>
+<td><code>2u</code></td>
+<td>进程的访问令牌</td>
+</tr>
+<tr>
+<td><code>dwServiceType</code></td>
+<td><code>0x10u</code></td>
+<td>服务类型，这里是独立进程的服务程序</td>
+</tr>
+<tr>
+<td><code>dwStartType</code></td>
+<td><code>2u</code></td>
+<td>服务启动选项，这里是开机自启</td>
+</tr>
+<tr>
+<td><code>dwErrorContorl</code></td>
+<td><code>0</code></td>
+<td>服务启动失败的措施，这里是忽略错误继续执行</td>
+</tr>
+<tr>
+<td><code>IpBinaryPathName</code></td>
+<td><code>&amp;Filename</code></td>
+<td>服务程序的二进制文件路径</td>
+</tr>
+</tbody>
+</table>
+<p>看到这里就大概明白了，这个程序注册一个自己的服务开机运行，潜伏在程序运行时的当前目录的二进制文件中。</p>
+<p>继续向下分析，发现是设定一个时间<code>2100/0/0 00:00:00</code>，然后获取系统时间，如果到了这个时间，那么就船舰20个线程，每个线程都是从<code>StartAddress</code>开始执行，我们进入这个<code>StartAddress</code>函数</p>
+<p><img src="https://raw.githubusercontent.com/damaoooo/imageBed/master/assets/image-20191223223257410.png" alt="image-20191223223257410.png"></p>
+<p>发现是打开<code>Internet</code>版本是<code>Internet Explorer 8.0</code>，然后打开网址<code>http://www.malwareanalysisbook.com</code>，字符串参考列表如下</p>
+<p><img src="https://raw.githubusercontent.com/damaoooo/imageBed/master/assets/image-20191223223350956.png" alt="image-20191223223350956.png"></p>
+<p>运行完了之后还没完，这个程序会一直<code>Sleep</code>的方式驻留在服务中</p>
+<h3 id="1、-问题：当计算机重启后，这个程序如何确保它继续运行？-（即持久化驻留）"><a href="#1、-问题：当计算机重启后，这个程序如何确保它继续运行？-（即持久化驻留）" class="headerlink" title="1、 问题：当计算机重启后，这个程序如何确保它继续运行？ （即持久化驻留）"></a>1、 问题：当计算机重启后，这个程序如何确保它继续运行？ （即持久化驻留）</h3><p>​    程序将自己写进了开机自启动中</p>
+<h3 id="2、-问题：为什么这个程序会使用一个互斥量？"><a href="#2、-问题：为什么这个程序会使用一个互斥量？" class="headerlink" title="2、 问题：为什么这个程序会使用一个互斥量？"></a>2、 问题：为什么这个程序会使用一个互斥量？</h3><p>​    保证同一时间只有一个自己的程序运行</p>
+<h3 id="3、-问题：可以用来检测这个程序的基于主机特征是什么？"><a href="#3、-问题：可以用来检测这个程序的基于主机特征是什么？" class="headerlink" title="3、 问题：可以用来检测这个程序的基于主机特征是什么？"></a>3、 问题：可以用来检测这个程序的基于主机特征是什么？</h3><p>​    互斥锁<code>HGL345</code></p>
+<p>​    服务<code>MalService</code></p>
+<h3 id="4、-问题：检测这个恶意代码的基于网络特征是什么？"><a href="#4、-问题：检测这个恶意代码的基于网络特征是什么？" class="headerlink" title="4、 问题：检测这个恶意代码的基于网络特征是什么？"></a>4、 问题：检测这个恶意代码的基于网络特征是什么？</h3><p>​    打开<code>Internet Explorer 8.0</code>和网址<code>http://www.malwareanalysisbook.com</code></p>
+<h3 id="5、-这个程序的目的是什么？"><a href="#5、-这个程序的目的是什么？" class="headerlink" title="5、 这个程序的目的是什么？"></a>5、 这个程序的目的是什么？</h3><p>​    到了一个指定的时间之后，打开20个线程同时访问该网站，估计是将病毒植入抓到的肉鸡中，然后指定一个时间进行<code>DDOS</code>攻击</p>
+<h3 id="6、这个程序什么时候完成执行？"><a href="#6、这个程序什么时候完成执行？" class="headerlink" title="6、这个程序什么时候完成执行？"></a>6、这个程序什么时候完成执行？</h3><p>​    在<code>2100/01/01 00:00:00</code>开始执行，执行完了之后还会一直潜伏在电脑里面</p>
+<h2 id="LAB07-02-exe"><a href="#LAB07-02-exe" class="headerlink" title="LAB07-02.exe"></a>LAB07-02.exe</h2><h3 id="使用IDA进行静态分析"><a href="#使用IDA进行静态分析" class="headerlink" title="使用IDA进行静态分析"></a>使用IDA进行静态分析</h3><p>我们首先看看函数导入表</p>
+<p><img src="https://raw.githubusercontent.com/damaoooo/imageBed/master/assets/image-20191224130550304.png" alt="image-20191224130550304.png"></p>
+<p>发现它的函数导入并不多，<code>OleInitialize</code>用于创建<code>ole</code>初始化对象，<code>CoCreateInstance</code>用于创建一个<code>Com</code>实例，<code>OleUninitialize</code>用于删除一个<code>ole</code>对象，上面的<code>SysAllocString</code>和<code>SysFreeString</code>用于字符串的操作。</p>
+<p>我们再看看字符串列表</p>
+<p><img src="https://raw.githubusercontent.com/damaoooo/imageBed/master/assets/image-20191224130757083.png" alt="image-20191224130757083.png"></p>
+<p><img src="https://raw.githubusercontent.com/damaoooo/imageBed/master/assets/image-20191224130907842.png" alt="image-20191224130907842.png"></p>
+<p>看到了一个网址，可能有用来打开这个网址的操作</p>
+<p>进入main函数看一看</p>
+<p><img src="https://raw.githubusercontent.com/damaoooo/imageBed/master/assets/image-20191224131042462.png" alt="image-20191224131042462.png"></p>
+<p>发现非常简短，不过这个面向对象的操作有点看不懂，大概分析就是首先创建实例，如果创建成功了，那么就运行<code>ppv+44</code>处函数指针指向的函数，其中v3是分配了一个字符串，跟进去看一看</p>
+<p><img src="https://raw.githubusercontent.com/damaoooo/imageBed/master/assets/image-20191224131202003.png" alt="image-20191224131202003.png"></p>
+<p>发现就是网址，我们把这个网址改一下名字，然后查询old函数的操作，发现这个<code>CoCreateInstance</code>函数的参数如下</p>
+<table>
+<thead>
+<tr>
+<th>参数</th>
+<th>值</th>
+<th>功能</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>rclsid</code></td>
+<td><code>0002DF01-0000-0000-C000-000000000046</code></td>
+<td>用于标识一个对象</td>
+</tr>
+<tr>
+<td><code>pUnkOuter</code></td>
+<td><code>0</code></td>
+<td>表示是否非聚合式对象</td>
+</tr>
+<tr>
+<td><code>dwClsContext</code></td>
+<td><code>4</code></td>
+<td>组件类别</td>
+</tr>
+<tr>
+<td><code>riid</code></td>
+<td><code>D30C1661-CDAF-11D0-8A3E-00C04FC9E26E</code></td>
+<td>接口标识符，用于对象通信</td>
+</tr>
+<tr>
+<td><code>ppv</code></td>
+<td><code>&amp;ppv</code></td>
+<td>接收接口指针</td>
+</tr>
+</tbody>
+</table>
+<p>这两个ID看上去像是<code>uuid</code>的格式，我们找一下这两个id的功能是什么</p>
+<p><img src="https://raw.githubusercontent.com/damaoooo/imageBed/master/assets/image-20191224134213628.png" alt="image-20191224134213628.png"></p>
+<p><img src="https://raw.githubusercontent.com/damaoooo/imageBed/master/assets/image-20191224134245470.png" alt="image-20191224134245470.png"></p>
+<p>看样子这个程序是打开浏览器来访问这样的一个网站的操作</p>
+<p>使用标准结构体之后如下</p>
+<p><img src="https://raw.githubusercontent.com/damaoooo/imageBed/master/assets/image-20191224134700424.png" alt="image-20191224134700424.png"></p>
+<p>就是打开浏览器导航的一个操作，然后释放变量，关闭对象，结束<code>main</code></p>
+<h3 id="1、-问题：这个程序如何完成持久化驻留"><a href="#1、-问题：这个程序如何完成持久化驻留" class="headerlink" title="1、 问题：这个程序如何完成持久化驻留"></a>1、 问题：这个程序如何完成持久化驻留</h3><p>似乎没有进行持久化驻留，打开了之后就关闭了</p>
+<h3 id="2、-问题：这个程序的目的是什么？"><a href="#2、-问题：这个程序的目的是什么？" class="headerlink" title="2、 问题：这个程序的目的是什么？"></a>2、 问题：这个程序的目的是什么？</h3><p>打开一个网站</p>
+<h3 id="3-这个程序什么时候完成执行"><a href="#3-这个程序什么时候完成执行" class="headerlink" title="3.这个程序什么时候完成执行"></a>3.这个程序什么时候完成执行</h3><p>网站打开了就结束了</p>
+<h2 id="LAB7-3"><a href="#LAB7-3" class="headerlink" title="LAB7-3"></a>LAB7-3</h2><h3 id="静态分析LAB07-03-exe"><a href="#静态分析LAB07-03-exe" class="headerlink" title="静态分析LAB07-03.exe"></a>静态分析LAB07-03.exe</h3><p>查看导入函数表</p>
+<p><img src="https://raw.githubusercontent.com/damaoooo/imageBed/master/assets/image-20191224141845795.png" alt="image-20191224141845795.png"></p>
+<p>发现有<code>CreateFileA</code>，<code>CreateFileMappingA</code>，<code>FindNextFileA</code>，<code>FindFirstFileA</code>，<code>CopyFileA</code>这些函数是用来查找和创建，复制文件</p>
+<p>查看字符串列表</p>
+<p><img src="https://raw.githubusercontent.com/damaoooo/imageBed/master/assets/image-20191224162158101.png" alt="image-20191224162158101.png"></p>
+<p>发现是有两个目录<code>C:\\windows\\system32\\kernel32.dll</code>，和<code>C:\\windows\\system32\\kerne132.dll</code></p>
+<p>长得非常相似，估计是把自己的<code>kerne132.dll</code>替换掉系统的<code>kernel32.dll</code>，这个<code>kerne132.dll</code>，就来自于<code>Lab07-03.dll</code></p>
+<p>我们进入<code>main</code>函数分析一下</p>
+<p><img src="https://raw.githubusercontent.com/damaoooo/imageBed/master/assets/image-20191224163753430.png" alt="image-20191224163753430.png"></p>
+<p>这个main有点长，我们慢慢逆</p>
+<p>首先是检查程序的运行参数，如果是有字符串<code>WARNING_THIS_WILL_DESTROY_YOUR_MACHINE</code>，就继续，反之就关闭程序，剩下的操作比较魔幻，我们打开与之配套的<code>DLL</code>看看</p>
+<p>进入导入函数列表</p>
+<p><img src="https://raw.githubusercontent.com/damaoooo/imageBed/master/assets/image-20191224171253226.png" alt="image-20191224171253226.png"></p>
+<p>发现有大量的套接字通信操作<code>send</code>，<code>connect</code>，<code>socket</code>，<code>WSAStartup</code>，<code>recv</code>等等，说明这个程序能够进行网络通信，接着我们看看字符串</p>
+<p><img src="https://raw.githubusercontent.com/damaoooo/imageBed/master/assets/image-20191224171359651.png" alt="image-20191224171359651.png"></p>
+<p>发现了一个IP地址，还找到了<code>exec</code>，<code>sleep</code>，<code>hello</code>等关键字符串，我们看看主程序以及这些字符串的调用情况</p>
+<p><img src="https://raw.githubusercontent.com/damaoooo/imageBed/master/assets/image-20191224172400232.png" alt="image-20191224172400232.png"></p>
+<p>然后经过逆向分析可发现，这个<code>DLL</code>的<code>DLLMain</code>函数是连接一个远程的套接字<code>127.26.152.13:80</code>，然后尝试发送一个<code>hello</code>，然后接收消息，如果接收到的是<code>sleep</code>，那么就调用<code>sleep(0x60000)</code>，如果接受到的是<code>exec</code>，那么就打开一个命令行，如果接收到的是<code>q</code>，那么就退出程序</p>
+<p><code>DLL</code>分析完了，现在继续分析<code>exe</code></p>
+<p><img src="https://raw.githubusercontent.com/damaoooo/imageBed/master/assets/image-20191224210044783.png" alt="image-20191224210044783.png"></p>
+<p>跳过一堆不明真相的函数之后我们来到下面的<code>closeHandle</code></p>
+<p><img src="https://raw.githubusercontent.com/damaoooo/imageBed/master/assets/image-20191224211248722.png" alt="image-20191224211248722.png"></p>
+<p>发现是将这个<code>dll</code>复制到这个<code>C:\windows\system32\kerne132.dll</code>中去，然后我们跟进下main一个调用了<code>C:\*</code>的函数中</p>
+<p><img src="https://raw.githubusercontent.com/damaoooo/imageBed/master/assets/image-20191224211542279.png" alt="image-20191224211542279.png"></p>
+<p>发现是在C盘遍历文件，如果遍历出来的文件结尾是<code>.exe</code>的话，就执行一个<code>sub_4010A0()</code>函数，我们跟进去看看</p>
+<p><img src="https://raw.githubusercontent.com/damaoooo/imageBed/master/assets/image-20191224212332825.png" alt="image-20191224212332825.png"></p>
+<p>发现是读取这个文件，然后看看通过<code>IsBadReadPtr()</code>检查进程是否有权限访问指定的内存块。如果成功了就执行一系列操作,从这个程序中提取一个字符串出来，看看是否为<code>kernel32.dll</code>，如果是的话就将内存中的伪造的<code>kerne132.dll</code>覆盖进去。</p>
+<p>目的是检测所有含有调用了这个<code>dll</code>的并把所有调用的改为<code>kernel132.dll</code>来干扰正常程序运行并打开后门程序</p>
+<p>静态分析完毕，开始动态分析</p>
+<h3 id="动态分析Lab7-3-exe"><a href="#动态分析Lab7-3-exe" class="headerlink" title="动态分析Lab7-3.exe"></a>动态分析Lab7-3.exe</h3><p>通过上面的静态分析我们已经知道了这个程序会把根目录下的文件感染，让其无法正常调用<code>kernel32.dll</code>，我们编译一个<code>hello world</code>，然后运行这个程序，通过比对我们来看一看这个程序做了什么</p>
+<p><img src="https://raw.githubusercontent.com/damaoooo/imageBed/master/assets/image-20191224213644141.png" alt="image-20191224213644141.png"></p>
+<p>这是在Windows10下面使用<code>gcc -m32 helloworld.cpp -o hello.exe</code>生成的32位简单程序，其中调用到了<code>KERNEL32.dll</code>，我们使用病毒感染这个文件</p>
+<p>为了能够跟上去动态调试，我们使用IDA的调试功能<code>Local Win32 debugger</code></p>
+<p><img src="https://raw.githubusercontent.com/damaoooo/imageBed/master/assets/image-20191224214706559.png" alt="image-20191224214706559.png"></p>
+<p><img src="https://raw.githubusercontent.com/damaoooo/imageBed/master/assets/image-20191224214650312.png" alt="image-20191224214650312.png"></p>
+<p>成功设置后我们进入了单步调试阶段</p>
+<p><img src="https://raw.githubusercontent.com/damaoooo/imageBed/master/assets/image-20191224215335016.png" alt="image-20191224215335016.png"></p>
+<p>可以看到下面挨个读取出来的文件，我们下一个断点一次读一个文件来看看，发现第一个找到的是</p>
+<p><img src="https://raw.githubusercontent.com/damaoooo/imageBed/master/assets/image-20191224215606090.png" alt="image-20191224215606090.png"></p>
+<p>不是我们想要跟上的，我们继续运行，但是发现太久了，我们就直接跑完好了，到后面我们<code>patch</code>一下这个让他遍历C盘</p>
+<p>运行完了之后我们看看后面的这个文件如何</p>
+<p><img src="https://raw.githubusercontent.com/damaoooo/imageBed/master/assets/image-20191224220400836.png" alt="image-20191224220400836.png"></p>
+<p>发现这个程序的<code>kernel32</code>变成了<code>kerne132</code>，证实了我们的猜想</p>
+<p><img src="https://raw.githubusercontent.com/damaoooo/imageBed/master/assets/image-20191224220323285.png" alt="image-20191224220323285.png"></p>
+<p>用<code>procmon</code>查看进程信息发现的确如此</p>
+<p>我们进入原来的被修改的地方看看</p>
+<p><img src="https://raw.githubusercontent.com/damaoooo/imageBed/master/assets/image-20191224220743147.png" alt="image-20191224220743147.png"></p>
+<p>发现新的<code>kerne132.dll</code>除了包含了原来本身的<code>kernel32.dll</code>之外还带有网络程序用于远程控制通信，既保证了原来的程序能够正常运行，又把自己也连带运行了起来，是一个非常高明的病毒感染方法。</p>
+<h3 id="1、-问题：这个程序如何完成持久化驻留，来确保在计算机重启后它能继续运行？"><a href="#1、-问题：这个程序如何完成持久化驻留，来确保在计算机重启后它能继续运行？" class="headerlink" title="1、 问题：这个程序如何完成持久化驻留，来确保在计算机重启后它能继续运行？"></a>1、 问题：这个程序如何完成持久化驻留，来确保在计算机重启后它能继续运行？</h3><p>​    把C盘的文件感染，让其每次运行的时候都会调用这个被感染之后的<code>kerne132.dll</code>，同时也把自身藏在<code>C:\windows\system32</code>下面</p>
+<h3 id="2、-问题：这个恶意代码的两个明显的基于主机特征是什么？"><a href="#2、-问题：这个恶意代码的两个明显的基于主机特征是什么？" class="headerlink" title="2、 问题：这个恶意代码的两个明显的基于主机特征是什么？"></a>2、 问题：这个恶意代码的两个明显的基于主机特征是什么？</h3><p>​    在<code>C:\windows\system32</code>下多了一个<code>kerne132.dll</code>，在C盘下的程序的导入函数表中的<code>kernel32.dll</code>被替换为<code>kerne132.dll</code></p>
+<p>还创建了一个互斥<code>SADFHUHF</code></p>
+<p><img src="https://raw.githubusercontent.com/damaoooo/imageBed/master/assets/image-20191224221550703.png" alt="image-20191224221550703.png"></p>
+<h3 id="3、-问题：这个程序的目的是什么？"><a href="#3、-问题：这个程序的目的是什么？" class="headerlink" title="3、 问题：这个程序的目的是什么？"></a>3、 问题：这个程序的目的是什么？</h3><p>​    一个后门程序，可以用来远控</p>
+<h3 id="4、-问题：一旦这个恶意代码被安装，你如何移除它？"><a href="#4、-问题：一旦这个恶意代码被安装，你如何移除它？" class="headerlink" title="4、 问题：一旦这个恶意代码被安装，你如何移除它？"></a>4、 问题：一旦这个恶意代码被安装，你如何移除它？</h3><p>​    把之前的<code>kernel132.dll</code>清除并把C盘的<code>exe</code>的导入函数还原成<code>kernel132.dll</code></p>
+<p>​    或者是直接把<code>kerne132.dll</code>替换成<code>kernel32.dll</code>的内容就是了，但是这种做法只在本机有效</p>
 
       
 
@@ -370,7 +460,7 @@
     <a class="close js-modal-close" href="javascript:;"><i class="icon icon-close"></i></a>
     <p>扫一扫，分享到微信</p>
     <div class="wx-qrcode">
-      <img src="//pan.baidu.com/share/qrcode?url=http://yoursite.com/2019/12/08/实验四/" alt="微信分享二维码">
+      <img src="//pan.baidu.com/share/qrcode?url=http://yoursite.com/2019/12/12/实验六/" alt="微信分享二维码">
     </div>
 </div>
 
@@ -384,18 +474,18 @@
   
 <nav id="article-nav">
   
-    <a href="/2019/12/12/实验六/" id="article-nav-newer" class="article-nav-link-wrap">
+    <a href="/2019/12/14/实验五/" id="article-nav-newer" class="article-nav-link-wrap">
       <i class="icon-circle-left"></i>
       <div class="article-nav-title">
         
-          恶意代码分析实战笔记(四)
+          恶意代码分析实战（三）
         
       </div>
     </a>
   
   
-    <a href="/2019/12/01/自动化markdown插入图床/" id="article-nav-older" class="article-nav-link-wrap">
-      <div class="article-nav-title">自动化markdown插入图床</div>
+    <a href="/2019/12/08/实验四/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">恶意代码分析实战笔记（二）</div>
       <i class="icon-circle-right"></i>
     </a>
   
@@ -422,7 +512,7 @@
                 </span>
                 <span class="tooltip-content">
                     <div class="toc-article">
-                    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#恶意代码分析实战笔记（二）"><span class="toc-number">1.</span> <span class="toc-text">恶意代码分析实战笔记（二）</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#LAB03-01-exe"><span class="toc-number">1.1.</span> <span class="toc-text">LAB03-01.exe</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1、找出这个恶意代码的导入函数与字符串列表？"><span class="toc-number">1.1.1.</span> <span class="toc-text">1、找出这个恶意代码的导入函数与字符串列表？</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2、这个恶意代码在主机上的感染迹象特征是什么？"><span class="toc-number">1.1.2.</span> <span class="toc-text">2、这个恶意代码在主机上的感染迹象特征是什么？</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3、这个恶意代码是否存在一些有用的网络特征码？如果存在，他们是什么？"><span class="toc-number">1.1.3.</span> <span class="toc-text">3、这个恶意代码是否存在一些有用的网络特征码？如果存在，他们是什么？</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Lab03-02-dll"><span class="toc-number">1.2.</span> <span class="toc-text">Lab03-02.dll</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-你怎样才能让这个恶意代码自行安装？"><span class="toc-number">1.2.1.</span> <span class="toc-text">1.你怎样才能让这个恶意代码自行安装？</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-在安装之后，你如何让这个恶意代码运行起来？"><span class="toc-number">1.2.2.</span> <span class="toc-text">2.在安装之后，你如何让这个恶意代码运行起来？</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3、你怎么能找到这个恶意代码是在哪个进程下运行的？"><span class="toc-number">1.2.3.</span> <span class="toc-text">3、你怎么能找到这个恶意代码是在哪个进程下运行的？</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4、你可以在procmon工具中设置什么样的过滤器，才能收集这个恶意代码的信息？"><span class="toc-number">1.2.4.</span> <span class="toc-text">4、你可以在procmon工具中设置什么样的过滤器，才能收集这个恶意代码的信息？</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5、这个恶意代码在主机上的感染迹象特征是什么？"><span class="toc-number">1.2.5.</span> <span class="toc-text">5、这个恶意代码在主机上的感染迹象特征是什么？</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#6、这个恶意代码是否存在一些有用的网络特征码？"><span class="toc-number">1.2.6.</span> <span class="toc-text">6、这个恶意代码是否存在一些有用的网络特征码？</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#LAB03-03-exe"><span class="toc-number">1.3.</span> <span class="toc-text">LAB03-03.exe</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1、当你使用Process-explorer工具进行监视时，你注意到了什么？"><span class="toc-number">1.3.1.</span> <span class="toc-text">1、当你使用Process explorer工具进行监视时，你注意到了什么？</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2、你可以找出任何的内存修改行为吗？"><span class="toc-number">1.3.2.</span> <span class="toc-text">2、你可以找出任何的内存修改行为吗？</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3、这个恶意代码在主机上的感染迹象特征是什么？"><span class="toc-number">1.3.3.</span> <span class="toc-text">3、这个恶意代码在主机上的感染迹象特征是什么？</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4、这个恶意代码的目的是什么？"><span class="toc-number">1.3.4.</span> <span class="toc-text">4、这个恶意代码的目的是什么？</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Lab03-04-exe"><span class="toc-number">1.4.</span> <span class="toc-text">Lab03-04.exe</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1、当你运行这个文件时，会发生什么呢？"><span class="toc-number">1.4.1.</span> <span class="toc-text">1、当你运行这个文件时，会发生什么呢？</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2、是什么原因造成动态分析无法有效实施？"><span class="toc-number">1.4.2.</span> <span class="toc-text">2、是什么原因造成动态分析无法有效实施？</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3、是否有其它方式来运行这个程序？"><span class="toc-number">1.4.3.</span> <span class="toc-text">3、是否有其它方式来运行这个程序？</span></a></li></ol></li></ol></li></ol>
+                    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#恶意代码分析实战笔记-四"><span class="toc-number">1.</span> <span class="toc-text">恶意代码分析实战笔记(四)</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#LAB07-01-exe"><span class="toc-number">1.1.</span> <span class="toc-text">LAB07-01.exe</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#静态分析"><span class="toc-number">1.1.1.</span> <span class="toc-text">静态分析</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1、-问题：当计算机重启后，这个程序如何确保它继续运行？-（即持久化驻留）"><span class="toc-number">1.1.2.</span> <span class="toc-text">1、 问题：当计算机重启后，这个程序如何确保它继续运行？ （即持久化驻留）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2、-问题：为什么这个程序会使用一个互斥量？"><span class="toc-number">1.1.3.</span> <span class="toc-text">2、 问题：为什么这个程序会使用一个互斥量？</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3、-问题：可以用来检测这个程序的基于主机特征是什么？"><span class="toc-number">1.1.4.</span> <span class="toc-text">3、 问题：可以用来检测这个程序的基于主机特征是什么？</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4、-问题：检测这个恶意代码的基于网络特征是什么？"><span class="toc-number">1.1.5.</span> <span class="toc-text">4、 问题：检测这个恶意代码的基于网络特征是什么？</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5、-这个程序的目的是什么？"><span class="toc-number">1.1.6.</span> <span class="toc-text">5、 这个程序的目的是什么？</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#6、这个程序什么时候完成执行？"><span class="toc-number">1.1.7.</span> <span class="toc-text">6、这个程序什么时候完成执行？</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#LAB07-02-exe"><span class="toc-number">1.2.</span> <span class="toc-text">LAB07-02.exe</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#使用IDA进行静态分析"><span class="toc-number">1.2.1.</span> <span class="toc-text">使用IDA进行静态分析</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1、-问题：这个程序如何完成持久化驻留"><span class="toc-number">1.2.2.</span> <span class="toc-text">1、 问题：这个程序如何完成持久化驻留</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2、-问题：这个程序的目的是什么？"><span class="toc-number">1.2.3.</span> <span class="toc-text">2、 问题：这个程序的目的是什么？</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-这个程序什么时候完成执行"><span class="toc-number">1.2.4.</span> <span class="toc-text">3.这个程序什么时候完成执行</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#LAB7-3"><span class="toc-number">1.3.</span> <span class="toc-text">LAB7-3</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#静态分析LAB07-03-exe"><span class="toc-number">1.3.1.</span> <span class="toc-text">静态分析LAB07-03.exe</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#动态分析Lab7-3-exe"><span class="toc-number">1.3.2.</span> <span class="toc-text">动态分析Lab7-3.exe</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1、-问题：这个程序如何完成持久化驻留，来确保在计算机重启后它能继续运行？"><span class="toc-number">1.3.3.</span> <span class="toc-text">1、 问题：这个程序如何完成持久化驻留，来确保在计算机重启后它能继续运行？</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2、-问题：这个恶意代码的两个明显的基于主机特征是什么？"><span class="toc-number">1.3.4.</span> <span class="toc-text">2、 问题：这个恶意代码的两个明显的基于主机特征是什么？</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3、-问题：这个程序的目的是什么？"><span class="toc-number">1.3.5.</span> <span class="toc-text">3、 问题：这个程序的目的是什么？</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4、-问题：一旦这个恶意代码被安装，你如何移除它？"><span class="toc-number">1.3.6.</span> <span class="toc-text">4、 问题：一旦这个恶意代码被安装，你如何移除它？</span></a></li></ol></li></ol></li></ol>
                     </div>
                 </span>
             </div>
@@ -439,8 +529,8 @@
   <div id="cloud-tie-wrapper" class="cloud-tie-wrapper"></div>
 <script>
   var cloudTieConfig = {
-    url: "http://yoursite.com/2019/12/08/实验四/", 
-    sourceId: "实验四",
+    url: "http://yoursite.com/2019/12/12/实验六/", 
+    sourceId: "实验六",
     productKey: "true",
     target: "cloud-tie-wrapper"
   };
