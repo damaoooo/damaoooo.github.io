@@ -164,171 +164,6 @@
           <div id="js-content" class="content-ll">
             
   
-    <article id="post-实验五" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2019/12/14/实验五/">恶意代码分析实战（三）</a>
-    </h1>
-  
-
-        
-        <a href="/2019/12/14/实验五/" class="archive-article-date">
-  	<time datetime="2019-12-14T08:37:54.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-12-14</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h1 id="恶意代码分析实战（三）"><a href="#恶意代码分析实战（三）" class="headerlink" title="恶意代码分析实战（三）"></a>恶意代码分析实战（三）</h1><h2 id="1：DllMain的地址是什么？"><a href="#1：DllMain的地址是什么？" class="headerlink" title="1：DllMain的地址是什么？"></a>1：DllMain的地址是什么？</h2><p><img src="https://raw.githubusercontent.com/damaoooo/imageBed/master/assets/image-20191213173917324.png" alt="image-20191213173917324.png"></p>
-<h2 id="2：使用Imports窗口并浏览到gethostbyname-导入函数定位到什么地址？"><a href="#2：使用Imports窗口并浏览到gethostbyname-导入函数定位到什么地址？" class="headerlink" title="2：使用Imports窗口并浏览到gethostbyname, 导入函数定位到什么地址？"></a>2：使用Imports窗口并浏览到gethostbyname, 导入函数定位到什么地址？</h2><p><img src="https://raw.githubusercontent.com/damaoooo/imageBed/master/assets/image-20191213174017362.png" alt="image-20191213174017362.png"></p>
-<h2 id="3：有多少函数调用了gethostbyname"><a href="#3：有多少函数调用了gethostbyname" class="headerlink" title="3：有多少函数调用了gethostbyname?"></a>3：有多少函数调用了gethostbyname?</h2><p><img src="https://raw.githubusercontent.com/damaoooo/imageBed/master/assets/image-20191213174044141.png" alt="image-20191213174044141.png"></p>
-<h2 id="4-将精力集中在位于0x10001757处的对gethostbyname的调用，你能找出那个DNS请求将被触发吗？"><a href="#4-将精力集中在位于0x10001757处的对gethostbyname的调用，你能找出那个DNS请求将被触发吗？" class="headerlink" title="4: 将精力集中在位于0x10001757处的对gethostbyname的调用，你能找出那个DNS请求将被触发吗？"></a>4: 将精力集中在位于0x10001757处的对gethostbyname的调用，你能找出那个DNS请求将被触发吗？</h2><p><img src="https://raw.githubusercontent.com/damaoooo/imageBed/master/assets/image-20191213180757726.png" alt="image-20191213180757726.png"></p>
-<p>在这儿，找DNS，前面PUSH了这样一个字符串，跟进去</p>
-<p><img src="https://raw.githubusercontent.com/damaoooo/imageBed/master/assets/image-20191213180828528.png" alt="image-20191213180828528.png"></p>
-<p><img src="https://raw.githubusercontent.com/damaoooo/imageBed/master/assets/image-20191213180859421.png" alt="image-20191213180859421.png"></p>
-<p><img src="https://raw.githubusercontent.com/damaoooo/imageBed/master/assets/image-20191213180904886.png" alt="image-20191213180904886.png"></p>
-<p>这个就是要DNS查询的地址，上面在压栈的时候有<code>add eax,0dh</code>的操作，因此指向的就是<code>pics.praticalmalwareanalysis.com</code></p>
-<h2 id="5：IDA-Pro识别了在0x10001656处的子过程中的多少个局部变量？"><a href="#5：IDA-Pro识别了在0x10001656处的子过程中的多少个局部变量？" class="headerlink" title="5：IDA Pro识别了在0x10001656处的子过程中的多少个局部变量？"></a>5：IDA Pro识别了在0x10001656处的子过程中的多少个局部变量？</h2><p><img src="https://raw.githubusercontent.com/damaoooo/imageBed/master/assets/image-20191213212713210.png" alt="image-20191213212713210.png"></p>
-<p>局部变量有23个</p>
-<h2 id="6：IDA-Pro识别了在0x10001656处的子过程中的多少个参数？"><a href="#6：IDA-Pro识别了在0x10001656处的子过程中的多少个参数？" class="headerlink" title="6：IDA Pro识别了在0x10001656处的子过程中的多少个参数？"></a>6：IDA Pro识别了在0x10001656处的子过程中的多少个参数？</h2><p>参数就是<code>IpThreadParameter=dword ptr 4</code>这一个</p>
-<h2 id="7：使用Strings窗口，来在反汇编中定位字符串-cmd-exe-c。-它位于哪？"><a href="#7：使用Strings窗口，来在反汇编中定位字符串-cmd-exe-c。-它位于哪？" class="headerlink" title="7：使用Strings窗口，来在反汇编中定位字符串\cmd.exe /c。 它位于哪？"></a>7：使用Strings窗口，来在反汇编中定位字符串\cmd.exe /c。 它位于哪？</h2><p><img src="https://raw.githubusercontent.com/damaoooo/imageBed/master/assets/image-20191213213025628.png" alt="image-20191213213025628.png"></p>
-<h2 id="8：在引用-cmd-exe-c的代码所在的区域发生了什么？"><a href="#8：在引用-cmd-exe-c的代码所在的区域发生了什么？" class="headerlink" title="8：在引用\cmd.exe /c的代码所在的区域发生了什么？"></a>8：在引用\cmd.exe /c的代码所在的区域发生了什么？</h2><p><img src="https://raw.githubusercontent.com/damaoooo/imageBed/master/assets/image-20191213213438591.png" alt="image-20191213213438591.png"></p>
-<p>上面的部分看上去像是一个命令行操作</p>
-<p><img src="https://raw.githubusercontent.com/damaoooo/imageBed/master/assets/image-20191213213936548.png" alt="image-20191213213936548.png"></p>
-<p>上面一部分就是开启一个系统进程，然后<code>GetSystemDirectoryA</code>获取系统目录，然后在系统目录下面执行命令行<code>cmd.exe</code>或者是<code>command.exe</code></p>
-<h2 id="在同样的区域，在0x100101C8处，看起来好像dword-1008E5C4是一个全局变量，它帮助决定走哪条路径。那恶意代码是如何设置dword-1008E5C4的呢？（提示：使用dword-1008E5C4的交叉引用。）"><a href="#在同样的区域，在0x100101C8处，看起来好像dword-1008E5C4是一个全局变量，它帮助决定走哪条路径。那恶意代码是如何设置dword-1008E5C4的呢？（提示：使用dword-1008E5C4的交叉引用。）" class="headerlink" title="在同样的区域，在0x100101C8处，看起来好像dword_1008E5C4是一个全局变量，它帮助决定走哪条路径。那恶意代码是如何设置dword_1008E5C4的呢？（提示：使用dword_1008E5C4的交叉引用。）"></a>在同样的区域，在0x100101C8处，看起来好像dword_1008E5C4是一个全局变量，它帮助决定走哪条路径。那恶意代码是如何设置dword_1008E5C4的呢？（提示：使用dword_1008E5C4的交叉引用。）</h2><p><img src="https://raw.githubusercontent.com/damaoooo/imageBed/master/assets/image-20191213223357790.png" alt="image-20191213223357790.png"></p>
-<p>这一处我已经改名字</p>
-<p>前面的这个判断是一个<code>GetVersionExA</code>的API</p>
-<p><img src="https://raw.githubusercontent.com/damaoooo/imageBed/master/assets/image-20191213223110763.png" alt="image-20191213223110763.png"></p>
-<p>查询这个API是干什么的，发现就是判断是不是<code>windows 2000</code>的，因为在<code>windows 2000</code>之前的命令行是<code>command.exe</code>，这也是为什么要有上面的判断的原因</p>
-<h2 id="10：在位于0x1000FF58处的子过程中的几百行指令中，一系列使用memecmp来比较字符串的比较。如果对robotwork的字符串比较是成功的（当memcmp返回0），会发生什么？"><a href="#10：在位于0x1000FF58处的子过程中的几百行指令中，一系列使用memecmp来比较字符串的比较。如果对robotwork的字符串比较是成功的（当memcmp返回0），会发生什么？" class="headerlink" title="10：在位于0x1000FF58处的子过程中的几百行指令中，一系列使用memecmp来比较字符串的比较。如果对robotwork的字符串比较是成功的（当memcmp返回0），会发生什么？"></a>10：在位于0x1000FF58处的子过程中的几百行指令中，一系列使用memecmp来比较字符串的比较。如果对robotwork的字符串比较是成功的（当memcmp返回0），会发生什么？</h2><p>首先分析前面</p>
-<p><img src="https://raw.githubusercontent.com/damaoooo/imageBed/master/assets/image-20191213223836408.png" alt="image-20191213223836408.png"></p>
-<p><img src="https://raw.githubusercontent.com/damaoooo/imageBed/master/assets/image-20191213223847953.png" alt="image-20191213223847953.png"></p>
-<p>屏幕上显示这么一串字符串，前面是显示时间的一串操作，然后最后一句话有点意思，说是加密的魔数，然后就是这个<code>dword_1009E5D0</code>，待会儿逆向一下，我们先按照要求看下面的<code>memcmp</code>函数</p>
-<p><img src="https://raw.githubusercontent.com/damaoooo/imageBed/master/assets/image-20191213224323988.png" alt="image-20191213224323988.png"></p>
-<p>这个函数的s就是来自socket 的远程指令</p>
-<p><img src="https://raw.githubusercontent.com/damaoooo/imageBed/master/assets/image-20191213224352251.png" alt="image-20191213224352251.png"></p>
-<p>这一堆<code>memcmp</code>长得像是CTF里面经常出现的虚拟机，其实就是判断远程发送过来的指令，并通过不同的函数来执行远程发出的指令</p>
-<p>我们找到<code>RobotWork</code>的指令部分</p>
-<p><img src="https://raw.githubusercontent.com/damaoooo/imageBed/master/assets/image-20191213224534691.png" alt="image-20191213224534691.png"></p>
-<p>然后对这个函数跟进去逆向（已改名）</p>
-<p><img src="https://raw.githubusercontent.com/damaoooo/imageBed/master/assets/image-20191214141604980.png" alt="image-20191214141604980.png"></p>
-<p>获取注册表的<code>HKEY_LOCAL_MACHIME\SOFTWARE\Microsoft\Windows\CurrentVersion</code>里面的<code>Worktime</code>的值，然后传入这个<code>sub_100038EE</code>函数里面</p>
-<p>又跟进去之后发现</p>
-<p><img src="https://raw.githubusercontent.com/damaoooo/imageBed/master/assets/image-20191214145022619.png" alt="image-20191214145022619.png"></p>
-<p>就是把worktime时间加上一个偏移，然后发送到远程套接字里面</p>
-<p><img src="https://raw.githubusercontent.com/damaoooo/imageBed/master/assets/image-20191214145217009.png" alt="image-20191214145217009.png"></p>
-<p>查询前面这个<code>dword_1008E5D0</code>就是和魔数的加密有关，留待后面破解</p>
-<h2 id="11、问题：PSLIST导出函数做了什么？"><a href="#11、问题：PSLIST导出函数做了什么？" class="headerlink" title="11、问题：PSLIST导出函数做了什么？"></a>11、问题：PSLIST导出函数做了什么？</h2><p>在导出函数窗口找到这个函数</p>
-<p><img src="https://raw.githubusercontent.com/damaoooo/imageBed/master/assets/image-20191214145325997.png" alt="image-20191214145325997.png"></p>
-<p>跟进去看</p>
-<p><img src="https://raw.githubusercontent.com/damaoooo/imageBed/master/assets/image-20191214145536247.png" alt="image-20191214145536247.png"></p>
-<p>之前的遇上的函数，result就是这个是否是32位windows，以及是否是windows server 2003之后的版本</p>
-<p>然后就是分支，由于这个函数的调用还不明确，所以这个result就是在如果这个是符合条件的结果之后的分支，我们就跟进去，首先是符合条件的这个<code>sub_1000664C()</code>这个函数</p>
-<p><img src="https://raw.githubusercontent.com/damaoooo/imageBed/master/assets/image-20191214150758268.png" alt="image-20191214150758268.png"></p>
-<p>经过一通逆向之后算是弄明白了这个，就是获取当前进程列表并远程发送给套接字，写入进去一个叫做<code>Xinstall.dll</code>的文件里面，成功就返回0，失败就返回1,这个函数改名为<code>getProcessList</code></p>
-<p>接下来进入分支的第二个函数<code>sub_10006518()</code></p>
-<p><img src="https://raw.githubusercontent.com/damaoooo/imageBed/master/assets/image-20191214151035079.png" alt="image-20191214151035079.png"></p>
-<p>和上面的函数功能大致一样，获取进程列表，但是这个只是写了<code>Xinstall.dll</code>，并没有发送到套接字，函数改名为<code>getProcessListNoSend()</code></p>
-<p>至此这个PSLIST被我们分析完毕</p>
-<p><img src="https://raw.githubusercontent.com/damaoooo/imageBed/master/assets/image-20191214151445007.png" alt="image-20191214151445007.png"></p>
-<p>首先是获取操作系统版本，如果版本过低或过新，<code>return false</code>，如果版本符合<code>windows 2000-windows 8.1 x32</code>，那就遍历进程列表，根据传入的<code>str</code>的进程名字来决定发送哪一个进程。</p>
-<h2 id="12、问题：使用图模式来绘制出对sub-10004E79的交叉引用图。当进入这个函数时，哪个API函数可能被调用？仅仅基于这些API函数，你会如何命名这个函数？"><a href="#12、问题：使用图模式来绘制出对sub-10004E79的交叉引用图。当进入这个函数时，哪个API函数可能被调用？仅仅基于这些API函数，你会如何命名这个函数？" class="headerlink" title="12、问题：使用图模式来绘制出对sub_10004E79的交叉引用图。当进入这个函数时，哪个API函数可能被调用？仅仅基于这些API函数，你会如何命名这个函数？"></a>12、问题：使用图模式来绘制出对sub_10004E79的交叉引用图。当进入这个函数时，哪个API函数可能被调用？仅仅基于这些API函数，你会如何命名这个函数？</h2><p><img src="https://raw.githubusercontent.com/damaoooo/imageBed/master/assets/image-20191214152132352.png" alt="image-20191214152132352.png"></p>
-<p>图模式打不开，看这个也是一样的</p>
-<p><img src="https://raw.githubusercontent.com/damaoooo/imageBed/master/assets/image-20191214152152206.png" alt="image-20191214152152206.png"></p>
-<p>进去之后一通改名，发现这个函数就是获取系统语言，然后发送给套接字的，这个函数我们改名为<code>sendLanguageInfo()</code></p>
-<h2 id="13、问题：DllMain直接调用了多少个Windwos-API-多少深度为2时被调用？"><a href="#13、问题：DllMain直接调用了多少个Windwos-API-多少深度为2时被调用？" class="headerlink" title="13、问题：DllMain直接调用了多少个Windwos API? 多少深度为2时被调用？"></a>13、问题：DllMain直接调用了多少个Windwos API? 多少深度为2时被调用？</h2><p><img src="https://raw.githubusercontent.com/damaoooo/imageBed/master/assets/image-20191214152906311.png" alt="image-20191214152906311.png"></p>
-<p>由于无法看图，就在题解中找了个图</p>
-<p><img src="http://www.atomsec.org/wp-content/uploads/2018/06/%E5%9B%BE%E7%89%87123.png" alt="img"></p>
-<h2 id="14、问题：在0x10001358处，有一个Sleep（一个使用一个包含要睡眠的毫秒级的参数的API函数）的调用。顺着代码向后看，如果这段代码执行，这个程序会睡眠多久？"><a href="#14、问题：在0x10001358处，有一个Sleep（一个使用一个包含要睡眠的毫秒级的参数的API函数）的调用。顺着代码向后看，如果这段代码执行，这个程序会睡眠多久？" class="headerlink" title="14、问题：在0x10001358处，有一个Sleep（一个使用一个包含要睡眠的毫秒级的参数的API函数）的调用。顺着代码向后看，如果这段代码执行，这个程序会睡眠多久？"></a>14、问题：在0x10001358处，有一个Sleep（一个使用一个包含要睡眠的毫秒级的参数的API函数）的调用。顺着代码向后看，如果这段代码执行，这个程序会睡眠多久？</h2><p><img src="https://raw.githubusercontent.com/damaoooo/imageBed/master/assets/image-20191214153227893.png" alt="image-20191214153227893.png"></p>
-<p>我们进入伪代码界面</p>
-<p><img src="https://raw.githubusercontent.com/damaoooo/imageBed/master/assets/image-20191214153248408.png" alt="image-20191214153248408.png"></p>
-<p>sleep1000*v14 ms，现在就是要找v14，是由一个字符通过<code>atoi</code>转化的</p>
-<p><img src="https://raw.githubusercontent.com/damaoooo/imageBed/master/assets/image-20191214153355596.png" alt="image-20191214153355596.png"></p>
-<p>查到这个<code>[</code>的ascii是91，加上13，也就是sleep一共104秒</p>
-<h2 id="15、问题：在0x10001701处是一个对socket的调用，它的3个参数是什么？"><a href="#15、问题：在0x10001701处是一个对socket的调用，它的3个参数是什么？" class="headerlink" title="15、问题：在0x10001701处是一个对socket的调用，它的3个参数是什么？"></a>15、问题：在0x10001701处是一个对socket的调用，它的3个参数是什么？</h2><p><img src="https://raw.githubusercontent.com/damaoooo/imageBed/master/assets/image-20191214154045868.png" alt="image-20191214154045868.png"></p>
-<p>三个参数倒序入栈，搜索参数含义，找到了函数原型</p>
-<p>官方文档</p>
-<p><code>https://docs.microsoft.com/en-us/windows/win32/api/winsock2/nf-winsock2-socket</code></p>
-<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;cket.c&gt;</span></span></span><br><span class="line"><span class="keyword">int</span> __socket (domain, type, protocol)</span><br><span class="line">     <span class="keyword">int</span> domain;</span><br><span class="line">     <span class="keyword">int</span> type;</span><br><span class="line">     <span class="keyword">int</span> protocol;</span><br><span class="line">&#123;</span><br><span class="line">  __set_errno (ENOSYS);</span><br><span class="line">  <span class="keyword">return</span> <span class="number">-1</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>af = 2 = AF_INET</p>
-<p>type = 1 = SOCK_STREAM</p>
-<p>protocol = 6 = IPPROTO_TCP</p>
-<p>综上可知，是建立一个TCP流式通信的连接</p>
-<h2 id="16、问题：使用MSDN页面的socket和IDA-Pro中的命名符号常量，你能使参数更加有意义吗？在你应用了修改后，参数是什么？"><a href="#16、问题：使用MSDN页面的socket和IDA-Pro中的命名符号常量，你能使参数更加有意义吗？在你应用了修改后，参数是什么？" class="headerlink" title="16、问题：使用MSDN页面的socket和IDA Pro中的命名符号常量，你能使参数更加有意义吗？在你应用了修改后，参数是什么？"></a>16、问题：使用MSDN页面的socket和IDA Pro中的命名符号常量，你能使参数更加有意义吗？在你应用了修改后，参数是什么？</h2><p><img src="https://raw.githubusercontent.com/damaoooo/imageBed/master/assets/image-20191214155026920.png" alt="image-20191214155026920.png"></p>
-<p>通过IDA的<code>Symbolic Constant</code>改名就好看多了</p>
-<h2 id="17、问题：搜索in指令（opcode-0xED）的使用。-这个指令和一个魔术字符串VMXh用来进行VMware检测。这在这个恶意代码中被使用了吗？使用对执行in指令函数的交叉引用，能发现进一步检测VMware的证据吗？"><a href="#17、问题：搜索in指令（opcode-0xED）的使用。-这个指令和一个魔术字符串VMXh用来进行VMware检测。这在这个恶意代码中被使用了吗？使用对执行in指令函数的交叉引用，能发现进一步检测VMware的证据吗？" class="headerlink" title="17、问题：搜索in指令（opcode 0xED）的使用。 这个指令和一个魔术字符串VMXh用来进行VMware检测。这在这个恶意代码中被使用了吗？使用对执行in指令函数的交叉引用，能发现进一步检测VMware的证据吗？"></a>17、问题：搜索in指令（opcode 0xED）的使用。 这个指令和一个魔术字符串VMXh用来进行VMware检测。这在这个恶意代码中被使用了吗？使用对执行in指令函数的交叉引用，能发现进一步检测VMware的证据吗？</h2><p>使用<code>alt+t</code>来搜索<code>in</code>指令，发现了如下的vmxh魔数</p>
-<p><img src="https://raw.githubusercontent.com/damaoooo/imageBed/master/assets/image-20191214155409861.png" alt="image-20191214155409861.png"></p>
-<p><img src="https://raw.githubusercontent.com/damaoooo/imageBed/master/assets/image-20191214155604603.png" alt="image-20191214155604603.png"></p>
-<p>使用xref查看引用，发现了三个地方在调用检测vmware的函数</p>
-<p><img src="https://raw.githubusercontent.com/damaoooo/imageBed/master/assets/image-20191214155733402.png" alt="image-20191214155733402.png"></p>
-<p>如果发现了VMware，就在日志里面输出</p>
-<p><img src="https://raw.githubusercontent.com/damaoooo/imageBed/master/assets/image-20191214155814569.png" alt="image-20191214155814569.png"></p>
-<p>实锤了检测VMware的操作</p>
-<h2 id="18、问题：将光标跳转到0x1001D988处，你发现了什么？"><a href="#18、问题：将光标跳转到0x1001D988处，你发现了什么？" class="headerlink" title="18、问题：将光标跳转到0x1001D988处，你发现了什么？"></a>18、问题：将光标跳转到0x1001D988处，你发现了什么？</h2><p><img src="https://raw.githubusercontent.com/damaoooo/imageBed/master/assets/image-20191214160029679.png" alt="image-20191214160029679.png"></p>
-<p>看上去是一堆乱码</p>
-<p>写个脚本进行xor操作看看是什么</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">a = [<span class="number">0x2D</span>,<span class="number">0x31</span>,<span class="number">0x3A</span>,<span class="number">0x3A</span>,<span class="number">0x27</span>,<span class="number">0x75</span>,<span class="number">0x3C</span>,<span class="number">0x26</span>,<span class="number">0x75</span>,<span class="number">0x21</span>,</span><br><span class="line">    <span class="number">0x3D</span>,<span class="number">0x3C</span>,<span class="number">0x26</span>,<span class="number">0x75</span>,<span class="number">0x37</span>,<span class="number">0x34</span>,<span class="number">0x36</span>,<span class="number">0x3E</span>,<span class="number">0x31</span>,<span class="number">0x3A</span>,</span><br><span class="line">    <span class="number">0x3A</span>,<span class="number">0x27</span>,<span class="number">0x79</span>,<span class="number">0x75</span>,<span class="number">0x26</span>,<span class="number">0x21</span>,<span class="number">0x27</span>,<span class="number">0x3C</span>,<span class="number">0x3B</span>,<span class="number">0x32</span>,</span><br><span class="line">    <span class="number">0x75</span>,<span class="number">0x31</span>,<span class="number">0x30</span>,<span class="number">0x36</span>,<span class="number">0x3A</span>,<span class="number">0x31</span>,<span class="number">0x30</span>,<span class="number">0x31</span>,<span class="number">0x75</span>,<span class="number">0x33</span>,</span><br><span class="line">    <span class="number">0x3A</span>,<span class="number">0x27</span>,<span class="number">0x75</span>,<span class="number">0x05</span>,<span class="number">0x27</span>,<span class="number">0x34</span>,<span class="number">0x36</span>,<span class="number">0x21</span>,<span class="number">0x3C</span>,<span class="number">0x36</span>,</span><br><span class="line">    <span class="number">0x34</span>,<span class="number">0x39</span>,<span class="number">0x75</span>,<span class="number">0x18</span>,<span class="number">0x34</span>,<span class="number">0x39</span>,<span class="number">0x22</span>,<span class="number">0x34</span>,<span class="number">0x27</span>,<span class="number">0x30</span>,</span><br><span class="line">    <span class="number">0x75</span>,<span class="number">0x14</span>,<span class="number">0x3B</span>,<span class="number">0x34</span>,<span class="number">0x39</span>,<span class="number">0x2C</span>,<span class="number">0x26</span>,<span class="number">0x3C</span>,<span class="number">0x26</span>,<span class="number">0x75</span>,</span><br><span class="line">    <span class="number">0x19</span>,<span class="number">0x34</span>,<span class="number">0x37</span>,<span class="number">0x75</span>,<span class="number">0x6F</span>,<span class="number">0x7C</span>,<span class="number">0x64</span>,<span class="number">0x67</span>,<span class="number">0x66</span>,<span class="number">0x61</span>]</span><br><span class="line">res = <span class="string">''</span></span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> a:</span><br><span class="line">    chs = i^<span class="number">0x55</span></span><br><span class="line">    res+=chr(chs)</span><br><span class="line">print(res)</span><br></pre></td></tr></table></figure>
-<p>结果如下</p>
-<p><img src="https://raw.githubusercontent.com/damaoooo/imageBed/master/assets/image-20191214160558499.png" alt="image-20191214160558499.png"></p>
-<h2 id="额外"><a href="#额外" class="headerlink" title="额外"></a>额外</h2><p>现在我们还差一个对之前<code>magicNumberWaitiongForCrack</code>进行逆向破解的过程了</p>
-<p><img src="https://raw.githubusercontent.com/damaoooo/imageBed/master/assets/image-20191214161136943.png" alt="image-20191214161136943.png"></p>
-<p>因为在<code>sendtoSocket()</code>函数会被调用很多次，这个变量就是在这个函数里面</p>
-<p>打开交叉引用查看引用</p>
-<p><img src="https://raw.githubusercontent.com/damaoooo/imageBed/master/assets/image-20191214161218525.png" alt="image-20191214161218525.png"></p>
-<p>找到对赋值的最后一个函数，进去看看</p>
-<p><img src="https://raw.githubusercontent.com/damaoooo/imageBed/master/assets/image-20191214161326717.png" alt="image-20191214161326717.png"></p>
-<p>这是个随机数，获取CPU始终周期，然后取低5位，+1，然后作为一个偏移</p>
-<p><img src="https://raw.githubusercontent.com/damaoooo/imageBed/master/assets/image-20191214161458729.png" alt="image-20191214161458729.png"></p>
-<p>再结合之前的这个函数，就明白了，远程发送<code>Enmagic</code>被接收到了之后就显示这个随机数，因此这个变量就得改名为<code>randomMagicNumber</code></p>
-<p>在进行发送的时候都会加上这样一个数字来进行加密</p>
-
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-      
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2019/12/14/实验五/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
     <article id="post-实验六" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
@@ -336,13 +171,13 @@
         
   
     <h1 itemprop="name">
-      <a class="article-title" href="/2019/12/12/实验六/">恶意代码分析实战笔记(四)</a>
+      <a class="article-title" href="/2019/12/24/实验六/">恶意代码分析实战笔记(四)</a>
     </h1>
   
 
         
-        <a href="/2019/12/12/实验六/" class="archive-article-date">
-  	<time datetime="2019-12-12T14:32:53.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-12-12</time>
+        <a href="/2019/12/24/实验六/" class="archive-article-date">
+  	<time datetime="2019-12-24T14:32:53.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-12-24</time>
 </a>
         
       </header>
@@ -547,7 +382,172 @@
 
       
         <p class="article-more-link">
-          <a class="article-more-a" href="/2019/12/12/实验六/">展开全文 >></a>
+          <a class="article-more-a" href="/2019/12/24/实验六/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
+    <article id="post-实验五" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2019/12/14/实验五/">恶意代码分析实战（三）</a>
+    </h1>
+  
+
+        
+        <a href="/2019/12/14/实验五/" class="archive-article-date">
+  	<time datetime="2019-12-14T08:37:54.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-12-14</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="恶意代码分析实战（三）"><a href="#恶意代码分析实战（三）" class="headerlink" title="恶意代码分析实战（三）"></a>恶意代码分析实战（三）</h1><h2 id="1：DllMain的地址是什么？"><a href="#1：DllMain的地址是什么？" class="headerlink" title="1：DllMain的地址是什么？"></a>1：DllMain的地址是什么？</h2><p><img src="https://raw.githubusercontent.com/damaoooo/imageBed/master/assets/image-20191213173917324.png" alt="image-20191213173917324.png"></p>
+<h2 id="2：使用Imports窗口并浏览到gethostbyname-导入函数定位到什么地址？"><a href="#2：使用Imports窗口并浏览到gethostbyname-导入函数定位到什么地址？" class="headerlink" title="2：使用Imports窗口并浏览到gethostbyname, 导入函数定位到什么地址？"></a>2：使用Imports窗口并浏览到gethostbyname, 导入函数定位到什么地址？</h2><p><img src="https://raw.githubusercontent.com/damaoooo/imageBed/master/assets/image-20191213174017362.png" alt="image-20191213174017362.png"></p>
+<h2 id="3：有多少函数调用了gethostbyname"><a href="#3：有多少函数调用了gethostbyname" class="headerlink" title="3：有多少函数调用了gethostbyname?"></a>3：有多少函数调用了gethostbyname?</h2><p><img src="https://raw.githubusercontent.com/damaoooo/imageBed/master/assets/image-20191213174044141.png" alt="image-20191213174044141.png"></p>
+<h2 id="4-将精力集中在位于0x10001757处的对gethostbyname的调用，你能找出那个DNS请求将被触发吗？"><a href="#4-将精力集中在位于0x10001757处的对gethostbyname的调用，你能找出那个DNS请求将被触发吗？" class="headerlink" title="4: 将精力集中在位于0x10001757处的对gethostbyname的调用，你能找出那个DNS请求将被触发吗？"></a>4: 将精力集中在位于0x10001757处的对gethostbyname的调用，你能找出那个DNS请求将被触发吗？</h2><p><img src="https://raw.githubusercontent.com/damaoooo/imageBed/master/assets/image-20191213180757726.png" alt="image-20191213180757726.png"></p>
+<p>在这儿，找DNS，前面PUSH了这样一个字符串，跟进去</p>
+<p><img src="https://raw.githubusercontent.com/damaoooo/imageBed/master/assets/image-20191213180828528.png" alt="image-20191213180828528.png"></p>
+<p><img src="https://raw.githubusercontent.com/damaoooo/imageBed/master/assets/image-20191213180859421.png" alt="image-20191213180859421.png"></p>
+<p><img src="https://raw.githubusercontent.com/damaoooo/imageBed/master/assets/image-20191213180904886.png" alt="image-20191213180904886.png"></p>
+<p>这个就是要DNS查询的地址，上面在压栈的时候有<code>add eax,0dh</code>的操作，因此指向的就是<code>pics.praticalmalwareanalysis.com</code></p>
+<h2 id="5：IDA-Pro识别了在0x10001656处的子过程中的多少个局部变量？"><a href="#5：IDA-Pro识别了在0x10001656处的子过程中的多少个局部变量？" class="headerlink" title="5：IDA Pro识别了在0x10001656处的子过程中的多少个局部变量？"></a>5：IDA Pro识别了在0x10001656处的子过程中的多少个局部变量？</h2><p><img src="https://raw.githubusercontent.com/damaoooo/imageBed/master/assets/image-20191213212713210.png" alt="image-20191213212713210.png"></p>
+<p>局部变量有23个</p>
+<h2 id="6：IDA-Pro识别了在0x10001656处的子过程中的多少个参数？"><a href="#6：IDA-Pro识别了在0x10001656处的子过程中的多少个参数？" class="headerlink" title="6：IDA Pro识别了在0x10001656处的子过程中的多少个参数？"></a>6：IDA Pro识别了在0x10001656处的子过程中的多少个参数？</h2><p>参数就是<code>IpThreadParameter=dword ptr 4</code>这一个</p>
+<h2 id="7：使用Strings窗口，来在反汇编中定位字符串-cmd-exe-c。-它位于哪？"><a href="#7：使用Strings窗口，来在反汇编中定位字符串-cmd-exe-c。-它位于哪？" class="headerlink" title="7：使用Strings窗口，来在反汇编中定位字符串\cmd.exe /c。 它位于哪？"></a>7：使用Strings窗口，来在反汇编中定位字符串\cmd.exe /c。 它位于哪？</h2><p><img src="https://raw.githubusercontent.com/damaoooo/imageBed/master/assets/image-20191213213025628.png" alt="image-20191213213025628.png"></p>
+<h2 id="8：在引用-cmd-exe-c的代码所在的区域发生了什么？"><a href="#8：在引用-cmd-exe-c的代码所在的区域发生了什么？" class="headerlink" title="8：在引用\cmd.exe /c的代码所在的区域发生了什么？"></a>8：在引用\cmd.exe /c的代码所在的区域发生了什么？</h2><p><img src="https://raw.githubusercontent.com/damaoooo/imageBed/master/assets/image-20191213213438591.png" alt="image-20191213213438591.png"></p>
+<p>上面的部分看上去像是一个命令行操作</p>
+<p><img src="https://raw.githubusercontent.com/damaoooo/imageBed/master/assets/image-20191213213936548.png" alt="image-20191213213936548.png"></p>
+<p>上面一部分就是开启一个系统进程，然后<code>GetSystemDirectoryA</code>获取系统目录，然后在系统目录下面执行命令行<code>cmd.exe</code>或者是<code>command.exe</code></p>
+<h2 id="在同样的区域，在0x100101C8处，看起来好像dword-1008E5C4是一个全局变量，它帮助决定走哪条路径。那恶意代码是如何设置dword-1008E5C4的呢？（提示：使用dword-1008E5C4的交叉引用。）"><a href="#在同样的区域，在0x100101C8处，看起来好像dword-1008E5C4是一个全局变量，它帮助决定走哪条路径。那恶意代码是如何设置dword-1008E5C4的呢？（提示：使用dword-1008E5C4的交叉引用。）" class="headerlink" title="在同样的区域，在0x100101C8处，看起来好像dword_1008E5C4是一个全局变量，它帮助决定走哪条路径。那恶意代码是如何设置dword_1008E5C4的呢？（提示：使用dword_1008E5C4的交叉引用。）"></a>在同样的区域，在0x100101C8处，看起来好像dword_1008E5C4是一个全局变量，它帮助决定走哪条路径。那恶意代码是如何设置dword_1008E5C4的呢？（提示：使用dword_1008E5C4的交叉引用。）</h2><p><img src="https://raw.githubusercontent.com/damaoooo/imageBed/master/assets/image-20191213223357790.png" alt="image-20191213223357790.png"></p>
+<p>这一处我已经改名字</p>
+<p>前面的这个判断是一个<code>GetVersionExA</code>的API</p>
+<p><img src="https://raw.githubusercontent.com/damaoooo/imageBed/master/assets/image-20191213223110763.png" alt="image-20191213223110763.png"></p>
+<p>查询这个API是干什么的，发现就是判断是不是<code>windows 2000</code>的，因为在<code>windows 2000</code>之前的命令行是<code>command.exe</code>，这也是为什么要有上面的判断的原因</p>
+<h2 id="10：在位于0x1000FF58处的子过程中的几百行指令中，一系列使用memecmp来比较字符串的比较。如果对robotwork的字符串比较是成功的（当memcmp返回0），会发生什么？"><a href="#10：在位于0x1000FF58处的子过程中的几百行指令中，一系列使用memecmp来比较字符串的比较。如果对robotwork的字符串比较是成功的（当memcmp返回0），会发生什么？" class="headerlink" title="10：在位于0x1000FF58处的子过程中的几百行指令中，一系列使用memecmp来比较字符串的比较。如果对robotwork的字符串比较是成功的（当memcmp返回0），会发生什么？"></a>10：在位于0x1000FF58处的子过程中的几百行指令中，一系列使用memecmp来比较字符串的比较。如果对robotwork的字符串比较是成功的（当memcmp返回0），会发生什么？</h2><p>首先分析前面</p>
+<p><img src="https://raw.githubusercontent.com/damaoooo/imageBed/master/assets/image-20191213223836408.png" alt="image-20191213223836408.png"></p>
+<p><img src="https://raw.githubusercontent.com/damaoooo/imageBed/master/assets/image-20191213223847953.png" alt="image-20191213223847953.png"></p>
+<p>屏幕上显示这么一串字符串，前面是显示时间的一串操作，然后最后一句话有点意思，说是加密的魔数，然后就是这个<code>dword_1009E5D0</code>，待会儿逆向一下，我们先按照要求看下面的<code>memcmp</code>函数</p>
+<p><img src="https://raw.githubusercontent.com/damaoooo/imageBed/master/assets/image-20191213224323988.png" alt="image-20191213224323988.png"></p>
+<p>这个函数的s就是来自socket 的远程指令</p>
+<p><img src="https://raw.githubusercontent.com/damaoooo/imageBed/master/assets/image-20191213224352251.png" alt="image-20191213224352251.png"></p>
+<p>这一堆<code>memcmp</code>长得像是CTF里面经常出现的虚拟机，其实就是判断远程发送过来的指令，并通过不同的函数来执行远程发出的指令</p>
+<p>我们找到<code>RobotWork</code>的指令部分</p>
+<p><img src="https://raw.githubusercontent.com/damaoooo/imageBed/master/assets/image-20191213224534691.png" alt="image-20191213224534691.png"></p>
+<p>然后对这个函数跟进去逆向（已改名）</p>
+<p><img src="https://raw.githubusercontent.com/damaoooo/imageBed/master/assets/image-20191214141604980.png" alt="image-20191214141604980.png"></p>
+<p>获取注册表的<code>HKEY_LOCAL_MACHIME\SOFTWARE\Microsoft\Windows\CurrentVersion</code>里面的<code>Worktime</code>的值，然后传入这个<code>sub_100038EE</code>函数里面</p>
+<p>又跟进去之后发现</p>
+<p><img src="https://raw.githubusercontent.com/damaoooo/imageBed/master/assets/image-20191214145022619.png" alt="image-20191214145022619.png"></p>
+<p>就是把worktime时间加上一个偏移，然后发送到远程套接字里面</p>
+<p><img src="https://raw.githubusercontent.com/damaoooo/imageBed/master/assets/image-20191214145217009.png" alt="image-20191214145217009.png"></p>
+<p>查询前面这个<code>dword_1008E5D0</code>就是和魔数的加密有关，留待后面破解</p>
+<h2 id="11、问题：PSLIST导出函数做了什么？"><a href="#11、问题：PSLIST导出函数做了什么？" class="headerlink" title="11、问题：PSLIST导出函数做了什么？"></a>11、问题：PSLIST导出函数做了什么？</h2><p>在导出函数窗口找到这个函数</p>
+<p><img src="https://raw.githubusercontent.com/damaoooo/imageBed/master/assets/image-20191214145325997.png" alt="image-20191214145325997.png"></p>
+<p>跟进去看</p>
+<p><img src="https://raw.githubusercontent.com/damaoooo/imageBed/master/assets/image-20191214145536247.png" alt="image-20191214145536247.png"></p>
+<p>之前的遇上的函数，result就是这个是否是32位windows，以及是否是windows server 2003之后的版本</p>
+<p>然后就是分支，由于这个函数的调用还不明确，所以这个result就是在如果这个是符合条件的结果之后的分支，我们就跟进去，首先是符合条件的这个<code>sub_1000664C()</code>这个函数</p>
+<p><img src="https://raw.githubusercontent.com/damaoooo/imageBed/master/assets/image-20191214150758268.png" alt="image-20191214150758268.png"></p>
+<p>经过一通逆向之后算是弄明白了这个，就是获取当前进程列表并远程发送给套接字，写入进去一个叫做<code>Xinstall.dll</code>的文件里面，成功就返回0，失败就返回1,这个函数改名为<code>getProcessList</code></p>
+<p>接下来进入分支的第二个函数<code>sub_10006518()</code></p>
+<p><img src="https://raw.githubusercontent.com/damaoooo/imageBed/master/assets/image-20191214151035079.png" alt="image-20191214151035079.png"></p>
+<p>和上面的函数功能大致一样，获取进程列表，但是这个只是写了<code>Xinstall.dll</code>，并没有发送到套接字，函数改名为<code>getProcessListNoSend()</code></p>
+<p>至此这个PSLIST被我们分析完毕</p>
+<p><img src="https://raw.githubusercontent.com/damaoooo/imageBed/master/assets/image-20191214151445007.png" alt="image-20191214151445007.png"></p>
+<p>首先是获取操作系统版本，如果版本过低或过新，<code>return false</code>，如果版本符合<code>windows 2000-windows 8.1 x32</code>，那就遍历进程列表，根据传入的<code>str</code>的进程名字来决定发送哪一个进程。</p>
+<h2 id="12、问题：使用图模式来绘制出对sub-10004E79的交叉引用图。当进入这个函数时，哪个API函数可能被调用？仅仅基于这些API函数，你会如何命名这个函数？"><a href="#12、问题：使用图模式来绘制出对sub-10004E79的交叉引用图。当进入这个函数时，哪个API函数可能被调用？仅仅基于这些API函数，你会如何命名这个函数？" class="headerlink" title="12、问题：使用图模式来绘制出对sub_10004E79的交叉引用图。当进入这个函数时，哪个API函数可能被调用？仅仅基于这些API函数，你会如何命名这个函数？"></a>12、问题：使用图模式来绘制出对sub_10004E79的交叉引用图。当进入这个函数时，哪个API函数可能被调用？仅仅基于这些API函数，你会如何命名这个函数？</h2><p><img src="https://raw.githubusercontent.com/damaoooo/imageBed/master/assets/image-20191214152132352.png" alt="image-20191214152132352.png"></p>
+<p>图模式打不开，看这个也是一样的</p>
+<p><img src="https://raw.githubusercontent.com/damaoooo/imageBed/master/assets/image-20191214152152206.png" alt="image-20191214152152206.png"></p>
+<p>进去之后一通改名，发现这个函数就是获取系统语言，然后发送给套接字的，这个函数我们改名为<code>sendLanguageInfo()</code></p>
+<h2 id="13、问题：DllMain直接调用了多少个Windwos-API-多少深度为2时被调用？"><a href="#13、问题：DllMain直接调用了多少个Windwos-API-多少深度为2时被调用？" class="headerlink" title="13、问题：DllMain直接调用了多少个Windwos API? 多少深度为2时被调用？"></a>13、问题：DllMain直接调用了多少个Windwos API? 多少深度为2时被调用？</h2><p><img src="https://raw.githubusercontent.com/damaoooo/imageBed/master/assets/image-20191214152906311.png" alt="image-20191214152906311.png"></p>
+<p>由于无法看图，就在题解中找了个图</p>
+<p><img src="http://www.atomsec.org/wp-content/uploads/2018/06/%E5%9B%BE%E7%89%87123.png" alt="img"></p>
+<h2 id="14、问题：在0x10001358处，有一个Sleep（一个使用一个包含要睡眠的毫秒级的参数的API函数）的调用。顺着代码向后看，如果这段代码执行，这个程序会睡眠多久？"><a href="#14、问题：在0x10001358处，有一个Sleep（一个使用一个包含要睡眠的毫秒级的参数的API函数）的调用。顺着代码向后看，如果这段代码执行，这个程序会睡眠多久？" class="headerlink" title="14、问题：在0x10001358处，有一个Sleep（一个使用一个包含要睡眠的毫秒级的参数的API函数）的调用。顺着代码向后看，如果这段代码执行，这个程序会睡眠多久？"></a>14、问题：在0x10001358处，有一个Sleep（一个使用一个包含要睡眠的毫秒级的参数的API函数）的调用。顺着代码向后看，如果这段代码执行，这个程序会睡眠多久？</h2><p><img src="https://raw.githubusercontent.com/damaoooo/imageBed/master/assets/image-20191214153227893.png" alt="image-20191214153227893.png"></p>
+<p>我们进入伪代码界面</p>
+<p><img src="https://raw.githubusercontent.com/damaoooo/imageBed/master/assets/image-20191214153248408.png" alt="image-20191214153248408.png"></p>
+<p>sleep1000*v14 ms，现在就是要找v14，是由一个字符通过<code>atoi</code>转化的</p>
+<p><img src="https://raw.githubusercontent.com/damaoooo/imageBed/master/assets/image-20191214153355596.png" alt="image-20191214153355596.png"></p>
+<p>查到这个<code>[</code>的ascii是91，加上13，也就是sleep一共104秒</p>
+<h2 id="15、问题：在0x10001701处是一个对socket的调用，它的3个参数是什么？"><a href="#15、问题：在0x10001701处是一个对socket的调用，它的3个参数是什么？" class="headerlink" title="15、问题：在0x10001701处是一个对socket的调用，它的3个参数是什么？"></a>15、问题：在0x10001701处是一个对socket的调用，它的3个参数是什么？</h2><p><img src="https://raw.githubusercontent.com/damaoooo/imageBed/master/assets/image-20191214154045868.png" alt="image-20191214154045868.png"></p>
+<p>三个参数倒序入栈，搜索参数含义，找到了函数原型</p>
+<p>官方文档</p>
+<p><code>https://docs.microsoft.com/en-us/windows/win32/api/winsock2/nf-winsock2-socket</code></p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;cket.c&gt;</span></span></span><br><span class="line"><span class="keyword">int</span> __socket (domain, type, protocol)</span><br><span class="line">     <span class="keyword">int</span> domain;</span><br><span class="line">     <span class="keyword">int</span> type;</span><br><span class="line">     <span class="keyword">int</span> protocol;</span><br><span class="line">&#123;</span><br><span class="line">  __set_errno (ENOSYS);</span><br><span class="line">  <span class="keyword">return</span> <span class="number">-1</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>af = 2 = AF_INET</p>
+<p>type = 1 = SOCK_STREAM</p>
+<p>protocol = 6 = IPPROTO_TCP</p>
+<p>综上可知，是建立一个TCP流式通信的连接</p>
+<h2 id="16、问题：使用MSDN页面的socket和IDA-Pro中的命名符号常量，你能使参数更加有意义吗？在你应用了修改后，参数是什么？"><a href="#16、问题：使用MSDN页面的socket和IDA-Pro中的命名符号常量，你能使参数更加有意义吗？在你应用了修改后，参数是什么？" class="headerlink" title="16、问题：使用MSDN页面的socket和IDA Pro中的命名符号常量，你能使参数更加有意义吗？在你应用了修改后，参数是什么？"></a>16、问题：使用MSDN页面的socket和IDA Pro中的命名符号常量，你能使参数更加有意义吗？在你应用了修改后，参数是什么？</h2><p><img src="https://raw.githubusercontent.com/damaoooo/imageBed/master/assets/image-20191214155026920.png" alt="image-20191214155026920.png"></p>
+<p>通过IDA的<code>Symbolic Constant</code>改名就好看多了</p>
+<h2 id="17、问题：搜索in指令（opcode-0xED）的使用。-这个指令和一个魔术字符串VMXh用来进行VMware检测。这在这个恶意代码中被使用了吗？使用对执行in指令函数的交叉引用，能发现进一步检测VMware的证据吗？"><a href="#17、问题：搜索in指令（opcode-0xED）的使用。-这个指令和一个魔术字符串VMXh用来进行VMware检测。这在这个恶意代码中被使用了吗？使用对执行in指令函数的交叉引用，能发现进一步检测VMware的证据吗？" class="headerlink" title="17、问题：搜索in指令（opcode 0xED）的使用。 这个指令和一个魔术字符串VMXh用来进行VMware检测。这在这个恶意代码中被使用了吗？使用对执行in指令函数的交叉引用，能发现进一步检测VMware的证据吗？"></a>17、问题：搜索in指令（opcode 0xED）的使用。 这个指令和一个魔术字符串VMXh用来进行VMware检测。这在这个恶意代码中被使用了吗？使用对执行in指令函数的交叉引用，能发现进一步检测VMware的证据吗？</h2><p>使用<code>alt+t</code>来搜索<code>in</code>指令，发现了如下的vmxh魔数</p>
+<p><img src="https://raw.githubusercontent.com/damaoooo/imageBed/master/assets/image-20191214155409861.png" alt="image-20191214155409861.png"></p>
+<p><img src="https://raw.githubusercontent.com/damaoooo/imageBed/master/assets/image-20191214155604603.png" alt="image-20191214155604603.png"></p>
+<p>使用xref查看引用，发现了三个地方在调用检测vmware的函数</p>
+<p><img src="https://raw.githubusercontent.com/damaoooo/imageBed/master/assets/image-20191214155733402.png" alt="image-20191214155733402.png"></p>
+<p>如果发现了VMware，就在日志里面输出</p>
+<p><img src="https://raw.githubusercontent.com/damaoooo/imageBed/master/assets/image-20191214155814569.png" alt="image-20191214155814569.png"></p>
+<p>实锤了检测VMware的操作</p>
+<h2 id="18、问题：将光标跳转到0x1001D988处，你发现了什么？"><a href="#18、问题：将光标跳转到0x1001D988处，你发现了什么？" class="headerlink" title="18、问题：将光标跳转到0x1001D988处，你发现了什么？"></a>18、问题：将光标跳转到0x1001D988处，你发现了什么？</h2><p><img src="https://raw.githubusercontent.com/damaoooo/imageBed/master/assets/image-20191214160029679.png" alt="image-20191214160029679.png"></p>
+<p>看上去是一堆乱码</p>
+<p>写个脚本进行xor操作看看是什么</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">a = [<span class="number">0x2D</span>,<span class="number">0x31</span>,<span class="number">0x3A</span>,<span class="number">0x3A</span>,<span class="number">0x27</span>,<span class="number">0x75</span>,<span class="number">0x3C</span>,<span class="number">0x26</span>,<span class="number">0x75</span>,<span class="number">0x21</span>,</span><br><span class="line">    <span class="number">0x3D</span>,<span class="number">0x3C</span>,<span class="number">0x26</span>,<span class="number">0x75</span>,<span class="number">0x37</span>,<span class="number">0x34</span>,<span class="number">0x36</span>,<span class="number">0x3E</span>,<span class="number">0x31</span>,<span class="number">0x3A</span>,</span><br><span class="line">    <span class="number">0x3A</span>,<span class="number">0x27</span>,<span class="number">0x79</span>,<span class="number">0x75</span>,<span class="number">0x26</span>,<span class="number">0x21</span>,<span class="number">0x27</span>,<span class="number">0x3C</span>,<span class="number">0x3B</span>,<span class="number">0x32</span>,</span><br><span class="line">    <span class="number">0x75</span>,<span class="number">0x31</span>,<span class="number">0x30</span>,<span class="number">0x36</span>,<span class="number">0x3A</span>,<span class="number">0x31</span>,<span class="number">0x30</span>,<span class="number">0x31</span>,<span class="number">0x75</span>,<span class="number">0x33</span>,</span><br><span class="line">    <span class="number">0x3A</span>,<span class="number">0x27</span>,<span class="number">0x75</span>,<span class="number">0x05</span>,<span class="number">0x27</span>,<span class="number">0x34</span>,<span class="number">0x36</span>,<span class="number">0x21</span>,<span class="number">0x3C</span>,<span class="number">0x36</span>,</span><br><span class="line">    <span class="number">0x34</span>,<span class="number">0x39</span>,<span class="number">0x75</span>,<span class="number">0x18</span>,<span class="number">0x34</span>,<span class="number">0x39</span>,<span class="number">0x22</span>,<span class="number">0x34</span>,<span class="number">0x27</span>,<span class="number">0x30</span>,</span><br><span class="line">    <span class="number">0x75</span>,<span class="number">0x14</span>,<span class="number">0x3B</span>,<span class="number">0x34</span>,<span class="number">0x39</span>,<span class="number">0x2C</span>,<span class="number">0x26</span>,<span class="number">0x3C</span>,<span class="number">0x26</span>,<span class="number">0x75</span>,</span><br><span class="line">    <span class="number">0x19</span>,<span class="number">0x34</span>,<span class="number">0x37</span>,<span class="number">0x75</span>,<span class="number">0x6F</span>,<span class="number">0x7C</span>,<span class="number">0x64</span>,<span class="number">0x67</span>,<span class="number">0x66</span>,<span class="number">0x61</span>]</span><br><span class="line">res = <span class="string">''</span></span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> a:</span><br><span class="line">    chs = i^<span class="number">0x55</span></span><br><span class="line">    res+=chr(chs)</span><br><span class="line">print(res)</span><br></pre></td></tr></table></figure>
+<p>结果如下</p>
+<p><img src="https://raw.githubusercontent.com/damaoooo/imageBed/master/assets/image-20191214160558499.png" alt="image-20191214160558499.png"></p>
+<h2 id="额外"><a href="#额外" class="headerlink" title="额外"></a>额外</h2><p>现在我们还差一个对之前<code>magicNumberWaitiongForCrack</code>进行逆向破解的过程了</p>
+<p><img src="https://raw.githubusercontent.com/damaoooo/imageBed/master/assets/image-20191214161136943.png" alt="image-20191214161136943.png"></p>
+<p>因为在<code>sendtoSocket()</code>函数会被调用很多次，这个变量就是在这个函数里面</p>
+<p>打开交叉引用查看引用</p>
+<p><img src="https://raw.githubusercontent.com/damaoooo/imageBed/master/assets/image-20191214161218525.png" alt="image-20191214161218525.png"></p>
+<p>找到对赋值的最后一个函数，进去看看</p>
+<p><img src="https://raw.githubusercontent.com/damaoooo/imageBed/master/assets/image-20191214161326717.png" alt="image-20191214161326717.png"></p>
+<p>这是个随机数，获取CPU始终周期，然后取低5位，+1，然后作为一个偏移</p>
+<p><img src="https://raw.githubusercontent.com/damaoooo/imageBed/master/assets/image-20191214161458729.png" alt="image-20191214161458729.png"></p>
+<p>再结合之前的这个函数，就明白了，远程发送<code>Enmagic</code>被接收到了之后就显示这个随机数，因此这个变量就得改名为<code>randomMagicNumber</code></p>
+<p>在进行发送的时候都会加上这样一个数字来进行加密</p>
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+      
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2019/12/14/实验五/">展开全文 >></a>
         </p>
       
 
