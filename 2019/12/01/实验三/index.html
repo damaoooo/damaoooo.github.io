@@ -48,13 +48,13 @@
   };
 </script>
 
-  <meta name="description" content="恶意代码分析实战解题笔记（一）LAB01-01.dll和LAB01-01.exe 文件分析首先拖到www.virustotal.com里面进行在线分析，得到如下结果  大多数杀毒引擎分析出这是一个特洛伊木马病毒 分析LAB01-01.exe得到的结果如下  和上面的结果类似 然后再虚拟机上进行分析  LAB01-01.dll文件没有加壳，就是个普通的VS6编译出的dll，里面的代码区段也很明显，多">
+  <meta name="description" content="恶意代码分析实战解题笔记（一）LAB01-01.dll和LAB01-01.exe 文件分析首先拖到www.virustotal.com里面进行在线分析，得到如下结果  大多数杀毒引擎分析出这是一个特洛伊木马病毒">
 <meta name="keywords" content=" ">
 <meta property="og:type" content="article">
 <meta property="og:title" content="恶意代码分析实战笔记(一)">
 <meta property="og:url" content="http://yoursite.com/2019/12/01/实验三/index.html">
 <meta property="og:site_name" content="Mr.周半仙的blog">
-<meta property="og:description" content="恶意代码分析实战解题笔记（一）LAB01-01.dll和LAB01-01.exe 文件分析首先拖到www.virustotal.com里面进行在线分析，得到如下结果  大多数杀毒引擎分析出这是一个特洛伊木马病毒 分析LAB01-01.exe得到的结果如下  和上面的结果类似 然后再虚拟机上进行分析  LAB01-01.dll文件没有加壳，就是个普通的VS6编译出的dll，里面的代码区段也很明显，多">
+<meta property="og:description" content="恶意代码分析实战解题笔记（一）LAB01-01.dll和LAB01-01.exe 文件分析首先拖到www.virustotal.com里面进行在线分析，得到如下结果  大多数杀毒引擎分析出这是一个特洛伊木马病毒">
 <meta property="og:locale" content="zh-CN">
 <meta property="og:image" content="https://raw.githubusercontent.com/damaoooo/imageBed/master/assets/image-20191201015128319.png">
 <meta property="og:image" content="https://raw.githubusercontent.com/damaoooo/imageBed/master/assets/image-20191201015401592.png">
@@ -91,10 +91,10 @@
 <meta property="og:image" content="https://raw.githubusercontent.com/damaoooo/imageBed/master/assets/image-20191201115334824.png">
 <meta property="og:image" content="https://raw.githubusercontent.com/damaoooo/imageBed/master/assets/image-20191201115449765.png">
 <meta property="og:image" content="https://raw.githubusercontent.com/damaoooo/imageBed/master/assets/image-20191201115701299.png">
-<meta property="og:updated_time" content="2020-01-17T08:57:18.382Z">
+<meta property="og:updated_time" content="2020-05-05T16:18:03.233Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="恶意代码分析实战笔记(一)">
-<meta name="twitter:description" content="恶意代码分析实战解题笔记（一）LAB01-01.dll和LAB01-01.exe 文件分析首先拖到www.virustotal.com里面进行在线分析，得到如下结果  大多数杀毒引擎分析出这是一个特洛伊木马病毒 分析LAB01-01.exe得到的结果如下  和上面的结果类似 然后再虚拟机上进行分析  LAB01-01.dll文件没有加壳，就是个普通的VS6编译出的dll，里面的代码区段也很明显，多">
+<meta name="twitter:description" content="恶意代码分析实战解题笔记（一）LAB01-01.dll和LAB01-01.exe 文件分析首先拖到www.virustotal.com里面进行在线分析，得到如下结果  大多数杀毒引擎分析出这是一个特洛伊木马病毒">
 <meta name="twitter:image" content="https://raw.githubusercontent.com/damaoooo/imageBed/master/assets/image-20191201015128319.png">
 
 <link rel="canonical" href="http://yoursite.com/2019/12/01/实验三/">
@@ -244,7 +244,7 @@
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-01-17 16:57:18" itemprop="dateModified" datetime="2020-01-17T16:57:18+08:00">2020-01-17</time>
+                <time title="修改时间：2020-05-06 00:18:03" itemprop="dateModified" datetime="2020-05-06T00:18:03+08:00">2020-05-06</time>
               </span>
 
           
@@ -261,6 +261,7 @@
         <h1 id="恶意代码分析实战解题笔记（一）"><a href="#恶意代码分析实战解题笔记（一）" class="headerlink" title="恶意代码分析实战解题笔记（一）"></a>恶意代码分析实战解题笔记（一）</h1><h2 id="LAB01-01-dll和LAB01-01-exe-文件分析"><a href="#LAB01-01-dll和LAB01-01-exe-文件分析" class="headerlink" title="LAB01-01.dll和LAB01-01.exe 文件分析"></a>LAB01-01.dll和LAB01-01.exe 文件分析</h2><p>首先拖到<code>www.virustotal.com</code>里面进行在线分析，得到如下结果</p>
 <p><img src="https://raw.githubusercontent.com/damaoooo/imageBed/master/assets/image-20191201015128319.png" alt="image-20191201015128319.png"></p>
 <p>大多数杀毒引擎分析出这是一个特洛伊木马病毒</p>
+<a id="more"></a>
 <p>分析LAB01-01.exe得到的结果如下</p>
 <p><img src="https://raw.githubusercontent.com/damaoooo/imageBed/master/assets/image-20191201015401592.png" alt="image-20191201015401592.png"></p>
 <p>和上面的结果类似</p>
@@ -272,7 +273,6 @@
 <p>通过strings查看LAB01-01.exe里的关键字符串</p>
 <p><img src="https://raw.githubusercontent.com/damaoooo/imageBed/master/assets/image-20191201020213238.png" alt="image-20191201020213238.png"></p>
 <p>除了基本的<code>KERNEL32.DLL</code>和<code>MSVCRT.DLL</code>之外，还看到了调用<code>CreateFileA</code>，<code>CopyFileA</code>等可疑的API，通过字符分析，猜测是把程序的<code>lab01-01.dll</code>复制到<code>C:\Windows\system32\kernel132.dll</code>，改个名字，然后查找，调用该程序。</p>
-<a id="more"></a>
 <p>这个分析完了之后再看看dll里的字符</p>
 <p><img src="https://raw.githubusercontent.com/damaoooo/imageBed/master/assets/image-20191201020523141.png" alt="image-20191201020523141.png"></p>
 <p>看到了<code>WS2_32.dll</code>是用于网络套接字编程的一个DLL，然后还有一个私有IP地址，估计是用于通信的IP地址，看到了<code>CreateMutexA</code>，<code>OpenMutexA</code>等API，是用于互斥锁的一个原子操作，后面还有创建句柄等等，怀疑是驻留后台的进程</p>

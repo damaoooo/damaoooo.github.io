@@ -48,13 +48,13 @@
   };
 </script>
 
-  <meta name="description" content="恶意代码分析实战笔记(四)LAB07-01.exe静态分析通过IDA分析整个程序的逻辑与疑点，先打开导入函数表，大致浏览程序的功能  发现了一个CreateServiceA，StartServiceCtrlDispatcherA，OpenSCManagerA 等等有关于系统服务的函数，说明该程序具有操作系统的操作，InternetOpenUrlA，InternetOpenA函数用于打开一个网址，C">
+  <meta name="description" content="恶意代码分析实战笔记(四)LAB07-01.exe静态分析通过IDA分析整个程序的逻辑与疑点，先打开导入函数表，大致浏览程序的功能">
 <meta name="keywords" content=" ">
 <meta property="og:type" content="article">
 <meta property="og:title" content="恶意代码分析实战笔记(四)">
 <meta property="og:url" content="http://yoursite.com/2019/12/24/实验六/index.html">
 <meta property="og:site_name" content="Mr.周半仙的blog">
-<meta property="og:description" content="恶意代码分析实战笔记(四)LAB07-01.exe静态分析通过IDA分析整个程序的逻辑与疑点，先打开导入函数表，大致浏览程序的功能  发现了一个CreateServiceA，StartServiceCtrlDispatcherA，OpenSCManagerA 等等有关于系统服务的函数，说明该程序具有操作系统的操作，InternetOpenUrlA，InternetOpenA函数用于打开一个网址，C">
+<meta property="og:description" content="恶意代码分析实战笔记(四)LAB07-01.exe静态分析通过IDA分析整个程序的逻辑与疑点，先打开导入函数表，大致浏览程序的功能">
 <meta property="og:locale" content="zh-CN">
 <meta property="og:image" content="https://raw.githubusercontent.com/damaoooo/imageBed/master/assets/image-20191223220040221.png">
 <meta property="og:image" content="https://raw.githubusercontent.com/damaoooo/imageBed/master/assets/image-20191223220603411.png">
@@ -88,10 +88,10 @@
 <meta property="og:image" content="https://raw.githubusercontent.com/damaoooo/imageBed/master/assets/image-20191224220323285.png">
 <meta property="og:image" content="https://raw.githubusercontent.com/damaoooo/imageBed/master/assets/image-20191224220743147.png">
 <meta property="og:image" content="https://raw.githubusercontent.com/damaoooo/imageBed/master/assets/image-20191224221550703.png">
-<meta property="og:updated_time" content="2020-01-17T08:56:16.180Z">
+<meta property="og:updated_time" content="2020-05-05T16:19:02.728Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="恶意代码分析实战笔记(四)">
-<meta name="twitter:description" content="恶意代码分析实战笔记(四)LAB07-01.exe静态分析通过IDA分析整个程序的逻辑与疑点，先打开导入函数表，大致浏览程序的功能  发现了一个CreateServiceA，StartServiceCtrlDispatcherA，OpenSCManagerA 等等有关于系统服务的函数，说明该程序具有操作系统的操作，InternetOpenUrlA，InternetOpenA函数用于打开一个网址，C">
+<meta name="twitter:description" content="恶意代码分析实战笔记(四)LAB07-01.exe静态分析通过IDA分析整个程序的逻辑与疑点，先打开导入函数表，大致浏览程序的功能">
 <meta name="twitter:image" content="https://raw.githubusercontent.com/damaoooo/imageBed/master/assets/image-20191223220040221.png">
 
 <link rel="canonical" href="http://yoursite.com/2019/12/24/实验六/">
@@ -241,7 +241,7 @@
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-01-17 16:56:16" itemprop="dateModified" datetime="2020-01-17T16:56:16+08:00">2020-01-17</time>
+                <time title="修改时间：2020-05-06 00:19:02" itemprop="dateModified" datetime="2020-05-06T00:19:02+08:00">2020-05-06</time>
               </span>
 
           
@@ -257,13 +257,13 @@
       
         <h1 id="恶意代码分析实战笔记-四"><a href="#恶意代码分析实战笔记-四" class="headerlink" title="恶意代码分析实战笔记(四)"></a>恶意代码分析实战笔记(四)</h1><h2 id="LAB07-01-exe"><a href="#LAB07-01-exe" class="headerlink" title="LAB07-01.exe"></a>LAB07-01.exe</h2><h3 id="静态分析"><a href="#静态分析" class="headerlink" title="静态分析"></a>静态分析</h3><p>通过IDA分析整个程序的逻辑与疑点，先打开导入函数表，大致浏览程序的功能</p>
 <p><img src="https://raw.githubusercontent.com/damaoooo/imageBed/master/assets/image-20191223220040221.png" alt="image-20191223220040221.png"></p>
+<a id="more"></a>
 <p>发现了一个<code>CreateServiceA</code>，<code>StartServiceCtrlDispatcherA</code>，<code>OpenSCManagerA</code> 等等有关于系统服务的函数，说明该程序具有操作系统的操作，<code>InternetOpenUrlA</code>，<code>InternetOpenA</code>函数用于打开一个网址，<code>CreateMutexA</code>，<code>OpenMutexA</code>用于创建和打开互斥锁。</p>
 <p>我们使用IDA分析程序的<code>main</code>函数</p>
 <p><img src="https://raw.githubusercontent.com/damaoooo/imageBed/master/assets/image-20191223220603411.png" alt="image-20191223220603411.png"></p>
 <p>这个<code>main()</code>函数是用来创建一个服务列表，名字是<code>MalService</code>，主程序是<code>sub_401040()</code>，通过<code>StartServiceCtrlDispatcherA</code>来执行这样的一个函数，我们跟进服务主程序去看看</p>
 <p><img src="https://raw.githubusercontent.com/damaoooo/imageBed/master/assets/image-20191223221008103.png" alt="image-20191223221008103.png"></p>
 <p>理清函数功能，首先是打开互斥锁<code>HGL345</code>，如果打开成功就创建这样的互斥锁，如果不成功就退出程序，是保证程序只有一个程序运行</p>
-<a id="more"></a>
 <p>然后打开服务管理器，获取当前进程，找到当前进程的名字和文件目录<code>Filename</code>，创建基于这个随机获取到的文件目录来创建自己的服务，参数解释如下</p>
 <table>
 <thead>

@@ -289,7 +289,7 @@
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-01-17 16:56:16" itemprop="dateModified" datetime="2020-01-17T16:56:16+08:00">2020-01-17</time>
+                <time title="修改时间：2020-05-06 00:19:02" itemprop="dateModified" datetime="2020-05-06T00:19:02+08:00">2020-05-06</time>
               </span>
 
           
@@ -305,12 +305,6 @@
       
           <h1 id="恶意代码分析实战笔记-四"><a href="#恶意代码分析实战笔记-四" class="headerlink" title="恶意代码分析实战笔记(四)"></a>恶意代码分析实战笔记(四)</h1><h2 id="LAB07-01-exe"><a href="#LAB07-01-exe" class="headerlink" title="LAB07-01.exe"></a>LAB07-01.exe</h2><h3 id="静态分析"><a href="#静态分析" class="headerlink" title="静态分析"></a>静态分析</h3><p>通过IDA分析整个程序的逻辑与疑点，先打开导入函数表，大致浏览程序的功能</p>
 <p><img src="https://raw.githubusercontent.com/damaoooo/imageBed/master/assets/image-20191223220040221.png" alt="image-20191223220040221.png"></p>
-<p>发现了一个<code>CreateServiceA</code>，<code>StartServiceCtrlDispatcherA</code>，<code>OpenSCManagerA</code> 等等有关于系统服务的函数，说明该程序具有操作系统的操作，<code>InternetOpenUrlA</code>，<code>InternetOpenA</code>函数用于打开一个网址，<code>CreateMutexA</code>，<code>OpenMutexA</code>用于创建和打开互斥锁。</p>
-<p>我们使用IDA分析程序的<code>main</code>函数</p>
-<p><img src="https://raw.githubusercontent.com/damaoooo/imageBed/master/assets/image-20191223220603411.png" alt="image-20191223220603411.png"></p>
-<p>这个<code>main()</code>函数是用来创建一个服务列表，名字是<code>MalService</code>，主程序是<code>sub_401040()</code>，通过<code>StartServiceCtrlDispatcherA</code>来执行这样的一个函数，我们跟进服务主程序去看看</p>
-<p><img src="https://raw.githubusercontent.com/damaoooo/imageBed/master/assets/image-20191223221008103.png" alt="image-20191223221008103.png"></p>
-<p>理清函数功能，首先是打开互斥锁<code>HGL345</code>，如果打开成功就创建这样的互斥锁，如果不成功就退出程序，是保证程序只有一个程序运行</p>
           <!--noindex-->
             <div class="post-button">
               <a class="btn" href="/2019/12/24/实验六/#more" rel="contents">
@@ -368,7 +362,7 @@
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-01-17 16:57:34" itemprop="dateModified" datetime="2020-01-17T16:57:34+08:00">2020-01-17</time>
+                <time title="修改时间：2020-05-06 00:18:41" itemprop="dateModified" datetime="2020-05-06T00:18:41+08:00">2020-05-06</time>
               </span>
 
           
@@ -383,16 +377,6 @@
 
       
           <h1 id="恶意代码分析实战（三）"><a href="#恶意代码分析实战（三）" class="headerlink" title="恶意代码分析实战（三）"></a>恶意代码分析实战（三）</h1><h2 id="1：DllMain的地址是什么？"><a href="#1：DllMain的地址是什么？" class="headerlink" title="1：DllMain的地址是什么？"></a>1：DllMain的地址是什么？</h2><p><img src="https://raw.githubusercontent.com/damaoooo/imageBed/master/assets/image-20191213173917324.png" alt="image-20191213173917324.png"></p>
-<h2 id="2：使用Imports窗口并浏览到gethostbyname-导入函数定位到什么地址？"><a href="#2：使用Imports窗口并浏览到gethostbyname-导入函数定位到什么地址？" class="headerlink" title="2：使用Imports窗口并浏览到gethostbyname, 导入函数定位到什么地址？"></a>2：使用Imports窗口并浏览到gethostbyname, 导入函数定位到什么地址？</h2><p><img src="https://raw.githubusercontent.com/damaoooo/imageBed/master/assets/image-20191213174017362.png" alt="image-20191213174017362.png"></p>
-<h2 id="3：有多少函数调用了gethostbyname"><a href="#3：有多少函数调用了gethostbyname" class="headerlink" title="3：有多少函数调用了gethostbyname?"></a>3：有多少函数调用了gethostbyname?</h2><p><img src="https://raw.githubusercontent.com/damaoooo/imageBed/master/assets/image-20191213174044141.png" alt="image-20191213174044141.png"></p>
-<h2 id="4-将精力集中在位于0x10001757处的对gethostbyname的调用，你能找出那个DNS请求将被触发吗？"><a href="#4-将精力集中在位于0x10001757处的对gethostbyname的调用，你能找出那个DNS请求将被触发吗？" class="headerlink" title="4: 将精力集中在位于0x10001757处的对gethostbyname的调用，你能找出那个DNS请求将被触发吗？"></a>4: 将精力集中在位于0x10001757处的对gethostbyname的调用，你能找出那个DNS请求将被触发吗？</h2><p><img src="https://raw.githubusercontent.com/damaoooo/imageBed/master/assets/image-20191213180757726.png" alt="image-20191213180757726.png"></p>
-<p>在这儿，找DNS，前面PUSH了这样一个字符串，跟进去</p>
-<p><img src="https://raw.githubusercontent.com/damaoooo/imageBed/master/assets/image-20191213180828528.png" alt="image-20191213180828528.png"></p>
-<p><img src="https://raw.githubusercontent.com/damaoooo/imageBed/master/assets/image-20191213180859421.png" alt="image-20191213180859421.png"></p>
-<p><img src="https://raw.githubusercontent.com/damaoooo/imageBed/master/assets/image-20191213180904886.png" alt="image-20191213180904886.png"></p>
-<p>这个就是要DNS查询的地址，上面在压栈的时候有<code>add eax,0dh</code>的操作，因此指向的就是<code>pics.praticalmalwareanalysis.com</code></p>
-<h2 id="5：IDA-Pro识别了在0x10001656处的子过程中的多少个局部变量？"><a href="#5：IDA-Pro识别了在0x10001656处的子过程中的多少个局部变量？" class="headerlink" title="5：IDA Pro识别了在0x10001656处的子过程中的多少个局部变量？"></a>5：IDA Pro识别了在0x10001656处的子过程中的多少个局部变量？</h2><p><img src="https://raw.githubusercontent.com/damaoooo/imageBed/master/assets/image-20191213212713210.png" alt="image-20191213212713210.png"></p>
-<p>局部变量有23个</p>
           <!--noindex-->
             <div class="post-button">
               <a class="btn" href="/2019/12/14/实验五/#more" rel="contents">
@@ -450,7 +434,7 @@
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-01-17 16:57:26" itemprop="dateModified" datetime="2020-01-17T16:57:26+08:00">2020-01-17</time>
+                <time title="修改时间：2020-05-06 00:18:25" itemprop="dateModified" datetime="2020-05-06T00:18:25+08:00">2020-05-06</time>
               </span>
 
           
@@ -465,13 +449,6 @@
 
       
           <h1 id="恶意代码分析实战笔记（二）"><a href="#恶意代码分析实战笔记（二）" class="headerlink" title="恶意代码分析实战笔记（二）"></a>恶意代码分析实战笔记（二）</h1><h2 id="LAB03-01-exe"><a href="#LAB03-01-exe" class="headerlink" title="LAB03-01.exe"></a>LAB03-01.exe</h2><h3 id="1、找出这个恶意代码的导入函数与字符串列表？"><a href="#1、找出这个恶意代码的导入函数与字符串列表？" class="headerlink" title="1、找出这个恶意代码的导入函数与字符串列表？"></a>1、找出这个恶意代码的导入函数与字符串列表？</h3><p>使用strings查看字符串，发现一下内容</p>
-<p><img src="https://raw.githubusercontent.com/damaoooo/imageBed/master/assets/image-20191206215235177.png" alt="image-20191206215235177.png"></p>
-<p>发现了一个网址，然后导入的函数库使用了<code>VideoDriver</code>，<code>ws2_32.dll</code>，还有个<code>vmx32to64.exe</code>听名字是视频32位转64位，又发现了两个注册表项<code>SOFTWARE\Microsoft\Windows\CurrentVersion\Run</code>还有<code>SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\Shell Folders</code>，是开机启动项。然后在<code>Process Explorer</code>里面跑一下，查看DLL，发现<code>dnsapi.dll</code>是查询<code>DNS</code>的</p>
-<h3 id="2、这个恶意代码在主机上的感染迹象特征是什么？"><a href="#2、这个恶意代码在主机上的感染迹象特征是什么？" class="headerlink" title="2、这个恶意代码在主机上的感染迹象特征是什么？"></a>2、这个恶意代码在主机上的感染迹象特征是什么？</h3><p>修改注册表，在<code>HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Run\VideoDriver</code>写一个值<code>C:\WINDOWS\system32\vmx32to64.exe</code>，然后开机自启，在<code>C:\Windows\system32\vmx32to64.exe</code>写入该文件。</p>
-<p><img src="https://raw.githubusercontent.com/damaoooo/imageBed/master/assets/image-20191206223926717.png" alt="image-20191206223926717.png"></p>
-<p>通过检查HASH值，发现vmx32to64就是这个LAB03-01.exe</p>
-<p><img src="https://raw.githubusercontent.com/damaoooo/imageBed/master/assets/image-20191206225749132.png" alt="image-20191206225749132.png"></p>
-<p>发现在请求DNS，打开<code>apateDNS</code>检测发现Framework挂掉了，重新下载之后无果，查询资料发现这个软件没法在xp上面运行，好在我们还有wireshark</p>
           <!--noindex-->
             <div class="post-button">
               <a class="btn" href="/2019/12/08/实验四/#more" rel="contents">
