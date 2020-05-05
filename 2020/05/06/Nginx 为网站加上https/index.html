@@ -1,0 +1,446 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 3.8.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="https://s2.ax1x.com/2019/04/14/AXibmn.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="https://s2.ax1x.com/2019/04/14/AXibmn.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="https://s2.ax1x.com/2019/04/14/AXibmn.png">
+  <link rel="mask-icon" href="https://s2.ax1x.com/2019/04/14/AXibmn.png" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+  <link rel="stylesheet" href="/lib/pace/pace-theme-mac-osx.min.css">
+  <script src="/lib/pace/pace.min.js"></script>
+
+
+<script id="hexo-configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    hostname: new URL('http://yoursite.com').hostname,
+    root: '/',
+    scheme: 'Pisces',
+    version: '7.7.0',
+    exturl: false,
+    sidebar: {"position":"left","display":"always","padding":18,"offset":12,"onmobile":false},
+    copycode: {"enable":false,"show_result":false,"style":null},
+    back2top: {"enable":true,"sidebar":false,"scrollpercent":false},
+    bookmark: {"enable":false,"color":"#222","save":"auto"},
+    fancybox: false,
+    mediumzoom: false,
+    lazyload: false,
+    pangu: false,
+    comments: {"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},
+    algolia: {
+      appID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    },
+    localsearch: {"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},
+    path: '',
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}
+  };
+</script>
+
+  <meta name="description" content="Nginx 为网站加上https众所周知，http协议是一种不安全的协议，采用wireshark可以轻易抓包获取并修改http报文的内容，chrome中更是把没有经过正规https证书的网站都给标记成为不安全的网站，而https抓包也看不出里面是个什么内容，一旦被修改了就会被发现，因此给网站加上https就显得尤为重要 具体步骤很简单，申请ssl证书-&amp;gt; 部署到nginx中-&amp;gt;配置强制">
+<meta name="keywords" content=" ">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Nginx 为网站加上https">
+<meta property="og:url" content="http://yoursite.com/2020/05/06/Nginx 为网站加上https/index.html">
+<meta property="og:site_name" content="Mr.周半仙的blog">
+<meta property="og:description" content="Nginx 为网站加上https众所周知，http协议是一种不安全的协议，采用wireshark可以轻易抓包获取并修改http报文的内容，chrome中更是把没有经过正规https证书的网站都给标记成为不安全的网站，而https抓包也看不出里面是个什么内容，一旦被修改了就会被发现，因此给网站加上https就显得尤为重要 具体步骤很简单，申请ssl证书-&amp;gt; 部署到nginx中-&amp;gt;配置强制">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2020-05-05T16:16:00.888Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Nginx 为网站加上https">
+<meta name="twitter:description" content="Nginx 为网站加上https众所周知，http协议是一种不安全的协议，采用wireshark可以轻易抓包获取并修改http报文的内容，chrome中更是把没有经过正规https证书的网站都给标记成为不安全的网站，而https抓包也看不出里面是个什么内容，一旦被修改了就会被发现，因此给网站加上https就显得尤为重要 具体步骤很简单，申请ssl证书-&amp;gt; 部署到nginx中-&amp;gt;配置强制">
+
+<link rel="canonical" href="http://yoursite.com/2020/05/06/Nginx 为网站加上https/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome: false,
+    isPost: true
+  };
+</script>
+
+  <title>Nginx 为网站加上https | Mr.周半仙的blog</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-meta">
+
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Mr.周半仙的blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+        <p class="site-subtitle">大二搬砖狗一只……</p>
+  </div>
+
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-fw fa-user"></i>关于</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档</a>
+
+  </li>
+  </ul>
+
+</nav>
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content">
+            
+
+  <div class="posts-expand">
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/05/06/Nginx 为网站加上https/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="https://s2.ax1x.com/2019/04/14/AXibmn.png">
+      <meta itemprop="name" content="Mr.周半仙的blog">
+      <meta itemprop="description" content="大二搬砖狗一只……">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Mr.周半仙的blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Nginx 为网站加上https
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2020-05-06 22:34:44 / 修改时间：00:16:00" itemprop="dateCreated datePublished" datetime="2020-05-06T22:34:44+08:00">2020-05-06</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h1 id="Nginx-为网站加上https"><a href="#Nginx-为网站加上https" class="headerlink" title="Nginx 为网站加上https"></a>Nginx 为网站加上https</h1><p>众所周知，http协议是一种不安全的协议，采用wireshark可以轻易抓包获取并修改http报文的内容，chrome中更是把没有经过正规https证书的网站都给标记成为不安全的网站，而https抓包也看不出里面是个什么内容，一旦被修改了就会被发现，因此给网站加上https就显得尤为重要</p>
+<p>具体步骤很简单，<code>申请ssl证书</code>-&gt; <code>部署到nginx中</code>-&gt;<code>配置强制跳转（可选）</code>-&gt;<code>再cloudflare中应用（可选）</code></p>
+<h2 id="为域名申请证书"><a href="#为域名申请证书" class="headerlink" title="为域名申请证书"></a>为域名申请证书</h2><p>https是采用ssl证书来进行验证的，https和ssl协同进行加密通信的具体原理网上一抓一大把。不求甚解的同学只需要知道ssl证书就相当于加密的钥匙就可以了，这里仅简述一下如何操作</p>
+<p>let’s encrypt是个免费的证书申请机构，申请ssl证书的本质是验证是你对这个域名的所有权</p>
+<p>首先运行<code>sudo apt-get install certbot</code>安装证书机器人，这个机器人还会自动给证书续期，非常的人性化。</p>
+<p>然后运行<code>sudo certbot --manual --preferred-challenges dns certonly</code>选择同意记录本机IP之后弹出如下提示</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">-------------------------------------------------------------------------------</span><br><span class="line">Please deploy a DNS TXT record under the name</span><br><span class="line">_acme-challenge.example.com with the following value:</span><br><span class="line"></span><br><span class="line">XXXXXXXXXXXXXXXXXXXXXXXXXXXXXX(你的token)</span><br><span class="line"></span><br><span class="line">Once this is deployed,</span><br><span class="line">-------------------------------------------------------------------------------</span><br><span class="line">Press Enter to Continue</span><br></pre></td></tr></table></figure>
+<p>然后程序会暂停，接着就打开你的域名的DNS管理界面，为你的域名<code>_acme-challenge.yourdomain.xxxx</code>添加一个TXT记录，内容就是上面的密钥。</p>
+<p>然后等一会儿再随便一台机子上（似乎linux才有这个命令，我Windows 10 无这个dig命令）使用<code>dig -t txt _acme-challenge.yourdomain.xxxx</code>查看是否获取到了相应的token</p>
+<p>然后回到你的服务器上面，回车继续，然后成功了之后，你的证书就会保存在<code>/etc/letsencrypt/live/yourdomain.xxxx/</code>下面，里面的<code>cert.pem</code>文件是证书文件，<code>privkey.pem</code>文件是私钥文件，一般我们只会用到这两个文件</p>
+<p>但是这个是一个链接，类似于windows里面的快捷方式，如果不做证书迁移的话直接用就行了，如果要迁移证书的话这个文件是保存在<code>/etc/letsencrypt/archive/yourdomain.xxxx/</code>下面的，而且名字也有些许不同</p>
+<h2 id="部署到nginx"><a href="#部署到nginx" class="headerlink" title="部署到nginx"></a>部署到nginx</h2><p>其实也很简单，只需要按照下方的配置文件进行配置</p>
+<figure class="highlight nginx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">server&#123;</span><br><span class="line">        <span class="attribute">listen</span> <span class="number">443</span> ssl; <span class="comment"># https默认监听443端口</span></span><br><span class="line">        <span class="attribute">listen</span> [::]:<span class="number">443</span> ssl;</span><br><span class="line">        <span class="attribute">ssl_certificate</span> /home/damaoooo/damaoooo.cf/cert1.pem; <span class="comment"># 这里是你的证书的位置</span></span><br><span class="line">        <span class="attribute">ssl_certificate_key</span> /home/damaoooo/damaoooo.cf/privkey1.pem; <span class="comment"># 这里是你密钥的位置</span></span><br><span class="line">        <span class="attribute">ssl_session_timeout</span> <span class="number">5m</span>;</span><br><span class="line">        <span class="attribute">ssl_protocols</span> TLSv1 TLSv1.<span class="number">1</span> TLSv1.<span class="number">2</span>;</span><br><span class="line">        <span class="attribute">ssl_ciphers</span> HIGH:!aNULL:!MD5;</span><br><span class="line">        <span class="attribute">server_name</span> blog.damaoooo.cf; <span class="comment"># 这里是你nginx要转发的域名</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">        <span class="attribute">location</span> / &#123;</span><br><span class="line">                <span class="attribute">proxy_pass</span> http://127.0.0.1:4400; <span class="comment"># 这里是网站的原始位置</span></span><br><span class="line">                <span class="attribute">proxy_http_version</span> <span class="number">1</span>.<span class="number">1</span>;</span><br><span class="line">                <span class="attribute">proxy_set_header</span> Upgrade <span class="variable">$http_upgrade</span>;</span><br><span class="line">                <span class="attribute">proxy_set_header</span> Connection <span class="string">"upgrade"</span>;</span><br><span class="line">        &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>保存在<code>/etc/nginx/conf.d</code>下面，文件名<code>xxxx.conf</code>即可，然后重启nginx</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">nginx -t //用于检查是否有语法错误</span><br><span class="line">nginx -s reload</span><br></pre></td></tr></table></figure>
+<p>然后通过<code>https://abc.yourdomain.xxxx</code>这种方式来访问你的网站就可以啦</p>
+<h2 id="强制跳转https"><a href="#强制跳转https" class="headerlink" title="强制跳转https"></a>强制跳转https</h2><p>由于默认我们浏览器访问的是80端口，这不是https的默认端口，每次在地址栏里面输入<code>https://</code>又太麻烦，因此我们可以搞一个强制转换，把<code>http://abc.yourdomain.xxx</code>强制转换成<code>https://abc.yourdomain.xxx</code>这种方式。我们只需要在nginx里面添加这样一个配置文件即可</p>
+<figure class="highlight nginx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="section">server</span> &#123;</span><br><span class="line">	<span class="attribute">listen</span>	<span class="number">80</span>;</span><br><span class="line">    <span class="attribute">listen</span> [::]: <span class="number">80</span>;</span><br><span class="line">	<span class="attribute">server_name</span>	abc.yourdomain.xxxx;<span class="comment"># 你要转换的网址</span></span><br><span class="line">	</span><br><span class="line">	<span class="attribute">rewrite</span><span class="regexp"> ^(.*)$</span>	https://<span class="variable">$host</span><span class="variable">$1</span>	<span class="literal">permanent</span>; <span class="comment"># 这个不要动</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>然后<code>nginx -t</code>-&gt; <code>nginx -s reload</code>重启nginx即可</p>
+<h2 id="在cloudflare里面配置"><a href="#在cloudflare里面配置" class="headerlink" title="在cloudflare里面配置"></a>在cloudflare里面配置</h2><p>给你的网站套一个cdn是一个不错的选择，然而默认的ssl设置是你到cdn是走https，cdn到网站走的是http，如果要全程https的话就得在cloudflare里面设置，cloudflare里面也很简单，只需要把小云朵点开，然后ssl设置里面把mode改为<code>full(strict)</code>即可，官方文档</p>
+<p><a href="https://support.cloudflare.com/hc/zh-cn/articles/200170416-使用-Cloudflare-的端到端-HTTPS-第-3-部分-SSL-选项" target="_blank" rel="noopener">设置端到端的https</a></p>
+<p>如果你的网站出现<code>重定向次数过多</code>的问题，多半是你开启了强制跳转却没有在cdn里面配置端到端的https的问题。</p>
+<p>这样一来，给网站升级到https就大功告成了</p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2019/12/24/实验六/" rel="prev" title="恶意代码分析实战笔记(四)">
+      <i class="fa fa-chevron-left"></i> 恶意代码分析实战笔记(四)
+    </a></div>
+      <div class="post-nav-item"></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+  </div>
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let activeClass = CONFIG.comments.activeClass;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Nginx-为网站加上https"><span class="nav-number">1.</span> <span class="nav-text">Nginx 为网站加上https</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#为域名申请证书"><span class="nav-number">1.1.</span> <span class="nav-text">为域名申请证书</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#部署到nginx"><span class="nav-number">1.2.</span> <span class="nav-text">部署到nginx</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#强制跳转https"><span class="nav-number">1.3.</span> <span class="nav-text">强制跳转https</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#在cloudflare里面配置"><span class="nav-number">1.4.</span> <span class="nav-text">在cloudflare里面配置</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Mr.周半仙的blog" src="https://s2.ax1x.com/2019/04/14/AXibmn.png">
+  <p class="site-author-name" itemprop="name">Mr.周半仙的blog</p>
+  <div class="site-description" itemprop="description">大二搬砖狗一只……</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">21</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-tags">
+        <span class="site-state-item-count">1</span>
+        <span class="site-state-item-name">标签</span>
+      </div>
+  </nav>
+</div>
+
+
+  <div class="links-of-blogroll motion-element">
+    <div class="links-of-blogroll-title">
+      <i class="fa fa-fw fa-link"></i>
+      Links
+    </div>
+    <ul class="links-of-blogroll-list">
+        <li class="links-of-blogroll-item">
+          <a href="http://primelyw.github.io/" title="http://primelyw.github.io/" rel="noopener" target="_blank">primeLee</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="http://mrh1s.top/" title="http://mrh1s.top/" rel="noopener" target="_blank">mrh1s</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="http://damaoooo.github.io/" title="http://damaoooo.github.io/" rel="noopener" target="_blank">thisWebsite</a>
+        </li>
+    </ul>
+  </div>
+
+      </div>
+      
+    </div>
+    <iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=330 height=86 src="//music.163.com/outchain/player?type=2&id=854041&auto=1&height=66"></iframe>
+
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Mr.周半仙的blog</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动 v3.8.0
+  </div>
+  <span class="post-meta-divider">|</span>
+  <div class="theme-info">主题 – <a href="https://pisces.theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Pisces</a> v7.7.0
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  
+  <script color="0,0,255" opacity="0.5" zindex="-1" count="99" src="/lib/canvas-nest/canvas-nest.min.js"></script>
+  <script size="300" alpha="0.6" zindex="-1" src="/lib/canvas-ribbon/canvas-ribbon.js"></script>
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+<script src="/js/utils.js"></script><script src="/js/motion.js"></script>
+<script src="/js/schemes/pisces.js"></script>
+<script src="/js/next-boot.js"></script>
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+  
+  <script type="text/javascript" src="//cdn.bootcss.com/canvas-nest.js/1.0.0/canvas-nest.min.js"></script>
+  
+
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"debug":false,"model":{"jsonPath":"/live2dw/assets/assets/hijiki.model.json"},"display":{"position":"right","width":150,"height":300},"mobile":{"show":true},"react":{"opacity":0.7},"log":false});</script></body>
+</html>
