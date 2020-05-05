@@ -48,18 +48,18 @@
   };
 </script>
 
-  <meta name="description" content="Nginx 为网站加上https众所周知，http协议是一种不安全的协议，采用wireshark可以轻易抓包获取并修改http报文的内容，chrome中更是把没有经过正规https证书的网站都给标记成为不安全的网站，而https抓包也看不出里面是个什么内容，一旦被修改了就会被发现，因此给网站加上https就显得尤为重要 具体步骤很简单，申请ssl证书-&amp;gt; 部署到nginx中-&amp;gt;配置强制">
+  <meta name="description" content="Nginx 为网站加上https众所周知，http协议是一种不安全的协议，采用wireshark可以轻易抓包获取并修改http报文的内容，chrome中更是把没有经过正规https证书的网站都给标记成为不安全的网站，而https抓包也看不出里面是个什么内容，一旦被修改了就会被发现，因此给网站加上https就显得尤为重要">
 <meta name="keywords" content=" ">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Nginx 为网站加上https">
 <meta property="og:url" content="http://yoursite.com/2020/05/06/Nginx 为网站加上https/index.html">
 <meta property="og:site_name" content="Mr.周半仙的blog">
-<meta property="og:description" content="Nginx 为网站加上https众所周知，http协议是一种不安全的协议，采用wireshark可以轻易抓包获取并修改http报文的内容，chrome中更是把没有经过正规https证书的网站都给标记成为不安全的网站，而https抓包也看不出里面是个什么内容，一旦被修改了就会被发现，因此给网站加上https就显得尤为重要 具体步骤很简单，申请ssl证书-&amp;gt; 部署到nginx中-&amp;gt;配置强制">
+<meta property="og:description" content="Nginx 为网站加上https众所周知，http协议是一种不安全的协议，采用wireshark可以轻易抓包获取并修改http报文的内容，chrome中更是把没有经过正规https证书的网站都给标记成为不安全的网站，而https抓包也看不出里面是个什么内容，一旦被修改了就会被发现，因此给网站加上https就显得尤为重要">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2020-05-05T16:16:00.888Z">
+<meta property="og:updated_time" content="2020-05-05T16:23:47.153Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Nginx 为网站加上https">
-<meta name="twitter:description" content="Nginx 为网站加上https众所周知，http协议是一种不安全的协议，采用wireshark可以轻易抓包获取并修改http报文的内容，chrome中更是把没有经过正规https证书的网站都给标记成为不安全的网站，而https抓包也看不出里面是个什么内容，一旦被修改了就会被发现，因此给网站加上https就显得尤为重要 具体步骤很简单，申请ssl证书-&amp;gt; 部署到nginx中-&amp;gt;配置强制">
+<meta name="twitter:description" content="Nginx 为网站加上https众所周知，http协议是一种不安全的协议，采用wireshark可以轻易抓包获取并修改http报文的内容，chrome中更是把没有经过正规https证书的网站都给标记成为不安全的网站，而https抓包也看不出里面是个什么内容，一旦被修改了就会被发现，因此给网站加上https就显得尤为重要">
 
 <link rel="canonical" href="http://yoursite.com/2020/05/06/Nginx 为网站加上https/">
 
@@ -202,7 +202,7 @@
               <span class="post-meta-item-text">发表于</span>
               
 
-              <time title="创建时间：2020-05-06 22:34:44 / 修改时间：00:16:00" itemprop="dateCreated datePublished" datetime="2020-05-06T22:34:44+08:00">2020-05-06</time>
+              <time title="创建时间：2020-05-06 22:34:44 / 修改时间：00:23:47" itemprop="dateCreated datePublished" datetime="2020-05-06T22:34:44+08:00">2020-05-06</time>
             </span>
 
           
@@ -217,6 +217,7 @@
 
       
         <h1 id="Nginx-为网站加上https"><a href="#Nginx-为网站加上https" class="headerlink" title="Nginx 为网站加上https"></a>Nginx 为网站加上https</h1><p>众所周知，http协议是一种不安全的协议，采用wireshark可以轻易抓包获取并修改http报文的内容，chrome中更是把没有经过正规https证书的网站都给标记成为不安全的网站，而https抓包也看不出里面是个什么内容，一旦被修改了就会被发现，因此给网站加上https就显得尤为重要</p>
+<a id="more"></a>
 <p>具体步骤很简单，<code>申请ssl证书</code>-&gt; <code>部署到nginx中</code>-&gt;<code>配置强制跳转（可选）</code>-&gt;<code>再cloudflare中应用（可选）</code></p>
 <h2 id="为域名申请证书"><a href="#为域名申请证书" class="headerlink" title="为域名申请证书"></a>为域名申请证书</h2><p>https是采用ssl证书来进行验证的，https和ssl协同进行加密通信的具体原理网上一抓一大把。不求甚解的同学只需要知道ssl证书就相当于加密的钥匙就可以了，这里仅简述一下如何操作</p>
 <p>let’s encrypt是个免费的证书申请机构，申请ssl证书的本质是验证是你对这个域名的所有权</p>
