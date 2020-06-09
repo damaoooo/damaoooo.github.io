@@ -177,6 +177,102 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/04/15/DDCTF re1 writeup/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="https://s2.ax1x.com/2019/04/14/AXibmn.png">
+      <meta itemprop="name" content="Mr.周半仙的blog">
+      <meta itemprop="description" content="大二搬砖狗一只……">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Mr.周半仙的blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          
+            <a href="/2019/04/15/DDCTF re1 writeup/" class="post-title-link" itemprop="url">DDCTF_re1_writeup</a>
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2019-04-15 23:15:21" itemprop="dateCreated datePublished" datetime="2019-04-15T23:15:21+08:00">2019-04-15</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2019-09-11 22:48:12" itemprop="dateModified" datetime="2019-09-11T22:48:12+08:00">2019-09-11</time>
+              </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="DDCTF-re1-writeup"><a href="#DDCTF-re1-writeup" class="headerlink" title="DDCTF re1 writeup"></a>DDCTF re1 writeup</h1><p>下载下来是一个叫做reverse1_final的文件，打开发现是windows x86文件，直接用IDA无法反编译，提示如下</p>
+<p><img src="https://i.loli.net/2019/09/11/UKpqB2OeJIZb3vQ.png" alt="UKpqB2OeJIZb3vQ.png"></p>
+<p>怀疑被加壳了，拖进PEID里面查看PE信息</p>
+<p><img src="https://i.loli.net/2019/09/11/hKvQlNxSXUkTfit.png" alt="hKvQlNxSXUkTfit.png"></p>
+<p>EP段是UPX1，说明是UPX的壳，下载解压器，拖进去解压得到新的文件，发现新的文件已经无法正常运行，拖入IDA反汇编，先找到main函数，然后一通改名字</p>
+<p><img src="https://i.loli.net/2019/09/11/1MFEDnXg9UsNBxC.png" alt="1MFEDnXg9UsNBxC.png"></p>
+<p>发现是对v4进行一系列操作后同<code>DDCTF{reverseME}</code> 进行比较，输入进入str_in，然后v4就是解密后的内容，进入该函数</p>
+<p><img src="https://i.loli.net/2019/09/11/VouKMtpCzDe5qvJ.png" alt="VouKMtpCzDe5qvJ.png"></p>
+<p>发现就是对输入的字符串进行读取，让然后去匹配data里面的数值，data大概就是密码表，双击进入data是可以发现data没有在源码里面固定。</p>
+<p>乱打乱撞，进入data里面发现这样</p>
+<p><img src="https://i.loli.net/2019/09/11/2RWCdanXDklS6yN.png" alt="2RWCdanXDklS6yN.png"></p>
+<p>没有发现密码表，然后在下面翻，居然让我发现了类似密码表的东西</p>
+<p><img src="https://i.loli.net/2019/09/11/mAbZtyvi7hp4U9W.png" alt="mAbZtyvi7hp4U9W.png"></p>
+<p>这串字符八九不离十就是密码表了，然后写脚本进行输出</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;string.h&gt;</span></span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="keyword">char</span> key[] = &#123;<span class="string">"DDCTF&#123;reverseME&#125;"</span>&#125;;</span><br><span class="line">	<span class="keyword">char</span> alpha[] = &#123;<span class="string">"~&#125;|&#123;zyxwvutsrqponmlkjihgfedcba`_^]\\[ZYXWVUTSRQPONMLKJIHGFEDCBA@?&gt;=&lt;;:9876543210/.-,+*)(，&amp;%$#\"!"</span>&#125; ;</span><br><span class="line">	<span class="keyword">for</span> (<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;<span class="built_in">strlen</span>(key);i++)&#123;</span><br><span class="line">		<span class="keyword">for</span>(<span class="keyword">int</span> j=<span class="number">0</span>;j&lt;<span class="built_in">strlen</span>(alpha);j++)&#123;</span><br><span class="line">			<span class="keyword">if</span>(key[i]==alpha[j]) <span class="built_in">printf</span>(<span class="string">"%d "</span>,j);</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line"> &#125;</span><br></pre></td></tr></table></figure>
+<p>运行结果如下<code>58 58 59 42 56 3 12 25 8 25 12 11 25 49 57 1</code></p>
+<p>根本不像是能打进去的字符串，于是进入ollydbg，发现这个地址是随机化了的，不好下断点，于是用PEtools 关闭地址空间随机化</p>
+<p><img src="https://i.loli.net/2019/09/11/ARPnsoW9KLTF6bC.png" alt="ARPnsoW9KLTF6bC.png"></p>
+<p><img src="https://i.loli.net/2019/09/11/J6nktLVENRfDP8S.png" alt="J6nktLVENRfDP8S.png"></p>
+<p>然后保存，在关键函数<code>sub_401000</code>处下断点，然后输入测试数据就是密码表的前面几个字符<code>ABCDEFG</code> 进行测试</p>
+<p><img src="https://i.loli.net/2019/09/11/T8p92g5ijaJnEVP.png" alt="T8p92g5ijaJnEVP.png"></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">loc_401020:</span><br><span class="line">movsx   eax, byte ptr [ebx+ecx]</span><br><span class="line">mov     dl, ds:data[eax]</span><br><span class="line">mov     eax, ebp</span><br><span class="line">mov     [ecx], dl</span><br><span class="line">inc     edi</span><br><span class="line">inc     ecx</span><br><span class="line">lea     esi, [eax+1]</span><br></pre></td></tr></table></figure>
+<p>这一块就是从堆栈里面找到<code>data[eax]</code>里面的内容，eax就是偏移量，然后eax是由ebx+ecx得到的，此时的寄存器信息如下</p>
+<p><img src="https://i.loli.net/2019/09/11/uOlmBJwN5yzW1VM.png" alt="uOlmBJwN5yzW1VM.png"></p>
+<p>发现A指向的是]，于是修改C</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;string.h&gt;</span></span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="keyword">char</span> key[] = &#123;<span class="string">"ABCDEFG"</span>&#125;;</span><br><span class="line">	<span class="keyword">char</span> alpha[] = &#123;<span class="string">"~&#125;|&#123;zyxwvutsrqponmlkjihgfedcba`_^],[ZYXWVUTSRQPONMLKJIHGFEDCBA@?&gt;=&lt;;:9876543210/.-,+*)(，&amp;%$#\"!"</span>&#125; ;</span><br><span class="line">	<span class="keyword">for</span> (<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;<span class="built_in">strlen</span>(key);i++)&#123;</span><br><span class="line">		<span class="keyword">for</span>(<span class="keyword">int</span> j=<span class="number">0</span>;j&lt;<span class="built_in">strlen</span>(alpha);j++)&#123;</span><br><span class="line">			<span class="keyword">if</span>(key[i]==alpha[j]) <span class="built_in">printf</span>(<span class="string">"%c "</span>,j-<span class="string">'='</span>+<span class="string">']'</span>);</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line"> &#125;</span><br></pre></td></tr></table></figure>
+<p>采用这种方式来找到偏移量，是<code>-&#39;=&#39;+&#39;]&#39;</code> 然后在OD里面验证一下，发现符合<code>] \ [ Z Y X W</code>然后把key换成<code>DDCTF{reverseME}</code> 放到OD里面进行验证</p>
+<p><img src="https://i.loli.net/2019/09/11/fHJZqe3P9TbuYW2.png" alt="fHJZqe3P9TbuYW2.png"></p>
+<p><img src="https://i.loli.net/2019/09/11/yjVghaFuMRcZtYG.png" alt="yjVghaFuMRcZtYG.png"></p>
+<p><img src="https://i.loli.net/2019/09/11/LkRNiHTtzajIAX8.png" alt="LkRNiHTtzajIAX8.png"></p>
+<p>成功拿到Flag~~</p>
+<p>撒花<em>★,°</em>:.☆(￣▽￣)/$:<em>.°★</em> 。</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+        
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/04/14/my-hello-world/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -305,7 +401,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">21</span>
+          <span class="site-state-item-count">22</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
