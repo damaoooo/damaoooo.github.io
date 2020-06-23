@@ -48,18 +48,18 @@
   };
 </script>
 
-  <meta name="description" content="Golang 的import玩法1. 相对路径和绝对路径1234import (	&quot;./mypackage&quot; //相对路径导包    &quot;github/myrepo/mypackage&quot; //绝对路径导包) 推荐使用绝对路径，不然文件结构一变动啥都乱了 2. 点操作123import(	. &quot;fmt&quot;) 这个就相当于python里面的from fmt import * 之前的导入操作是 123456">
+  <meta name="description" content="Golang 的import玩法1. 相对路径和绝对路径1234import (	&quot;./mypackage&quot; //相对路径导包    &quot;github/myrepo/mypackage&quot; //绝对路径导包) 推荐使用绝对路径，不然文件结构一变动啥都乱了">
 <meta name="keywords" content=" ">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Golang的import玩法">
 <meta property="og:url" content="http://yoursite.com/2020/06/23/Golang 的import玩法/index.html">
 <meta property="og:site_name" content="Mr.周半仙的blog">
-<meta property="og:description" content="Golang 的import玩法1. 相对路径和绝对路径1234import (	&quot;./mypackage&quot; //相对路径导包    &quot;github/myrepo/mypackage&quot; //绝对路径导包) 推荐使用绝对路径，不然文件结构一变动啥都乱了 2. 点操作123import(	. &quot;fmt&quot;) 这个就相当于python里面的from fmt import * 之前的导入操作是 123456">
+<meta property="og:description" content="Golang 的import玩法1. 相对路径和绝对路径1234import (	&quot;./mypackage&quot; //相对路径导包    &quot;github/myrepo/mypackage&quot; //绝对路径导包) 推荐使用绝对路径，不然文件结构一变动啥都乱了">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2020-06-23T16:20:43.910Z">
+<meta property="og:updated_time" content="2020-06-23T16:22:42.814Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Golang的import玩法">
-<meta name="twitter:description" content="Golang 的import玩法1. 相对路径和绝对路径1234import (	&quot;./mypackage&quot; //相对路径导包    &quot;github/myrepo/mypackage&quot; //绝对路径导包) 推荐使用绝对路径，不然文件结构一变动啥都乱了 2. 点操作123import(	. &quot;fmt&quot;) 这个就相当于python里面的from fmt import * 之前的导入操作是 123456">
+<meta name="twitter:description" content="Golang 的import玩法1. 相对路径和绝对路径1234import (	&quot;./mypackage&quot; //相对路径导包    &quot;github/myrepo/mypackage&quot; //绝对路径导包) 推荐使用绝对路径，不然文件结构一变动啥都乱了">
 
 <link rel="canonical" href="http://yoursite.com/2020/06/23/Golang 的import玩法/">
 
@@ -208,7 +208,7 @@
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-06-24 00:20:43" itemprop="dateModified" datetime="2020-06-24T00:20:43+08:00">2020-06-24</time>
+                <time title="修改时间：2020-06-24 00:22:42" itemprop="dateModified" datetime="2020-06-24T00:22:42+08:00">2020-06-24</time>
               </span>
 
           
@@ -224,6 +224,7 @@
       
         <h1 id="Golang-的import玩法"><a href="#Golang-的import玩法" class="headerlink" title="Golang 的import玩法"></a>Golang 的import玩法</h1><h2 id="1-相对路径和绝对路径"><a href="#1-相对路径和绝对路径" class="headerlink" title="1. 相对路径和绝对路径"></a>1. 相对路径和绝对路径</h2><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> (</span><br><span class="line">	<span class="string">"./mypackage"</span> <span class="comment">//相对路径导包</span></span><br><span class="line">    <span class="string">"github/myrepo/mypackage"</span> <span class="comment">//绝对路径导包</span></span><br><span class="line">)</span><br></pre></td></tr></table></figure>
 <p>推荐使用绝对路径，不然文件结构一变动啥都乱了</p>
+<a id="more"></a>
 <h2 id="2-点操作"><a href="#2-点操作" class="headerlink" title="2. 点操作"></a>2. 点操作</h2><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span>(</span><br><span class="line">	. <span class="string">"fmt"</span></span><br><span class="line">)</span><br></pre></td></tr></table></figure>
 <p>这个就相当于python里面的<code>from fmt import *</code></p>
 <p>之前的导入操作是</p>

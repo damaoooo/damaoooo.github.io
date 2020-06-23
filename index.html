@@ -208,7 +208,7 @@
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-06-24 00:20:43" itemprop="dateModified" datetime="2020-06-24T00:20:43+08:00">2020-06-24</time>
+                <time title="修改时间：2020-06-24 00:22:42" itemprop="dateModified" datetime="2020-06-24T00:22:42+08:00">2020-06-24</time>
               </span>
 
           
@@ -224,19 +224,14 @@
       
           <h1 id="Golang-的import玩法"><a href="#Golang-的import玩法" class="headerlink" title="Golang 的import玩法"></a>Golang 的import玩法</h1><h2 id="1-相对路径和绝对路径"><a href="#1-相对路径和绝对路径" class="headerlink" title="1. 相对路径和绝对路径"></a>1. 相对路径和绝对路径</h2><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> (</span><br><span class="line">	<span class="string">"./mypackage"</span> <span class="comment">//相对路径导包</span></span><br><span class="line">    <span class="string">"github/myrepo/mypackage"</span> <span class="comment">//绝对路径导包</span></span><br><span class="line">)</span><br></pre></td></tr></table></figure>
 <p>推荐使用绝对路径，不然文件结构一变动啥都乱了</p>
-<h2 id="2-点操作"><a href="#2-点操作" class="headerlink" title="2. 点操作"></a>2. 点操作</h2><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span>(</span><br><span class="line">	. <span class="string">"fmt"</span></span><br><span class="line">)</span><br></pre></td></tr></table></figure>
-<p>这个就相当于python里面的<code>from fmt import *</code></p>
-<p>之前的导入操作是</p>
-<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> (</span><br><span class="line">	<span class="string">"fmt"</span></span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">    fmt.Println(<span class="string">"Hello world"</span>)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>采用点操作就可以变成</p>
-<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> (</span><br><span class="line">	. <span class="string">"fmt"</span></span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span>&#123;</span><br><span class="line">    Println(<span class="string">"Hello world"</span>)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h2 id="3-别名操作"><a href="#3-别名操作" class="headerlink" title="3. 别名操作"></a>3. 别名操作</h2><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> (</span><br><span class="line">	f <span class="string">"fmt"</span></span><br><span class="line">)</span><br></pre></td></tr></table></figure>
-<p>就相当于python的<code>import numpy as np</code></p>
-<p>以后就可以通过别名来找包里面的函数</p>
-<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> (</span><br><span class="line">	f <span class="string">"fmt"</span></span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span>&#123;</span><br><span class="line">    f.Println(<span class="string">"Hello world"</span>)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h2 id="4-操作"><a href="#4-操作" class="headerlink" title="4. _操作"></a>4. _操作</h2><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> (</span><br><span class="line">	_ <span class="string">"github.com/myrepo/package"</span></span><br><span class="line">)</span><br></pre></td></tr></table></figure>
-<p>相当于不直接引入包，仅仅执行包里面的<code>init</code>函数</p>
-
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2020/06/23/Golang 的import玩法/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
       
     </div>
 
