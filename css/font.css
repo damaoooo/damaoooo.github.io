@@ -1,0 +1,15 @@
+@font-face{
+    font-family: 'xialuwenkai';
+    font-display: swap;
+    src: url('../font/LXGWWenKaiScreenR.ttf') format("truetype");
+}
+
+@font-face{
+    font-family: 'FiraCode';
+    font-display: swap;
+    src: url('../font/FiraCode-Medium.ttf') format("truetype");
+}
+
+body {
+    font-family: "FiraCode" , 'xialuwenkai', "Microsoft YaHei";
+}
