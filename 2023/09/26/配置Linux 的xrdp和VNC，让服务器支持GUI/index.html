@@ -1,0 +1,224 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width,initial-scale=1"><title>配置Linux 的xrdp和VNC，让服务器支持GUI | damaoooo's blog</title><meta name="description" content="众所周知，由于X11设计上的原因，在网络条件不佳的情况下，其质量巨差，但是有时候在linux中又会不可避免的用到GUI，这个时候xrdp似乎成了一个更好的选择，本文将讲述如何使用xrdp在linux-server上进行远程桌面连接 1. XRDP就像是windows的rdp一样的好用，但是xrdp是基于x11的，GUI的响应速度之比x11要好一些 1. 安装xrdp和xfce41234567sud"><meta name="keywords" content="Linux"><meta name="author" content="damaoooo"><meta name="copyright" content="damaoooo"><meta name="format-detection" content="telephone=no"><link rel="shortcut icon" href="/img/favicon.png"><link rel="canonical" href="http://yoursite.com/2023/09/26/%E9%85%8D%E7%BD%AELinux%20%E7%9A%84xrdp%E5%92%8CVNC%EF%BC%8C%E8%AE%A9%E6%9C%8D%E5%8A%A1%E5%99%A8%E6%94%AF%E6%8C%81GUI/"><meta http-equiv="Cache-Control" content="no-transform"><meta http-equiv="Cache-Control" content="no-siteapp"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//fonts.googleapis.com" crossorigin="crossorigin"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><meta property="og:type" content="article"><meta property="og:title" content="配置Linux 的xrdp和VNC，让服务器支持GUI"><meta property="og:url" content="http://yoursite.com/2023/09/26/%E9%85%8D%E7%BD%AELinux%20%E7%9A%84xrdp%E5%92%8CVNC%EF%BC%8C%E8%AE%A9%E6%9C%8D%E5%8A%A1%E5%99%A8%E6%94%AF%E6%8C%81GUI/"><meta property="og:site_name" content="damaoooo's blog"><meta property="og:description" content="众所周知，由于X11设计上的原因，在网络条件不佳的情况下，其质量巨差，但是有时候在linux中又会不可避免的用到GUI，这个时候xrdp似乎成了一个更好的选择，本文将讲述如何使用xrdp在linux-server上进行远程桌面连接 1. XRDP就像是windows的rdp一样的好用，但是xrdp是基于x11的，GUI的响应速度之比x11要好一些 1. 安装xrdp和xfce41234567sud"><meta property="og:image" content="https://img2.woyaogexing.com/2020/07/30/a0dd019796df496f855d3ef3e511c8a5!400x400.webp"><meta property="article:published_time" content="2023-09-25T23:16:44.000Z"><meta property="article:modified_time" content="2023-09-25T23:17:20.397Z"><meta name="twitter:card" content="summary"><script>var activateDarkMode = function () {
+  document.documentElement.setAttribute('data-theme', 'dark')
+  if (document.querySelector('meta[name="theme-color"]') !== null) {
+    document.querySelector('meta[name="theme-color"]').setAttribute('content', '#000')
+  }
+}
+var activateLightMode = function () {
+  document.documentElement.setAttribute('data-theme', 'light')
+  if (document.querySelector('meta[name="theme-color"]') !== null) {
+    document.querySelector('meta[name="theme-color"]').setAttribute('content', '#fff')
+  }
+}
+
+var getCookies = function (name) {
+  const value = `; ${document.cookie}`
+  const parts = value.split(`; ${name}=`)
+  if (parts.length === 2) return parts.pop().split(';').shift()
+}
+
+var autoChangeMode = 'true'
+var t = getCookies('theme')
+if (autoChangeMode === '1') {
+  var isDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches
+  var isLightMode = window.matchMedia('(prefers-color-scheme: light)').matches
+  var isNotSpecified = window.matchMedia('(prefers-color-scheme: no-preference)').matches
+  var hasNoSupport = !isDarkMode && !isLightMode && !isNotSpecified
+
+  if (t === undefined) {
+    if (isLightMode) activateLightMode()
+    else if (isDarkMode) activateDarkMode()
+    else if (isNotSpecified || hasNoSupport) {
+      console.log('You specified no preference for a color scheme or your browser does not support it. I Schedule dark mode during night time.')
+      var now = new Date()
+      var hour = now.getHours()
+      var isNight = hour <= 6 || hour >= 18
+      isNight ? activateDarkMode() : activateLightMode()
+    }
+    window.matchMedia('(prefers-color-scheme: dark)').addListener(function (e) {
+      if (Cookies.get('theme') === undefined) {
+        e.matches ? activateDarkMode() : activateLightMode()
+      }
+    })
+  } else if (t === 'light') activateLightMode()
+  else activateDarkMode()
+} else if (autoChangeMode === '2') {
+  now = new Date()
+  hour = now.getHours()
+  isNight = hour <= 6 || hour >= 18
+  if (t === undefined) isNight ? activateDarkMode() : activateLightMode()
+  else if (t === 'light') activateLightMode()
+  else activateDarkMode()
+} else {
+  if (t === 'dark') activateDarkMode()
+  else if (t === 'light') activateLightMode()
+}</script><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/node-snackbar/dist/snackbar.min.css"><link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Titillium+Web&amp;display=swap"><script>var GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  translate: undefined,
+  noticeOutdate: undefined,
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  bookmark: {
+    message_prev: '按',
+    message_next: '键将本页加入书签'
+  },
+  runtime_unit: '天',
+  runtime: false,
+  copyright: undefined,
+  ClickShowText: undefined,
+  medium_zoom: false,
+  fancybox: true,
+  Snackbar: {"bookmark":{"message_prev":"按","message_next":"键将本页加入书签"},"chs_to_cht":"你已切换为繁体","cht_to_chs":"你已切换为简体","day_to_night":"你已切换为深色模式","night_to_day":"你已切换为浅色模式","bgLight":"#49b1f5","bgDark":"#121212","position":"top-right"},
+  justifiedGallery: {
+    js: 'https://cdn.jsdelivr.net/npm/justifiedGallery/dist/js/jquery.justifiedGallery.min.js',
+    css: 'https://cdn.jsdelivr.net/npm/justifiedGallery/dist/css/justifiedGallery.min.css'
+  },
+  baiduPush: false,
+  highlightCopy: true,
+  highlightLang: true,
+  isPhotoFigcaption: false,
+  islazyload: true,
+  isanchor: false    
+}</script><script id="config_change">var GLOBAL_CONFIG_SITE = { 
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isSidebar: true,
+  postUpdate: '2023-09-26 02:17:20'
+}</script><noscript><style>
+#nav {
+  opacity: 1
+}
+.justified-gallery img {
+  opacity: 1
+}
+</style></noscript><meta name="generator" content="Hexo 5.0.0"></head><body><div id="mobile-sidebar"><div id="menu_mask"></div><div id="mobile-sidebar-menus"><div class="mobile_author_icon"><img class="avatar-img" data-lazy-src="https://i.loli.net/2020/07/30/shRu65oYXAlyOwp.png" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="mobile_post_data"><div class="mobile_data_item is-center"><div class="mobile_data_link"><a href="/archives/"><div class="headline">文章</div><div class="length_num">41</div></a></div></div><div class="mobile_data_item is-center">      <div class="mobile_data_link"><a href="/tags/"><div class="headline">标签</div><div class="length_num">17</div></a></div></div></div><hr/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 主页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="javascript:void(0);"><i class="fa-fw fas fa-list"></i><span> 清单</span><i class="fas fa-chevron-down expand"></i></a><ul class="menus_item_child"><li><a class="site-page" href="/music/"><i class="fa-fw fas fa-music"></i><span> 音乐</span></a></li><li><a class="site-page" href="/movies/"><i class="fa-fw fas fa-video"></i><span> 电影</span></a></li><li><a class="site-page" href="/books/"><i class="fa-fw fas fa-book"></i><span> 书单</span></a></li><li><a class="site-page" href="/bangumi/"><i class="fa-fw fas fa-film"></i><span> 番剧</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友链</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于我</span></a></div></div></div></div><div id="body-wrap"><div id="sidebar"><i class="fas fa-arrow-right on" id="toggle-sidebar"></i><div class="sidebar-toc"><div class="sidebar-toc__title">目录</div><div class="sidebar-toc__progress"><span class="progress-notice">你已经读了</span><span class="progress-num">0</span><span class="progress-percentage">%</span><div class="sidebar-toc__progress-bar">     </div></div><div class="sidebar-toc__content"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-XRDP"><span class="toc-number">1.</span> <span class="toc-text">1. XRDP</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-%E5%AE%89%E8%A3%85xrdp%E5%92%8Cxfce4"><span class="toc-number">1.1.</span> <span class="toc-text">1. 安装xrdp和xfce4</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-%E9%85%8D%E7%BD%AEkey%E6%9D%83%E9%99%90"><span class="toc-number">1.2.</span> <span class="toc-text">2. 配置key权限</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-%E5%85%B3%E9%97%AD%E4%B8%BB%E6%98%BE%E7%A4%BA%E5%99%A8%E7%9A%84GUI"><span class="toc-number">1.3.</span> <span class="toc-text">3.  关闭主显示器的GUI</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-%E7%94%A8root%E5%85%88%E7%99%BB%E9%99%86%E4%B8%80%E6%AC%A1%EF%BC%88%E5%A5%87%E6%80%AA%E7%9A%84%E9%97%AE%E9%A2%98%EF%BC%89"><span class="toc-number">1.4.</span> <span class="toc-text">4. 用root先登陆一次（奇怪的问题）</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-%E6%8D%A2%E7%94%A8VNC"><span class="toc-number">2.</span> <span class="toc-text">2. 换用VNC</span></a></li></ol></div></div></div><header class="post-bg" id="page-header" style="background-image: url(https://img2.woyaogexing.com/2020/07/30/a0dd019796df496f855d3ef3e511c8a5!400x400.webp)"><nav id="nav"><span class="pull-left" id="blog_name"><a class="blog_title" id="site-name" href="/">damaoooo's blog</a></span><span class="pull-right menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 主页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="javascript:void(0);"><i class="fa-fw fas fa-list"></i><span> 清单</span><i class="fas fa-chevron-down expand"></i></a><ul class="menus_item_child"><li><a class="site-page" href="/music/"><i class="fa-fw fas fa-music"></i><span> 音乐</span></a></li><li><a class="site-page" href="/movies/"><i class="fa-fw fas fa-video"></i><span> 电影</span></a></li><li><a class="site-page" href="/books/"><i class="fa-fw fas fa-book"></i><span> 书单</span></a></li><li><a class="site-page" href="/bangumi/"><i class="fa-fw fas fa-film"></i><span> 番剧</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友链</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于我</span></a></div></div><span class="toggle-menu close"><a class="site-page"><i class="fas fa-bars fa-fw"></i></a></span></span></nav><div id="post-info"><div id="post-title"><div class="posttitle">配置Linux 的xrdp和VNC，让服务器支持GUI</div></div><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2023-09-25T23:16:44.000Z" title="发表于 2023-09-26 02:16:44">2023-09-26</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2023-09-25T23:17:20.397Z" title="更新于 2023-09-26 02:17:20">2023-09-26</time></span></div><div class="meta-secondline"> <span class="post-meta-separator">|</span><span class="post-meta-pv-cv"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">阅读量:</span><span id="busuanzi_value_page_pv"></span></span></div></div></div></header><main class="layout_post" id="content-inner"><article id="post"><div class="post-content" id="article-container"><p>众所周知，由于X11设计上的原因，在网络条件不佳的情况下，其质量巨差，但是有时候在linux中又会不可避免的用到GUI，这个时候xrdp似乎成了一个更好的选择，本文将讲述如何使用xrdp在linux-server上进行远程桌面连接</p>
+<h2 id="1-XRDP"><a href="#1-XRDP" class="headerlink" title="1. XRDP"></a>1. XRDP</h2><p>就像是windows的rdp一样的好用，但是xrdp是基于x11的，GUI的响应速度之比x11要好一些</p>
+<h3 id="1-安装xrdp和xfce4"><a href="#1-安装xrdp和xfce4" class="headerlink" title="1. 安装xrdp和xfce4"></a>1. 安装xrdp和xfce4</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">sudo apt install xfce4</span><br><span class="line">sudo update-alternatives --config x-session-manager</span><br><span class="line"><span class="comment"># 选xfce4-sesion 回车</span></span><br><span class="line">sudo apt install xrdp</span><br><span class="line">sudo systemctl restart xrdp</span><br><span class="line"><span class="comment"># 开机自启，看情况开启</span></span><br><span class="line">sudo systemctl <span class="built_in">enable</span> xrdp </span><br></pre></td></tr></table></figure>
+
+<p>一般来说，这样就可以直接连接了，但是，如果遇到了问题，就继续下面的步骤</p>
+<h3 id="2-配置key权限"><a href="#2-配置key权限" class="headerlink" title="2. 配置key权限"></a>2. 配置key权限</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo adduser xrdp ssl-cert  </span><br></pre></td></tr></table></figure>
+
+<h3 id="3-关闭主显示器的GUI"><a href="#3-关闭主显示器的GUI" class="headerlink" title="3.  关闭主显示器的GUI"></a>3.  关闭主显示器的GUI</h3><p>这一步你主显示器的GUI就没了</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">sudo systemctl start multi-user.target </span><br><span class="line">sudo systemctl <span class="built_in">set</span>-default multi-user.target</span><br></pre></td></tr></table></figure>
+
+<p>要切换回来就得</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">sudo systemctl <span class="built_in">set</span>-default graphical.target</span><br><span class="line">sudo systemctl start graphical.target  </span><br></pre></td></tr></table></figure>
+
+<p>得<strong>重启</strong>!</p>
+<h3 id="4-用root先登陆一次（奇怪的问题）"><a href="#4-用root先登陆一次（奇怪的问题）" class="headerlink" title="4. 用root先登陆一次（奇怪的问题）"></a>4. 用root先登陆一次（奇怪的问题）</h3><p>如果还是不管用，先用root登陆一次，然后再用普通用户来登录</p>
+<h2 id="2-换用VNC"><a href="#2-换用VNC" class="headerlink" title="2. 换用VNC"></a>2. 换用VNC</h2><p>既然已经有xrdp了，默认你的xrdp已经通了，但是由于xrdp还是慢，换用VNC可能会好一些。<br>中途可能你还会遇到无数的💩。Linux Remote GUI还是太恼火了，还是老老实实本地虚拟机吧，或者是teamviewer这号的一键工具。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">gsettings set org.gnome.Vino require-encryption false</span><br></pre></td></tr></table></figure>
+
+<p>然后设置-屏幕共享</p>
+<p>打开屏幕共享就是VNC了</p>
+</div><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">文章作者: </span><span class="post-copyright-info"><a href="mailto:undefined">damaoooo</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">文章链接: </span><span class="post-copyright-info"><a href="http://yoursite.com/2023/09/26/%E9%85%8D%E7%BD%AELinux%20%E7%9A%84xrdp%E5%92%8CVNC%EF%BC%8C%E8%AE%A9%E6%9C%8D%E5%8A%A1%E5%99%A8%E6%94%AF%E6%8C%81GUI/">http://yoursite.com/2023/09/26/%E9%85%8D%E7%BD%AELinux%20%E7%9A%84xrdp%E5%92%8CVNC%EF%BC%8C%E8%AE%A9%E6%9C%8D%E5%8A%A1%E5%99%A8%E6%94%AF%E6%8C%81GUI/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="http://yoursite.com" target="_blank">damaoooo's blog</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/Linux/">Linux</a></div><div class="post_share"><div class="social-share" data-image="https://img2.woyaogexing.com/2020/07/30/a0dd019796df496f855d3ef3e511c8a5!400x400.webp" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/social-share.js/dist/css/share.min.css"><script src="https://cdn.jsdelivr.net/npm/social-share.js/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="next-post pull-full"><a href="/2023/09/15/PythonPyTorch%20%E8%B0%83%E4%BC%98%E6%8C%87%E5%8D%97/"><img class="next-cover" data-lazy-src="https://img2.woyaogexing.com/2020/07/30/9bc6cd92f7f649a19a6efd982ce4b413!400x400.webp" onerror="onerror=null;src='/img/404.jpg'"><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">Python / PyTorch 性能调优指南</div></div></a></div></nav><div class="relatedPosts"><div class="relatedPosts_headline"><i class="fas fa-thumbs-up fa-fw"></i><span> 相关推荐</span></div><div class="relatedPosts_list"><div class="relatedPosts_item"><a href="/2023/08/09/2023年，如何在wsl2上安装cuda搭建深度学习环境/" title="2023 年，如何在wsl2/linux上安装cuda搭建深度学习环境"><img class="relatedPosts_cover" data-lazy-src="https://img2.woyaogexing.com/2020/07/30/cd0326e40dd049e49e28fd958622947b!400x400.webp"><div class="relatedPosts_main is-center"><div class="relatedPosts_date"><i class="far fa-calendar-alt fa-fw"></i> 2023-08-09</div><div class="relatedPosts_title">2023 年，如何在wsl2/linux上安装cuda搭建深度学习环境</div></div></a></div><div class="relatedPosts_item"><a href="/2022/07/25/编译并vscode可视化调试Linux 4.18内核/" title="编译并vscode可视化调试Linux 4.18内核"><img class="relatedPosts_cover" data-lazy-src="https://i.loli.net/2020/07/30/HAcfI3T9pYPWwxu.png"><div class="relatedPosts_main is-center"><div class="relatedPosts_date"><i class="far fa-calendar-alt fa-fw"></i> 2022-07-25</div><div class="relatedPosts_title">编译并vscode可视化调试Linux 4.18内核</div></div></a></div></div></div></article></main><footer id="footer" style="background-image: url(https://img2.woyaogexing.com/2020/07/30/a0dd019796df496f855d3ef3e511c8a5!400x400.webp)" data-type="photo"><div id="footer-wrap"><div class="copyright">&copy;2019 - 2023 By damaoooo</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div><div class="footer_custom_text">欢迎经常来康康~</div></div></footer></div><section id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="font_plus" type="button" title="放大字体"><i class="fas fa-plus"></i></button><button id="font_minus" type="button" title="缩小字体"><i class="fas fa-minus"></i></button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="设置"><i class="fas fa-cog"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="回到顶部"><i class="fas fa-arrow-up"></i></button></div></section><div><script src="https://cdn.jsdelivr.net/npm/jquery@latest/dist/jquery.min.js"></script><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.js"></script><script src="https://cdn.jsdelivr.net/npm/instant.page/instantpage.min.js" type="module" defer></script><script src="https://cdn.jsdelivr.net/npm/vanilla-lazyload/dist/lazyload.iife.min.js" async></script><script src="https://cdn.jsdelivr.net/npm/node-snackbar/dist/snackbar.min.js"></script><div class="js-pjax"><script>if (!window.MathJax) {
+  window.MathJax = {
+    loader: {
+      source: {
+        '[tex]/amsCd': '[tex]/amscd'
+      }
+    },
+    tex: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"]],
+      tags: 'ams'
+    },
+    options: {
+      renderActions: {
+        findScript: [10, doc => {
+          for (const node of document.querySelectorAll('script[type^="math/tex"]')) {
+            const display = !!node.type.match(/; *mode=display/)
+            const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display)
+            const text = document.createTextNode('')
+            node.parentNode.replaceChild(text, node)
+            math.start = {node: text, delim: '', n: 0}
+            math.end = {node: text, delim: '', n: 0}
+            doc.math.push(math)
+          }
+        }, '']
+      }
+    }
+  }
+  
+  var script = document.createElement('script')
+  script.src = 'https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js'
+  script.id = 'MathJax-script'
+  script.async = true
+  document.head.appendChild(script)
+} else {
+  MathJax.startup.document.state(0)
+  MathJax.texReset()
+  MathJax.typeset()
+}</script><script>if (document.getElementsByClassName('mermaid').length) {
+  if (window.mermaidJsLoad) mermaid.init()
+  else {
+    $.getScript('https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js', function () {
+      window.mermaidJsLoad = true
+      mermaid.initialize({
+        theme: 'default',
+      })
+      true && mermaid.init()
+    })
+  }
+}</script><script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/aplayer@1.10.1/dist/APlayer.min.css"> <script src="https://cdn.jsdelivr.net/npm/aplayer@1.10.1/dist/APlayer.min.js"></script> <script src="https://cdn.jsdelivr.net/npm/meting@1.2.0/dist/Meting.min.js"></script>
+<div class="aplayer" data-id="497592050" data-server="netease" data-type="playlist" data-fixed="true" data-autoplay="true" data-order="random" data-volume="0.55" data-theme="#49b1f5" data-preload="auto" > </div><script id="canvas_nest" defer="defer" color="0,0,0" opacity="0.7" zIndex="-1" count="99" mobile="false" src="/js/third-party/canvas-nest.js"></script><script src="/js/third-party/activate-power-mode.js"></script><script>POWERMODE.colorful = true;
+POWERMODE.shake = true;
+document.body.addEventListener('input', POWERMODE);
+</script><script src="/js/third-party/click_heart.js" async="async"></script><script src="https://cdn.jsdelivr.net/npm/pjax/pjax.min.js"></script><script>var pjax = new Pjax({
+  elements: 'a:not([target="_blank"])',
+  selectors: [
+    'title',
+    'meta[name=description]',
+    '#config_change',
+    '#body-wrap',
+    '#rightside-config-hide',
+    '#rightside-config-show',
+    '.js-pjax'
+  ],
+  cacheBust: false,
+})
+
+document.addEventListener('pjax:complete', function () {
+  refreshFn()
+
+  $('script[data-pjax]').each(function () {
+    $(this).parent().append($(this).remove())
+  })
+
+  GLOBAL_CONFIG.islazyload && lazyLoadInstance.update()
+
+  typeof chatBtnFn === 'function' && chatBtnFn()
+  typeof panguInit === 'function' && panguInit()
+
+  if (typeof gtag === 'function') {
+    gtag('config', '', {'page_path': window.location.pathname});
+  }
+
+  typeof loadMeting === 'function' && document.getElementsByClassName('aplayer').length && loadMeting()
+
+})
+
+document.addEventListener('pjax:send', function () {
+  if (window.aplayers) {
+    for (let i = 0; i < window.aplayers.length; i++) {
+      if (!window.aplayers[i].options.fixed) {
+        window.aplayers[i].destroy()
+      }
+    }
+  }
+
+  typeof typed === 'object' && typed.destroy()
+
+  $(window).off('scroll')
+
+  //reset readmode
+  $('body').hasClass('read-mode') && $('body').removeClass('read-mode')
+
+  //reset font-size
+  $('body').css('font-size') !== originFontSize && $('body').css('font-size', parseFloat(originFontSize))
+})</script></div><script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"debug":false,"model":{"jsonPath":"/live2dw/assets/assets/hijiki.model.json"},"display":{"position":"right","width":150,"height":300},"mobile":{"show":true},"react":{"opacity":0.7},"log":false});</script></body></html>
