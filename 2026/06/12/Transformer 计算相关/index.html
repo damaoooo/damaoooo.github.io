@@ -1,0 +1,308 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width,initial-scale=1"><title>CS336笔记1 Transformer 计算相关 | damaoooo's blog</title><meta name="description" content="Transformer 计算相关也是惭愧，早就该补上这一课的，做CS336的大作业才把这个给搞明白。  本文假设读者已经懂了什么是Transformer基础架构，以及对应的基础知识  参数量计算我们这里就用CS 336里面的架构为例  这里我们可以看到LLM看着大，其实很大一部分是Transformer Block的重复，一个Transformer Block 里面又有3个主要的模块，Multi"><meta name="keywords" content="AI"><meta name="author" content="damaoooo"><meta name="copyright" content="damaoooo"><meta name="format-detection" content="telephone=no"><link rel="shortcut icon" href="/img/favicon.png"><link rel="canonical" href="http://yoursite.com/2026/06/12/Transformer%20%E8%AE%A1%E7%AE%97%E7%9B%B8%E5%85%B3/"><meta http-equiv="Cache-Control" content="no-transform"><meta http-equiv="Cache-Control" content="no-siteapp"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//fonts.googleapis.com" crossorigin="crossorigin"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><meta property="og:type" content="article"><meta property="og:title" content="CS336笔记1 Transformer 计算相关"><meta property="og:url" content="http://yoursite.com/2026/06/12/Transformer%20%E8%AE%A1%E7%AE%97%E7%9B%B8%E5%85%B3/"><meta property="og:site_name" content="damaoooo's blog"><meta property="og:description" content="Transformer 计算相关也是惭愧，早就该补上这一课的，做CS336的大作业才把这个给搞明白。  本文假设读者已经懂了什么是Transformer基础架构，以及对应的基础知识  参数量计算我们这里就用CS 336里面的架构为例  这里我们可以看到LLM看着大，其实很大一部分是Transformer Block的重复，一个Transformer Block 里面又有3个主要的模块，Multi"><meta property="og:image" content="https://img2.woyaogexing.com/2020/07/30/9bc6cd92f7f649a19a6efd982ce4b413!400x400.webp"><meta property="article:published_time" content="2026-06-12T02:34:44.000Z"><meta property="article:modified_time" content="2026-06-12T02:19:24.996Z"><meta name="twitter:card" content="summary"><script>var activateDarkMode = function () {
+  document.documentElement.setAttribute('data-theme', 'dark')
+  if (document.querySelector('meta[name="theme-color"]') !== null) {
+    document.querySelector('meta[name="theme-color"]').setAttribute('content', '#000')
+  }
+}
+var activateLightMode = function () {
+  document.documentElement.setAttribute('data-theme', 'light')
+  if (document.querySelector('meta[name="theme-color"]') !== null) {
+    document.querySelector('meta[name="theme-color"]').setAttribute('content', '#fff')
+  }
+}
+
+var getCookies = function (name) {
+  const value = `; ${document.cookie}`
+  const parts = value.split(`; ${name}=`)
+  if (parts.length === 2) return parts.pop().split(';').shift()
+}
+
+var autoChangeMode = 'true'
+var t = getCookies('theme')
+if (autoChangeMode === '1') {
+  var isDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches
+  var isLightMode = window.matchMedia('(prefers-color-scheme: light)').matches
+  var isNotSpecified = window.matchMedia('(prefers-color-scheme: no-preference)').matches
+  var hasNoSupport = !isDarkMode && !isLightMode && !isNotSpecified
+
+  if (t === undefined) {
+    if (isLightMode) activateLightMode()
+    else if (isDarkMode) activateDarkMode()
+    else if (isNotSpecified || hasNoSupport) {
+      console.log('You specified no preference for a color scheme or your browser does not support it. I Schedule dark mode during night time.')
+      var now = new Date()
+      var hour = now.getHours()
+      var isNight = hour <= 6 || hour >= 18
+      isNight ? activateDarkMode() : activateLightMode()
+    }
+    window.matchMedia('(prefers-color-scheme: dark)').addListener(function (e) {
+      if (Cookies.get('theme') === undefined) {
+        e.matches ? activateDarkMode() : activateLightMode()
+      }
+    })
+  } else if (t === 'light') activateLightMode()
+  else activateDarkMode()
+} else if (autoChangeMode === '2') {
+  now = new Date()
+  hour = now.getHours()
+  isNight = hour <= 6 || hour >= 18
+  if (t === undefined) isNight ? activateDarkMode() : activateLightMode()
+  else if (t === 'light') activateLightMode()
+  else activateDarkMode()
+} else {
+  if (t === 'dark') activateDarkMode()
+  else if (t === 'light') activateLightMode()
+}</script><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/node-snackbar/dist/snackbar.min.css"><link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Titillium+Web&amp;display=swap"><script>var GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  translate: undefined,
+  noticeOutdate: undefined,
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  bookmark: {
+    message_prev: '按',
+    message_next: '键将本页加入书签'
+  },
+  runtime_unit: '天',
+  runtime: false,
+  copyright: undefined,
+  ClickShowText: undefined,
+  medium_zoom: false,
+  fancybox: true,
+  Snackbar: {"bookmark":{"message_prev":"按","message_next":"键将本页加入书签"},"chs_to_cht":"你已切换为繁体","cht_to_chs":"你已切换为简体","day_to_night":"你已切换为深色模式","night_to_day":"你已切换为浅色模式","bgLight":"#49b1f5","bgDark":"#121212","position":"top-right"},
+  justifiedGallery: {
+    js: 'https://cdn.jsdelivr.net/npm/justifiedGallery/dist/js/jquery.justifiedGallery.min.js',
+    css: 'https://cdn.jsdelivr.net/npm/justifiedGallery/dist/css/justifiedGallery.min.css'
+  },
+  baiduPush: false,
+  highlightCopy: true,
+  highlightLang: true,
+  isPhotoFigcaption: false,
+  islazyload: true,
+  isanchor: false    
+}</script><script id="config_change">var GLOBAL_CONFIG_SITE = { 
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isSidebar: true,
+  postUpdate: '2026-06-12 05:19:24'
+}</script><noscript><style>
+#nav {
+  opacity: 1
+}
+.justified-gallery img {
+  opacity: 1
+}
+</style></noscript><link rel="stylesheet" href="/css/font.css"><meta name="generator" content="Hexo 5.0.0"></head><body><div id="mobile-sidebar"><div id="menu_mask"></div><div id="mobile-sidebar-menus"><div class="mobile_author_icon"><img class="avatar-img" data-lazy-src="https://i.loli.net/2020/07/30/shRu65oYXAlyOwp.png" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="mobile_post_data"><div class="mobile_data_item is-center"><div class="mobile_data_link"><a href="/archives/"><div class="headline">文章</div><div class="length_num">45</div></a></div></div><div class="mobile_data_item is-center">      <div class="mobile_data_link"><a href="/tags/"><div class="headline">标签</div><div class="length_num">20</div></a></div></div></div><hr/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 主页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="javascript:void(0);"><i class="fa-fw fas fa-list"></i><span> 清单</span><i class="fas fa-chevron-down expand"></i></a><ul class="menus_item_child"><li><a class="site-page" href="/music/"><i class="fa-fw fas fa-music"></i><span> 音乐</span></a></li><li><a class="site-page" href="/movies/"><i class="fa-fw fas fa-video"></i><span> 电影</span></a></li><li><a class="site-page" href="/books/"><i class="fa-fw fas fa-book"></i><span> 书单</span></a></li><li><a class="site-page" href="/bangumi/"><i class="fa-fw fas fa-film"></i><span> 番剧</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友链</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于我</span></a></div></div></div></div><div id="body-wrap"><div id="sidebar"><i class="fas fa-arrow-right on" id="toggle-sidebar"></i><div class="sidebar-toc"><div class="sidebar-toc__title">目录</div><div class="sidebar-toc__progress"><span class="progress-notice">你已经读了</span><span class="progress-num">0</span><span class="progress-percentage">%</span><div class="sidebar-toc__progress-bar">     </div></div><div class="sidebar-toc__content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#Transformer-%E8%AE%A1%E7%AE%97%E7%9B%B8%E5%85%B3"><span class="toc-number">1.</span> <span class="toc-text">Transformer 计算相关</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8F%82%E6%95%B0%E9%87%8F%E8%AE%A1%E7%AE%97"><span class="toc-number">1.1.</span> <span class="toc-text">参数量计算</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Transformer-Block"><span class="toc-number">1.1.1.</span> <span class="toc-text">Transformer Block</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#RMSNorm"><span class="toc-number">1.1.1.1.</span> <span class="toc-text">RMSNorm</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#MHA"><span class="toc-number">1.1.1.2.</span> <span class="toc-text">MHA</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#FFN"><span class="toc-number">1.1.1.3.</span> <span class="toc-text">FFN</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Embedding-Readout-Layer"><span class="toc-number">1.1.2.</span> <span class="toc-text">Embedding + Readout Layer</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#AdamW-%E5%8F%82%E6%95%B0%E9%87%8F%E8%AE%A1%E7%AE%97"><span class="toc-number">1.1.3.</span> <span class="toc-text">AdamW 参数量计算</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Activation-%E5%8F%82%E6%95%B0%E9%87%8F%E8%AE%A1%E7%AE%97-%EF%BC%88%E8%BF%99%E9%83%A8%E5%88%86%E5%8F%AF%E4%BB%A5%E7%89%BA%E7%89%B2%E9%80%9F%E5%BA%A6%E6%9D%A5%E6%8D%A2%E6%98%BE%E5%AD%98%EF%BC%89"><span class="toc-number">1.1.4.</span> <span class="toc-text">Activation 参数量计算 （这部分可以牺牲速度来换显存）</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#RMSNorm-1"><span class="toc-number">1.1.4.1.</span> <span class="toc-text">RMSNorm</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#MHA-1"><span class="toc-number">1.1.4.2.</span> <span class="toc-text">MHA</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#FFN-1"><span class="toc-number">1.1.4.3.</span> <span class="toc-text">FFN</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Others"><span class="toc-number">1.1.5.</span> <span class="toc-text">Others</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%AE%A1%E7%AE%97%E9%87%8F-FLOP-%E8%AE%A1%E7%AE%97"><span class="toc-number">1.2.</span> <span class="toc-text">计算量 FLOP 计算</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#RMSNorm-2"><span class="toc-number">1.2.0.1.</span> <span class="toc-text">RMSNorm</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#MHA-2"><span class="toc-number">1.2.0.2.</span> <span class="toc-text">MHA</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#FFN-2"><span class="toc-number">1.2.0.3.</span> <span class="toc-text">FFN</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%8F%8D%E5%90%91%E4%BC%A0%E6%92%AD"><span class="toc-number">1.2.1.</span> <span class="toc-text">反向传播</span></a></li></ol></li></ol></li></ol></div></div></div><header class="post-bg" id="page-header" style="background-image: url(https://img2.woyaogexing.com/2020/07/30/9bc6cd92f7f649a19a6efd982ce4b413!400x400.webp)"><nav id="nav"><span class="pull-left" id="blog_name"><a class="blog_title" id="site-name" href="/">damaoooo's blog</a></span><span class="pull-right menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 主页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="javascript:void(0);"><i class="fa-fw fas fa-list"></i><span> 清单</span><i class="fas fa-chevron-down expand"></i></a><ul class="menus_item_child"><li><a class="site-page" href="/music/"><i class="fa-fw fas fa-music"></i><span> 音乐</span></a></li><li><a class="site-page" href="/movies/"><i class="fa-fw fas fa-video"></i><span> 电影</span></a></li><li><a class="site-page" href="/books/"><i class="fa-fw fas fa-book"></i><span> 书单</span></a></li><li><a class="site-page" href="/bangumi/"><i class="fa-fw fas fa-film"></i><span> 番剧</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友链</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于我</span></a></div></div><span class="toggle-menu close"><a class="site-page"><i class="fas fa-bars fa-fw"></i></a></span></span></nav><div id="post-info"><div id="post-title"><div class="posttitle">CS336笔记1 Transformer 计算相关</div></div><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2026-06-12T02:34:44.000Z" title="发表于 2026-06-12 05:34:44">2026-06-12</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2026-06-12T02:19:24.996Z" title="更新于 2026-06-12 05:19:24">2026-06-12</time></span></div><div class="meta-secondline"> <span class="post-meta-separator">|</span><span class="post-meta-pv-cv"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">阅读量:</span><span id="busuanzi_value_page_pv"></span></span></div></div></div></header><main class="layout_post" id="content-inner"><article id="post"><div class="post-content" id="article-container"><h1 id="Transformer-计算相关"><a href="#Transformer-计算相关" class="headerlink" title="Transformer 计算相关"></a>Transformer 计算相关</h1><p>也是惭愧，早就该补上这一课的，做CS336的大作业才把这个给搞明白。</p>
+<blockquote>
+<p>本文假设读者已经懂了什么是Transformer基础架构，以及对应的基础知识</p>
+</blockquote>
+<h2 id="参数量计算"><a href="#参数量计算" class="headerlink" title="参数量计算"></a>参数量计算</h2><p>我们这里就用CS 336里面的架构为例</p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://images.damaoooo.com/2026/06/d8f752953b9f2e1af5bc11bd01a97817.png" alt="image-20260612025721858"></p>
+<p>这里我们可以看到LLM看着大，其实很大一部分是Transformer Block的重复，一个Transformer Block 里面又有3个主要的模块，Multi Head Attention (MHA), Feed Forward Network (FFN) 以及RMSNorm，接下来我们先从Transformer Block开始来计算参数量，然后再考虑其他部分。这里简单提及一下常见的缩写</p>
+<p>$B$ = Batch size, $S$ = Seqence Length, $H = d$ = Hidden Layer Size, $V$ = Vocabulary size $d_{ff} = \frac{8}{3}H$</p>
+<h3 id="Transformer-Block"><a href="#Transformer-Block" class="headerlink" title="Transformer Block"></a>Transformer Block</h3><h4 id="RMSNorm"><a href="#RMSNorm" class="headerlink" title="RMSNorm"></a>RMSNorm</h4><p>首先我们要知道RMSNorm的公式， 这里$X \in R^{1\times d} = {x_1, x_2, …, x_d}$， $g \in R^{1\times d}$<br>$$<br>RMSNorm(x_i) = \frac{x_i}{RMS(X)}g_i\<br>RMS(X) = \sqrt{\frac{\sum_{i=1}^{d}{x_i^2}}{d} + \epsilon}<br>$$<br>所以一层RMSNorm就有$H$个参数</p>
+<h4 id="MHA"><a href="#MHA" class="headerlink" title="MHA"></a>MHA</h4><p>对于MHA，我们一般是对于输入X，我们有$W_q, W_k, W_v, W_o \in R^{d \times d}$, 也就是说，直接是$4H^2$, 就这么简单</p>
+<h4 id="FFN"><a href="#FFN" class="headerlink" title="FFN"></a>FFN</h4><p>现在都是用的Swiglu FFN了，但是为了保持和传统的FFN一样，swiglu FFN的中间层是$d_{ff}= \frac{8}{3}d$，而传统的FFN中间层是$d_{ff} = 4d$， 所以哪怕用swiglu FFN，或者是传统的FFN，其实参数量都是一样的，传统的计算方法是<br>$$<br>2 \times H \times 4H = 8H^2<br>$$<br>swiglu FFN的公式是<br>$$<br>SwiGLUFFN(x) = W_3(SiLU(W_2X)\otimes (W_1X))<br>$$<br>这里$W_1 \in R^{d \times d_{ff}}$, $W_2 \in R^{d \times d_{ff}}$, $W_3 \in R^{d_{ff} \times d}$，所以总参数量就是<br>$$<br>3 \times d \times d_{ff} = 3 \times d \times \frac{8}{3}d = 8d^2 = 8H^2<br>$$<br>所以对于一个Transformer Block 来说，一层里面包含2个RMSNorm + 1个MHA + 1个FFN，所以加起来就是<br>$$<br>2\times H + 1\times 4H^2 + 1\times 8H^2 = 12H^2 + 2H<br>$$<br>我们假设有$L$层Transformer Block, 所以Transformer Blocks的参数量就是<br>$$<br>L(12H^2 + 2H) = 2L(6H^2 + H)<br>$$</p>
+<h3 id="Embedding-Readout-Layer"><a href="#Embedding-Readout-Layer" class="headerlink" title="Embedding + Readout Layer"></a>Embedding + Readout Layer</h3><p>这俩是互为相反形状的一个大矩阵，$W \in R^{V \times d}$, 所以这两层的参数量就是 $2VH$</p>
+<p>再加上最后一层单独的RMSNorm的H个参数，我们现在知道了纯参数有<br>$$<br>2VH + 2L(6H^2 + H) + H<br>$$<br>所以就从储存来说，纯参数量大小只和 $V, H, L$ 有关，我们来个实例，GPT3万恶之源了属于是, 也就是宣称有175B的参数，具体是以下构成的</p>
+<table>
+<thead>
+<tr>
+<th>Item</th>
+<th>Number</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>L</td>
+<td>96</td>
+</tr>
+<tr>
+<td>H</td>
+<td>12288</td>
+</tr>
+<tr>
+<td>V</td>
+<td>50257</td>
+</tr>
+<tr>
+<td>S</td>
+<td>2048</td>
+</tr>
+<tr>
+<td>A</td>
+<td>96</td>
+</tr>
+</tbody></table>
+<p>所以我们计算一下总的参数</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>L = <span class="number">96</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>H = <span class="number">12288</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>V = <span class="number">50257</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>P = <span class="number">2</span> * V * H + <span class="number">2</span> * L * (<span class="number">6</span> * H**<span class="number">2</span> + H) + H</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>P</span><br><span class="line"><span class="number">175183663104</span></span><br></pre></td></tr></table></figure>
+
+<p>175B，很合理，那么存储这些数据需要多少硬盘空间呢，如果我们用bf16来存，那么1个参数就要吃掉16bit也就是2Byte</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>P * <span class="number">2</span> / <span class="number">1024</span>**<span class="number">3</span></span><br><span class="line"><span class="number">326.3050003051758</span></span><br></pre></td></tr></table></figure>
+
+<p>326.3 GB, 还不错，一张SSD就能够带走。但是这个仅仅是推理，如果要训练呢？</p>
+<h3 id="AdamW-参数量计算"><a href="#AdamW-参数量计算" class="headerlink" title="AdamW 参数量计算"></a>AdamW 参数量计算</h3><p>首先对于每一个参数，我们求导都会占用相同的分量</p>
+<p>然后我们看看AdamW的公式</p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://images.damaoooo.com/2026/06/c1048239929278c834bb1f9fbfc25982.png" alt="image-20260612033347091"></p>
+<p>舒服了，$m$和$v$都是参数量大小的，记录了每一个参数的一阶和二阶动量，所以优化器这里的额外参数量是$3P$， 这还没完，因为如果我们要求梯度，还得保存正向的值</p>
+<h3 id="Activation-参数量计算-（这部分可以牺牲速度来换显存）"><a href="#Activation-参数量计算-（这部分可以牺牲速度来换显存）" class="headerlink" title="Activation 参数量计算 （这部分可以牺牲速度来换显存）"></a>Activation 参数量计算 （这部分可以牺牲速度来换显存）</h3><p>如果显存实在不够，这个可以被省略掉，但是我一般都不开gradient checkpoint，太慢，由于反向传播需要每一层的输入值，这个我这样解释可能比较清楚<br>$$<br>Y = W_2\sigma(XW_1)<br>$$<br>典型的两层神经网络，所以说如果我们对$W_2$ 求个导，就可以得到<br>$$<br>\frac{\partial Loss}{\partial W_2} = \frac{\partial Loss}{\partial Y}\frac{\partial Y}{\partial W_2} =  [\sigma(XW_1)]^T \frac{\partial Loss}{\partial Y}<br>$$<br>你看，是不是<strong>输入</strong>就需要保存下来了，不保存也可以，再算一次呗，但是计算比保存贵，所以我们需要计算每一层的计算结果</p>
+<h4 id="RMSNorm-1"><a href="#RMSNorm-1" class="headerlink" title="RMSNorm"></a>RMSNorm</h4><p>根据之前的公式，RMSNorm的<strong>输入</strong>是 BSH, 两个输入都是这个大小，所以是$2BSH$</p>
+<h4 id="MHA-1"><a href="#MHA-1" class="headerlink" title="MHA"></a>MHA</h4><p>这里得看一下MHA的公式，相信大家肯定都会背诵了<br>$$<br>MHA(X) = softmax(\frac{QK^T}{\sqrt{d}})V<br>$$</p>
+<p>MHA 里面首先是QKVO 矩阵的输入之后拿去计算，这一部分本身的输入是X，没关系，但是拿去计算都要作为输入的，所以$4BSH$, 这个应该问题不大。然后是$QK^T$ 之后，输入到softmax 的输入，是$BAS^2$, 这里的A 是Attention header 个数，Softmax 之后要乘以$V$, 所以这一步的输入也是$BAS^2$,</p>
+<p>所以MHA 里面的Activation 是<br>$$<br>4BHS + 2BAS^2<br>$$</p>
+<h4 id="FFN-1"><a href="#FFN-1" class="headerlink" title="FFN"></a>FFN</h4><p>SwiGLU比传统FFN会带来更多的激活，这里看着swiGLU的公式以及上面的例子，我们就知道，需要保存$W_1X, W_2X$ 的结果用作下一步计算，这里是$2 \times BSd_{ff}$, 然后SiLU的结果会用作下一步点乘的输入，所以这个大小也是$BSd_{ff}$, 一共是$3BSd_{ff} = 8BSH$，这一层的输出是$BSH$，正好交给下一层的Norm了</p>
+<p>所以单层Transformer Block的激活是<br>$$<br>2BSH + 4BSH + 2BAS^2 + 8BSH = 14BSH + 2BAS^2<br>$$</p>
+<h3 id="Others"><a href="#Others" class="headerlink" title="Others"></a>Others</h3><p>最后一层的RMSNorm 是 $BSH$, 读出层的输入是$BSH$, 如果读出层还要做Loss函数，输入就是$BSV$</p>
+<p>所以总的Activation就是<br>$$<br>Activation = \underbrace{2BSH}<em>{\text{Last RMS + Readout}}<br>+<br>\underbrace{BSV}</em>{\text{Loss Function}}<br>+<br>\underbrace{L\left(<br>    14BSH<br>    +<br>    2BAS^2<br>\right)}_{\text{all Transformer layers}}<br>$$<br>所以如果要训练，需要的显存大小是<br>$$<br>\underbrace{P}_\text{Model} + \underbrace{P}_\text{Gradient} + \underbrace{2P}_\text{AdamW} + Activation<br>$$<br>现在我们继续以GPT3 为例，上面两个多余的参数这不就有用了？如果我们就用1个Batch 来炼丹</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>S = <span class="number">2048</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>A = <span class="number">96</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>B = <span class="number">1</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>activation = <span class="number">2</span> * B * S * H + B * S * V + L * (<span class="number">14</span> * B * S * H + <span class="number">2</span> * B * A * S ** <span class="number">2</span>)</span><br></pre></td></tr></table></figure>
+
+<p>所以如果用的是bf16 ，优化器是FP32，而且优化器还要存一份FP32的P做一次高精度优化，那么需要吃掉的显存是<br>$$<br>\underbrace{2P}_\text{Model, BF16} + \underbrace{3\times4P}_\text{optimizer FP32} + \underbrace{2P}_\text{Gradient BF16} +  \underbrace{2\times Activation}_\text{BF16} = 2817.73GB<br>$$<br>其中我们把Batch size 有关的计算，也就是activation里面的B设置为1，那么这个值就是随着batch size正比例变化的，是207.3GB, 所以一共是2.8TB的显存呢，老黄一张A100是80G，8卡一个机器，所以需要</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">(<span class="number">16</span>*P + <span class="number">2</span>*activation) / <span class="number">1024</span> ** <span class="number">3</span> / (<span class="number">80</span>*<span class="number">8</span>)</span><br><span class="line"><span class="number">4.402696043252945</span></span><br></pre></td></tr></table></figure>
+
+<p>5台机器才能够跑得起来呢，所以<a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/626202865">pipeline parallel</a> 不可避免了，而当时官方训练的时候B = 1536, 怪不得当时要吃掉一万多张V100呢</p>
+<blockquote>
+<p> 也不知道现在V100已经日益落伍的今天，是否能够，旧时王谢堂前燕，飞入寻常百姓家。孕育出了ChatGPT雏形的高贵V100在经历过黑无天日的AI压榨过后，能否以平价售出，在我等垃圾佬Homelab里面安享晚年呢？</p>
+</blockquote>
+<h2 id="计算量-FLOP-计算"><a href="#计算量-FLOP-计算" class="headerlink" title="计算量 FLOP 计算"></a>计算量 FLOP 计算</h2><p>众所周知，参数量不等于计算量，所以我们还需要计算 计算量</p>
+<p>这里小常识，已知LLM里面大量的操作都是矩阵乘法，对于矩阵 $A \in R^{M \times N}, B \in R^{N \times K}, C = AB$来说，矩阵乘法，对于$C \in R^{M \times K}$, 每一个元素都是A的行和B的列相乘再相加得到的，所以每一个元素都有K个乘法 + （K-1）次加法，所以可以粗略看错2K次计算，所以对于这样的矩阵相乘，计算量就是<br>$$<br>2MNK<br>$$<br>了解这个我们就来计算一下前向Forward的计算量，记$N = B \times S$</p>
+<h4 id="RMSNorm-2"><a href="#RMSNorm-2" class="headerlink" title="RMSNorm"></a>RMSNorm</h4><p>主要是一个 [N, H] x [H] 的点乘，所以会占用$NH$的计算，不算多，后面会省略掉，Softmax也是，属于GEMV级别的，算存比太低，卡显存了</p>
+<h4 id="MHA-2"><a href="#MHA-2" class="headerlink" title="MHA"></a>MHA</h4><p>QKVO四次变换，所以是 $4 \times 2 \times NH^2 = 8NH^2$,</p>
+<p>$QK^T$ 是 [N, H] x [H, N] = [N, N], 计算量是 $2HN^2$, $Score \times V$  是 [N, N] x [N, H] = [N, H], 也是 $2HN^2$, 结果是$4HN^2$</p>
+<p>所以加一块儿是<br>$$<br>4HN^2 + 8NH^2<br>$$</p>
+<h4 id="FFN-2"><a href="#FFN-2" class="headerlink" title="FFN"></a>FFN</h4><p>我们还是用SwiGLU为例，传统的用上述方法也可以计算</p>
+<p>两次 [N, H] x [H, d_ff] = [N, d_ff] 的操作，是$2 \times 2NHd_{ff}$, 还有一次映射回来d的操作，是[N, d_ff] x [d_ff, H] = [N, H], 占用$2NHd_{ff}$，一共是<br>$$<br>6NHd_{ff} = 6NH \times \frac{8}{3}H = 16NH^2<br>$$<br>所以一个Transformer Block 的计算量是<br>$$<br>24NH^2 + 4HN^2 = 2N(12H^2 + 2HN)<br>$$<br>上文提到了模型单层的参数量<br>$$<br>P_0 = 12H^2 + 2H<br>$$<br>所以正比一下，对于一个参数量为$P$的模型前向计算量约为 $2NP$，$N = BS$ 所以一个Token就会吃掉大约$2P$的计算量</p>
+<h3 id="反向传播"><a href="#反向传播" class="headerlink" title="反向传播"></a>反向传播</h3><p>本质是矩阵乘法的反向传播，对于一个线性层，我们需要计算2次梯度，而我们之前的计算 计算量的全是通过矩阵乘法计算的</p>
+<ol>
+<li>W本身的梯度 $\nabla W = X^T \nabla Y$</li>
+<li>X的梯度，用于向前传递$\nabla X = \nabla Y W^T$</li>
+</ol>
+<p>所以计算量是前向的2倍</p>
+<p>因此可以粗略得到，训练的FLOPs  = 3倍前向FLOPs</p>
+<p>前向FLOPS 约等于2N倍参数， 如果要训练1个Token，就需要吃掉6P的计算量</p>
+<blockquote>
+<p>感觉这个比推Activate要简单</p>
+</blockquote>
+<p>那么继续按照GPT3的案例，看看要训练多久啊，我们由于不知道一共吃了多少个Batch，所以我们用6P原则粗略计算一下，查询到一共吃了300B的Token，所以说</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="number">300e9</span> * <span class="number">6</span> * P</span><br><span class="line"><span class="number">3.153305935872e+23</span></span><br></pre></td></tr></table></figure>
+
+<p>那么一张A100的BF16的FLOPS是312 TFLOPS，也就是一张A100我们需要</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="number">300e9</span> * <span class="number">6</span> * P / <span class="number">312e12</span> / <span class="number">3600</span> / <span class="number">24</span></span><br><span class="line"><span class="number">11697.627076923076</span></span><br></pre></td></tr></table></figure>
+
+<p>1万多天，人生不过短短3万多天, 如果我们8卡一个集群，开9个集群，不考虑通信延迟之类的要多久呢？</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">300e9</span> * <span class="number">6</span> * P / (<span class="number">312e12</span> * <span class="number">72</span>) / <span class="number">3600</span> / <span class="number">24</span></span><br><span class="line"><span class="number">162.46704273504272</span></span><br></pre></td></tr></table></figure>
+
+<p>那么如果我们能用上目前最强的GB200 NVL72 Rack，也就是72个集群一共约180PFLOS嗯造呢？</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">300e9</span> * <span class="number">6</span> * P / (<span class="number">180e15</span>) / <span class="number">3600</span> / <span class="number">24</span></span><br><span class="line"><span class="number">20.275886933333332</span></span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>也就是说这个速度提升了8倍。A100是2020年发布的，B200 是2024年发布的，也就是说4年的时间，老黄把AI性能是实打实提升了8倍, 也就是说每一年比上一年提升20%，这个速度不知道各位看官觉得是挤牙膏还是如何</p>
+</blockquote>
+</div><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">文章作者: </span><span class="post-copyright-info"><a href="mailto:undefined">damaoooo</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">文章链接: </span><span class="post-copyright-info"><a href="http://yoursite.com/2026/06/12/Transformer%20%E8%AE%A1%E7%AE%97%E7%9B%B8%E5%85%B3/">http://yoursite.com/2026/06/12/Transformer%20%E8%AE%A1%E7%AE%97%E7%9B%B8%E5%85%B3/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="http://yoursite.com" target="_blank">damaoooo's blog</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/AI/">AI</a></div><div class="post_share"><div class="social-share" data-image="https://img2.woyaogexing.com/2020/07/30/9bc6cd92f7f649a19a6efd982ce4b413!400x400.webp" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/social-share.js/dist/css/share.min.css"><script src="https://cdn.jsdelivr.net/npm/social-share.js/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="next-post pull-full"><a href="/2025/07/03/%E9%80%9A%E8%BF%87KVM%20%E5%AE%89%E8%A3%85%E9%BB%91%E7%BE%A4%E6%99%96%E5%B9%B6%E8%8E%B7%E5%8F%96%E7%8B%AC%E7%AB%8BIP/"><img class="next-cover" data-lazy-src="https://i.loli.net/2020/07/30/HAcfI3T9pYPWwxu.png" onerror="onerror=null;src='/img/404.jpg'"><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">通过KVM 安装黑群晖并获取独立IP</div></div></a></div></nav></article></main><footer id="footer" style="background-image: url(https://img2.woyaogexing.com/2020/07/30/9bc6cd92f7f649a19a6efd982ce4b413!400x400.webp)" data-type="photo"><div id="footer-wrap"><div class="copyright">&copy;2019 - 2026 By damaoooo</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div><div class="footer_custom_text">欢迎经常来康康~</div></div></footer></div><section id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="font_plus" type="button" title="放大字体"><i class="fas fa-plus"></i></button><button id="font_minus" type="button" title="缩小字体"><i class="fas fa-minus"></i></button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="设置"><i class="fas fa-cog"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="回到顶部"><i class="fas fa-arrow-up"></i></button></div></section><div><script src="https://cdn.jsdelivr.net/npm/jquery@latest/dist/jquery.min.js"></script><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.js"></script><script src="https://cdn.jsdelivr.net/npm/instant.page/instantpage.min.js" type="module" defer></script><script src="https://cdn.jsdelivr.net/npm/vanilla-lazyload/dist/lazyload.iife.min.js" async></script><script src="https://cdn.jsdelivr.net/npm/node-snackbar/dist/snackbar.min.js"></script><div class="js-pjax"><script>if (!window.MathJax) {
+  window.MathJax = {
+    loader: {
+      source: {
+        '[tex]/amsCd': '[tex]/amscd'
+      }
+    },
+    tex: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"]],
+      tags: 'ams'
+    },
+    options: {
+      renderActions: {
+        findScript: [10, doc => {
+          for (const node of document.querySelectorAll('script[type^="math/tex"]')) {
+            const display = !!node.type.match(/; *mode=display/)
+            const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display)
+            const text = document.createTextNode('')
+            node.parentNode.replaceChild(text, node)
+            math.start = {node: text, delim: '', n: 0}
+            math.end = {node: text, delim: '', n: 0}
+            doc.math.push(math)
+          }
+        }, '']
+      }
+    }
+  }
+  
+  var script = document.createElement('script')
+  script.src = 'https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js'
+  script.id = 'MathJax-script'
+  script.async = true
+  document.head.appendChild(script)
+} else {
+  MathJax.startup.document.state(0)
+  MathJax.texReset()
+  MathJax.typeset()
+}</script><script>if (document.getElementsByClassName('mermaid').length) {
+  if (window.mermaidJsLoad) mermaid.init()
+  else {
+    $.getScript('https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js', function () {
+      window.mermaidJsLoad = true
+      mermaid.initialize({
+        theme: 'default',
+      })
+      true && mermaid.init()
+    })
+  }
+}</script><script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/aplayer@1.10.1/dist/APlayer.min.css"> <script src="https://cdn.jsdelivr.net/npm/aplayer@1.10.1/dist/APlayer.min.js"></script> <script src="https://cdn.jsdelivr.net/npm/meting@1.2.0/dist/Meting.min.js"></script>
+<div class="aplayer" data-id="497592050" data-server="netease" data-type="playlist" data-fixed="true" data-autoplay="false" data-order="random" data-volume="0.55" data-theme="#49b1f5" data-preload="auto" > </div><script id="canvas_nest" defer="defer" color="0,0,0" opacity="0.7" zIndex="-1" count="99" mobile="false" src="/js/third-party/canvas-nest.js"></script><script src="/js/third-party/activate-power-mode.js"></script><script>POWERMODE.colorful = true;
+POWERMODE.shake = true;
+document.body.addEventListener('input', POWERMODE);
+</script><script src="/js/third-party/click_heart.js" async="async"></script><script src="https://cdn.jsdelivr.net/npm/pjax/pjax.min.js"></script><script>var pjax = new Pjax({
+  elements: 'a:not([target="_blank"])',
+  selectors: [
+    'title',
+    'meta[name=description]',
+    '#config_change',
+    '#body-wrap',
+    '#rightside-config-hide',
+    '#rightside-config-show',
+    '.js-pjax'
+  ],
+  cacheBust: false,
+})
+
+document.addEventListener('pjax:complete', function () {
+  refreshFn()
+
+  $('script[data-pjax]').each(function () {
+    $(this).parent().append($(this).remove())
+  })
+
+  GLOBAL_CONFIG.islazyload && lazyLoadInstance.update()
+
+  typeof chatBtnFn === 'function' && chatBtnFn()
+  typeof panguInit === 'function' && panguInit()
+
+  if (typeof gtag === 'function') {
+    gtag('config', '', {'page_path': window.location.pathname});
+  }
+
+  typeof loadMeting === 'function' && document.getElementsByClassName('aplayer').length && loadMeting()
+
+})
+
+document.addEventListener('pjax:send', function () {
+  if (window.aplayers) {
+    for (let i = 0; i < window.aplayers.length; i++) {
+      if (!window.aplayers[i].options.fixed) {
+        window.aplayers[i].destroy()
+      }
+    }
+  }
+
+  typeof typed === 'object' && typed.destroy()
+
+  $(window).off('scroll')
+
+  //reset readmode
+  $('body').hasClass('read-mode') && $('body').removeClass('read-mode')
+
+  //reset font-size
+  $('body').css('font-size') !== originFontSize && $('body').css('font-size', parseFloat(originFontSize))
+})</script></div><script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"debug":false,"model":{"jsonPath":"/live2dw/assets/assets/hijiki.model.json"},"display":{"position":"right","width":150,"height":300},"mobile":{"show":true},"react":{"opacity":0.7},"log":false});</script></body></html>
